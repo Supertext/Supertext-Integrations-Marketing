@@ -8,4 +8,5 @@
 - All Supertext integrations as content, with their latest GitHub release synced every night.
 - Service plans with monthly and annual prices and a Stripe Checkout shop; subscriptions recorded through the Stripe webhook.
 - Next.js website in the style of supertext.com: start, integrations, pricing and one page per integration.
+- Runs on Railway in its own project (supertext-integrations-site): CMS, website and Postgres in the ams region.
 - Demo accounts from `DEMO_ADMIN_*` / `DEMO_EDITOR_*` and starter content on first start.
