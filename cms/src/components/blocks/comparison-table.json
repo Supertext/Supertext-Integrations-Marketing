@@ -1,0 +1,27 @@
+{
+  "collectionName": "components_blocks_comparison_table",
+  "info": {
+    "displayName": "Comparison table",
+    "icon": "layout",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "columns": {
+      "type": "component",
+      "component": "shared.table-column",
+      "repeatable": true
+    },
+    "rows": {
+      "type": "component",
+      "component": "shared.table-row",
+      "repeatable": true
+    },
+    "footnote": {
+      "type": "richtext"
+    }
+  }
+}

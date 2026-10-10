@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_shared_feature_line",
+  "info": {
+    "displayName": "Feature line",
+    "icon": "check",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "text": {
+      "type": "string",
+      "required": true
+    },
+    "included": {
+      "type": "boolean",
+      "default": true
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "collectionName": "components_blocks_plan_cards",
+  "info": {
+    "displayName": "Plan cards",
+    "icon": "priceTag",
+    "description": "Service plans as pricing cards, with a monthly/annual toggle"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "subtitle": {
+      "type": "text"
+    },
+    "showBillingToggle": {
+      "type": "boolean",
+      "default": true
+    },
+    "annualSavingLabel": {
+      "type": "string"
+    },
+    "plans": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::service-plan.service-plan"
+    }
+  }
+}

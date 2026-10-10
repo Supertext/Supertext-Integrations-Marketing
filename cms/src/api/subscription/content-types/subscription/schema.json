@@ -1,0 +1,61 @@
+{
+  "kind": "collectionType",
+  "collectionName": "subscriptions",
+  "info": {
+    "singularName": "subscription",
+    "pluralName": "subscriptions",
+    "displayName": "Subscription",
+    "description": "Written by the Stripe webhook; Stripe is the source of truth."
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "stripeSubscriptionId": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "stripeCustomerId": {
+      "type": "string"
+    },
+    "email": {
+      "type": "email"
+    },
+    "name": {
+      "type": "string"
+    },
+    "company": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string"
+    },
+    "interval": {
+      "type": "enumeration",
+      "enum": [
+        "month",
+        "year"
+      ]
+    },
+    "plan": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::service-plan.service-plan"
+    },
+    "planSlug": {
+      "type": "string"
+    },
+    "platform": {
+      "type": "string"
+    },
+    "currentPeriodEnd": {
+      "type": "datetime"
+    },
+    "cancelAtPeriodEnd": {
+      "type": "boolean",
+      "default": false
+    }
+  }
+}

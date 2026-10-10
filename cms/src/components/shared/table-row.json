@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_shared_table_row",
+  "info": {
+    "displayName": "Table row",
+    "icon": "layout",
+    "description": "One cell per line, in the same order as the columns"
+  },
+  "options": {},
+  "attributes": {
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "cells": {
+      "type": "text",
+      "required": true
+    }
+  }
+}

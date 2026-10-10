@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_blocks_rich_text",
+  "info": {
+    "displayName": "Rich text",
+    "icon": "feather",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "body": {
+      "type": "richtext",
+      "required": true
+    },
+    "width": {
+      "type": "enumeration",
+      "enum": [
+        "narrow",
+        "wide"
+      ],
+      "default": "narrow"
+    }
+  }
+}

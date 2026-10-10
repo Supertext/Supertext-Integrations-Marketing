@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_shared_nav_group",
+  "info": {
+    "displayName": "Navigation group",
+    "icon": "bulletList",
+    "description": "A top-level menu entry; with links it opens a dropdown"
+  },
+  "options": {},
+  "attributes": {
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "url": {
+      "type": "string"
+    },
+    "links": {
+      "type": "component",
+      "component": "shared.nav-link",
+      "repeatable": true
+    }
+  }
+}

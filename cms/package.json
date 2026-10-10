@@ -1,0 +1,35 @@
+{
+  "name": "supertext-integrations-cms",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Strapi 5 CMS and shop back end for the Supertext integrations site",
+  "scripts": {
+    "build": "strapi build",
+    "develop": "strapi develop",
+    "start": "strapi start",
+    "strapi": "strapi",
+    "plugin": "sh scripts/fetch-plugin.sh && npm install --no-audit --no-fund",
+    "test": "node --test test/*.test.js",
+    "postinstall": "node scripts/unpin-plugin.js"
+  },
+  "dependencies": {
+    "@strapi/plugin-users-permissions": "5.57.0",
+    "@strapi/strapi": "5.57.0",
+    "pg": "^8.19.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.30.6",
+    "strapi-plugin-supertext-translation": "file:plugins/supertext.tgz",
+    "stripe": "^23.0.0",
+    "styled-components": "^6.5.3"
+  },
+  "optionalDependencies": {
+    "better-sqlite3": "^13.0.3"
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "strapi": {
+    "uuid": "d2b7e0f4-5a7c-4c1e-9b0a-3f6e8c1d2a47"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_shared_line_item",
+  "info": {
+    "displayName": "Line item",
+    "icon": "priceTag",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "detail": {
+      "type": "string"
+    },
+    "value": {
+      "type": "string"
+    }
+  }
+}

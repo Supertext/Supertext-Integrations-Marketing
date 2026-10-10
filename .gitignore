@@ -1,0 +1,20 @@
+node_modules
+.env
+.env.local
+*.log
+.DS_Store
+# Strapi
+cms/.tmp
+cms/.strapi
+cms/dist
+cms/build
+cms/types/generated
+cms/public/uploads/*
+!cms/public/uploads/.gitkeep
+cms/.strapi-updater.json
+cms/plugins/supertext.tgz
+# Next.js
+web/.next
+web/out
+web/next-env.d.ts
+web/*.tsbuildinfo

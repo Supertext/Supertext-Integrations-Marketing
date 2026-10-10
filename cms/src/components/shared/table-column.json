@@ -1,0 +1,33 @@
+{
+  "collectionName": "components_shared_table_column",
+  "info": {
+    "displayName": "Table column",
+    "icon": "layout",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "heading": {
+      "type": "string",
+      "required": true
+    },
+    "price": {
+      "type": "string"
+    },
+    "subheading": {
+      "type": "string"
+    },
+    "badge": {
+      "type": "string"
+    },
+    "cta": {
+      "type": "component",
+      "component": "shared.link",
+      "repeatable": false
+    },
+    "highlight": {
+      "type": "boolean",
+      "default": false
+    }
+  }
+}

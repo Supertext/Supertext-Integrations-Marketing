@@ -1,0 +1,46 @@
+{
+  "collectionName": "components_blocks_hero",
+  "info": {
+    "displayName": "Hero",
+    "icon": "landscape",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "eyebrow": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "subtitle": {
+      "type": "text"
+    },
+    "primaryCta": {
+      "type": "component",
+      "component": "shared.link",
+      "repeatable": false
+    },
+    "secondaryCta": {
+      "type": "component",
+      "component": "shared.link",
+      "repeatable": false
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "layout": {
+      "type": "enumeration",
+      "enum": [
+        "centered",
+        "split"
+      ],
+      "default": "centered"
+    }
+  }
+}

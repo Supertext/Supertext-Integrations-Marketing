@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_blocks_logo_strip",
+  "info": {
+    "displayName": "Logo strip",
+    "icon": "picture",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "logos": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": [
+        "images"
+      ]
+    }
+  }
+}

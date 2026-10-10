@@ -1,0 +1,36 @@
+{
+  "collectionName": "components_blocks_use_case",
+  "info": {
+    "displayName": "Use case",
+    "icon": "briefcase",
+    "description": "A story with line items, like 'What that looks like in practice'"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "storyTitle": {
+      "type": "string",
+      "required": true
+    },
+    "intro": {
+      "type": "text"
+    },
+    "items": {
+      "type": "component",
+      "component": "shared.line-item",
+      "repeatable": true
+    },
+    "footnote": {
+      "type": "string"
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    }
+  }
+}

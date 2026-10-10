@@ -1,0 +1,32 @@
+{
+  "collectionName": "components_shared_link",
+  "info": {
+    "displayName": "Link",
+    "icon": "link",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "url": {
+      "type": "string",
+      "required": true
+    },
+    "style": {
+      "type": "enumeration",
+      "enum": [
+        "primary",
+        "secondary",
+        "text"
+      ],
+      "default": "primary"
+    },
+    "newTab": {
+      "type": "boolean",
+      "default": false
+    }
+  }
+}

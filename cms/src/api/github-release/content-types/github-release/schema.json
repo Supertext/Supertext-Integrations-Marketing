@@ -1,0 +1,37 @@
+{
+  "kind": "collectionType",
+  "collectionName": "github_releases",
+  "info": {
+    "singularName": "github-release",
+    "pluralName": "github-releases",
+    "displayName": "GitHub release",
+    "description": "Filled in automatically every night from GitHub; don't edit."
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "repo": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "version": {
+      "type": "string"
+    },
+    "url": {
+      "type": "string"
+    },
+    "releasedAt": {
+      "type": "datetime"
+    },
+    "prerelease": {
+      "type": "boolean",
+      "default": false
+    },
+    "syncedAt": {
+      "type": "datetime"
+    }
+  }
+}

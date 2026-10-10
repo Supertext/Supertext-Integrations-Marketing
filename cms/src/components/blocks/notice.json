@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_blocks_notice",
+  "info": {
+    "displayName": "Notice",
+    "icon": "information",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "text": {
+      "type": "richtext",
+      "required": true
+    },
+    "tone": {
+      "type": "enumeration",
+      "enum": [
+        "info",
+        "highlight"
+      ],
+      "default": "info"
+    }
+  }
+}

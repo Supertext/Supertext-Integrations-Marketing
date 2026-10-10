@@ -1,0 +1,31 @@
+{
+  "collectionName": "components_blocks_feature_cards",
+  "info": {
+    "displayName": "Feature cards",
+    "icon": "dashboard",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "subtitle": {
+      "type": "text"
+    },
+    "columns": {
+      "type": "enumeration",
+      "enum": [
+        "two",
+        "three",
+        "four"
+      ],
+      "default": "three"
+    },
+    "cards": {
+      "type": "component",
+      "component": "shared.card",
+      "repeatable": true
+    }
+  }
+}

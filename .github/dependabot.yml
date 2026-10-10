@@ -1,0 +1,43 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/cms"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    # Majors Strapi 5 can't take yet (see docs/DEVELOPER.md → Dependency updates):
+    ignore:
+      - dependency-name: "react"  # Strapi 5's admin ships React 18
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "react-dom"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "react-router-dom"  # Strapi 5's admin uses react-router-dom 6
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "typescript"  # TypeScript 7 is the native compiler; Strapi's build still needs 5.x
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@types/node"  # types match the Node version we run, not the newest
+        update-types: ["version-update:semver-major"]
+    groups:
+      minor-and-patch:
+        update-types: ["minor", "patch"]
+  - package-ecosystem: "npm"
+    directory: "/web"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    ignore:
+      - dependency-name: "typescript"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@types/node"
+        update-types: ["version-update:semver-major"]
+    groups:
+      minor-and-patch:
+        update-types: ["minor", "patch"]
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    groups:
+      actions:
+        patterns: ["*"]

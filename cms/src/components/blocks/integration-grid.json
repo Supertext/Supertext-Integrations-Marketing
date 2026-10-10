@@ -1,0 +1,33 @@
+{
+  "collectionName": "components_blocks_integration_grid",
+  "info": {
+    "displayName": "Integration grid",
+    "icon": "apps",
+    "description": "All integrations (or one category) as cards, with category filters"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "subtitle": {
+      "type": "text"
+    },
+    "category": {
+      "type": "enumeration",
+      "enum": [
+        "all",
+        "cms",
+        "pim",
+        "ecommerce",
+        "email",
+        "design"
+      ],
+      "default": "all"
+    },
+    "showFilters": {
+      "type": "boolean",
+      "default": true
+    }
+  }
+}
