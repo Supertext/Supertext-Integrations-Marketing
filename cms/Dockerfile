@@ -9,7 +9,7 @@ COPY cms/scripts ./scripts
 # package.json depends on the resulting plugins/supertext.tgz.
 ARG PLUGIN_REF=main
 RUN PLUGIN_REF="$PLUGIN_REF" sh scripts/fetch-plugin.sh
-RUN npm ci --omit=optional --no-audit --no-fund
+RUN npm ci --no-audit --no-fund
 COPY cms/ ./
 RUN NODE_ENV=production npm run build
 

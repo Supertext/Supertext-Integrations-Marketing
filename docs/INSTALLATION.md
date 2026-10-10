@@ -1,18 +1,23 @@
 # Installation and operation
 
-The site runs as two Railway services built from this repository, plus a database on the shared Postgres service.
+The site runs in its own Railway project, **supertext-integrations-site** (not with the CMS demos): two services built from this repository and a Postgres service. Everything runs in the `ams` region.
+
+| Service | Railway domain |
+| --- | --- |
+| `cms` | https://cms-production-ce14.up.railway.app (admin at `/admin`) |
+| `web` | https://web-production-0657be.up.railway.app |
 
 | Service | Dockerfile | Port | Health check |
 | --- | --- | --- | --- |
 | `cms` (Strapi 5) | `cms/Dockerfile` | 1337 | `/health` |
 | `web` (Next.js) | `web/Dockerfile` | 3000 | `/health` |
 
-Both Dockerfiles use the **repository root** as build context. Railway ignores `railway.json`, so set the Dockerfile path (`RAILWAY_DOCKERFILE_PATH`), health check and restart policy on each service. Deploy in the `ams` region.
+Both Dockerfiles use the **repository root** as build context. Railway ignores `railway.json`, so set the Dockerfile path (`RAILWAY_DOCKERFILE_PATH`), health check and restart policy on each service. Deploy in the `ams` region (a service created through the API may land in the US; check its region).
 
 ## Requirements
 
 - Node.js 22 (in the images)
-- PostgreSQL: its own database on the shared Railway Postgres. The CMS creates it on start (`INTEGRATIONS_DB_NAME`).
+- PostgreSQL: the project's own Postgres service. The CMS creates its database on start (`INTEGRATIONS_DB_NAME`).
 - A volume on `cms` at `/app/public/uploads` for uploaded images
 - A Stripe account for the shop
 - A Supertext API key for translating the content
@@ -25,7 +30,7 @@ Generate each secret with `openssl rand -base64 32`. Never commit values; they l
 
 | Variable | Purpose |
 | --- | --- |
-| `DATABASE_URL` | Connection string of the shared Postgres server (`${{Postgres.DATABASE_URL}}`) |
+| `DATABASE_URL` | Connection string of the Postgres service (`${{Postgres.DATABASE_URL}}`) |
 | `INTEGRATIONS_DB_NAME` | This site's database on that server, e.g. `integrations_site`. Created on start if it doesn't exist. |
 | `URL` | Public URL of the CMS, e.g. `https://cms-integrations.up.railway.app` |
 | `APP_KEYS`, `API_TOKEN_SALT`, `ADMIN_JWT_SECRET`, `TRANSFER_TOKEN_SALT`, `JWT_SECRET`, `ENCRYPTION_KEY` | Strapi secrets (`APP_KEYS` is a comma-separated list of two or more) |
