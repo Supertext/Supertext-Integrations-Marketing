@@ -1,12 +1,14 @@
 const path = require('path');
+const { databaseUrl } = require('../lib/database-url');
 
-// Postgres when DATABASE_URL is set (Railway), otherwise a local SQLite file.
+// Postgres when DATABASE_URL is set (Railway; INTEGRATIONS_DB_NAME picks our database on the
+// shared server), otherwise a local SQLite file.
 module.exports = ({ env }) =>
   env('DATABASE_URL')
     ? {
         connection: {
           client: 'postgres',
-          connection: { connectionString: env('DATABASE_URL') },
+          connection: { connectionString: databaseUrl() },
           pool: { min: 0, max: 7 },
         },
       }

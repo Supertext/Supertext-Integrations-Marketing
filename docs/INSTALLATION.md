@@ -12,7 +12,8 @@ Both Dockerfiles use the **repository root** as build context. Railway ignores `
 ## Requirements
 
 - Node.js 22 (in the images)
-- PostgreSQL: its own database on the shared Railway Postgres (for example `integrations_site`)
+- PostgreSQL: its own database on the shared Railway Postgres. The CMS creates it on start (`INTEGRATIONS_DB_NAME`).
+- A volume on `cms` at `/app/public/uploads` for uploaded images
 - A Stripe account for the shop
 - A Supertext API key for translating the content
 
@@ -24,7 +25,8 @@ Generate each secret with `openssl rand -base64 32`. Never commit values; they l
 
 | Variable | Purpose |
 | --- | --- |
-| `DATABASE_URL` | Postgres connection string of this site's database |
+| `DATABASE_URL` | Connection string of the shared Postgres server (`${{Postgres.DATABASE_URL}}`) |
+| `INTEGRATIONS_DB_NAME` | This site's database on that server, e.g. `integrations_site`. Created on start if it doesn't exist. |
 | `URL` | Public URL of the CMS, e.g. `https://cms-integrations.up.railway.app` |
 | `APP_KEYS`, `API_TOKEN_SALT`, `ADMIN_JWT_SECRET`, `TRANSFER_TOKEN_SALT`, `JWT_SECRET`, `ENCRYPTION_KEY` | Strapi secrets (`APP_KEYS` is a comma-separated list of two or more) |
 | `CLIENT_URL` | Public URL of the website. The preview pane and CORS allow only this origin. |
@@ -55,11 +57,10 @@ Account passwords need 8+ characters with an upper-case letter, a lower-case let
 
 ## First deployment
 
-1. Create the database on the shared Postgres service.
-2. Create the `cms` service from this repo, set its variables and deploy. On the first start it creates the accounts, the languages (German, French, Italian), the read token and the starter content: all integrations, example plans, the start, integrations and pricing pages, and the header and footer.
-3. Create the `web` service, set its variables (including `STRAPI_PUBLIC_URL` before building) and deploy.
-4. Set `CLIENT_URL` on `cms` to the website's URL and redeploy `cms`.
-5. In Strapi → *Settings → Webhooks*, add a webhook to `https://<web>/api/revalidate` with the header `Authorization: Bearer <REVALIDATE_SECRET>` and the events *Entry publish*, *unpublish*, *update* and *delete*. Without it, published changes appear within a minute.
+1. Create the `cms` service from this repo, add the uploads volume, set its variables and deploy. On the first start it creates the accounts, the languages (German, French, Italian), the read token and the starter content: all integrations, example plans, the start, integrations and pricing pages, and the header and footer.
+2. Create the `web` service, set its variables (including `STRAPI_PUBLIC_URL` before building) and deploy.
+3. Set `CLIENT_URL` on `cms` to the website's URL and redeploy `cms`.
+4. In Strapi → *Settings → Webhooks*, add a webhook to `https://<web>/api/revalidate` with the header `Authorization: Bearer <REVALIDATE_SECRET>` and the events *Entry publish*, *unpublish*, *update* and *delete*. Without it, published changes appear within a minute.
 
 ## Supertext API key
 

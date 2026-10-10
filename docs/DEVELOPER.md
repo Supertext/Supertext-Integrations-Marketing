@@ -47,7 +47,7 @@ npm install
 npm run dev                       # http://localhost:3000
 ```
 
-Without `DATABASE_URL`, Strapi uses SQLite in `cms/.tmp/` (delete the folder to start over with fresh seed content).
+With `DATABASE_URL` (and `INTEGRATIONS_DB_NAME`), `npm start` first creates the database on that server (`scripts/ensure-db.js`, URL helper in `lib/database-url.js`). Without `DATABASE_URL`, Strapi uses SQLite in `cms/.tmp/` (delete the folder to start over with fresh seed content).
 
 For the shop, use Stripe test keys and forward webhooks with the Stripe CLI: `stripe listen --forward-to localhost:1337/api/shop/webhook`, then put the printed `whsec_…` in `STRIPE_WEBHOOK_SECRET`.
 

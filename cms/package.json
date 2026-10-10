@@ -6,7 +6,7 @@
   "scripts": {
     "build": "strapi build",
     "develop": "strapi develop",
-    "start": "strapi start",
+    "start": "node scripts/ensure-db.js && strapi start",
     "strapi": "strapi",
     "plugin": "sh scripts/fetch-plugin.sh && npm install --no-audit --no-fund",
     "test": "node --test test/*.test.js",
