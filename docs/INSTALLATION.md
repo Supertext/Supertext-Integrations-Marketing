@@ -12,7 +12,7 @@ The site runs in its own Railway project, **supertext-integrations-site** (not w
 | `cms` (Strapi 5) | `cms/Dockerfile` | 1337 | `/health` |
 | `web` (Next.js) | `web/Dockerfile` | 3000 | `/health` |
 
-Both Dockerfiles use the **repository root** as build context. Railway ignores `railway.json`, so set the Dockerfile path (`RAILWAY_DOCKERFILE_PATH`), health check and restart policy on each service. Deploy in the `ams` region (a service created through the API may land in the US; check its region).
+Both Dockerfiles use the **repository root** as build context. Railway ignores `railway.json`, so set the Dockerfile path (`RAILWAY_DOCKERFILE_PATH`), health check (`/health`; 600 s on `cms`, whose first start runs Strapi's migrations) and restart policy on each service. Deploy in the `ams` region (a service created through the API may land in the US; check its region).
 
 ## Requirements
 
@@ -30,6 +30,7 @@ Generate each secret with `openssl rand -base64 32`. Never commit values; they l
 
 | Variable | Purpose |
 | --- | --- |
+| `PORT` | `1337` (Railway's domain points at this port; without it Railway injects its own and the site returns 502) |
 | `DATABASE_URL` | Connection string of the Postgres service (`${{Postgres.DATABASE_URL}}`) |
 | `INTEGRATIONS_DB_NAME` | This site's database on that server, e.g. `integrations_site`. Created on start if it doesn't exist. |
 | `URL` | Public URL of the CMS, e.g. `https://cms-integrations.up.railway.app` |
@@ -52,6 +53,7 @@ Account passwords need 8+ characters with an upper-case letter, a lower-case let
 
 | Variable | Purpose |
 | --- | --- |
+| `PORT` | `3000` |
 | `STRAPI_URL` | CMS address for server requests, e.g. `http://cms.railway.internal:1337` |
 | `STRAPI_PUBLIC_URL` | Public URL of the CMS (images, preview). **Also a build argument**: set it before the first build. |
 | `STRAPI_API_TOKEN` | Same value as on `cms` (`${{cms.STRAPI_API_TOKEN}}`) |
@@ -87,7 +89,7 @@ Test with test keys first: card `4242 4242 4242 4242`, any future date, any CVC.
 
 ## Updating
 
-Pushes to `main` redeploy both services on Railway. Strapi applies content-model changes when it starts. Back up the database before changing or removing fields that hold content.
+Pushes to `main` redeploy both services on Railway. If a push doesn't deploy, check that Railway's GitHub app has access to this repo (https://github.com/organizations/Supertext/settings/installations → Railway → Configure), then reconnect each service's source once. Strapi applies content-model changes when it starts. Back up the database before changing or removing fields that hold content.
 
 ## Troubleshooting
 
