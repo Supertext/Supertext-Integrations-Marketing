@@ -12,6 +12,13 @@ export function mediaUrl(media) {
   return url.startsWith('http') ? url : `${PUBLIC_URL}${url}`;
 }
 
+/** What the client components need of an image: url, size and alt text. */
+export function imageProps(media) {
+  const src = mediaUrl(media);
+  if (!src) return null;
+  return { src, width: media.width || 1200, height: media.height || 800, alt: media.alternativeText || '' };
+}
+
 /**
  * GET from Strapi's REST API with the site's read-only token.
  * In draft mode (the admin's preview pane) drafts are read and nothing is cached.
@@ -57,7 +64,7 @@ export const getPage = (slug, locale) =>
   localized('/pages', { filters: { slug: { $eq: slug } }, populate: { seo: { populate: '*' }, blocks: BLOCK_POPULATE } }, locale);
 
 export const getIntegration = (slug, locale) =>
-  localized('/integrations', { filters: { slug: { $eq: slug } }, populate: { logo: true, seo: { populate: '*' }, blocks: BLOCK_POPULATE } }, locale);
+  localized('/integrations', { filters: { slug: { $eq: slug } }, populate: { logo: true, screenshot: true, seo: { populate: '*' }, blocks: BLOCK_POPULATE } }, locale);
 
 export const getGlobal = (locale) =>
   localized('/global', {
@@ -66,7 +73,7 @@ export const getGlobal = (locale) =>
 
 /** All integrations (in the language if translated, else English), with their latest GitHub release. */
 export async function getIntegrations(locale) {
-  const query = { populate: { logo: true }, sort: ['order:asc', 'system:asc'], pagination: { pageSize: 100 } };
+  const query = { populate: { logo: true, screenshot: true }, sort: ['order:asc', 'system:asc'], pagination: { pageSize: 100 } };
   const [own, english, releases] = await Promise.all([
     locale === 'en' ? null : strapi('/integrations', { ...query, locale }),
     strapi('/integrations', { ...query, locale: 'en' }),

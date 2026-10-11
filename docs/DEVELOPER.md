@@ -29,7 +29,7 @@ Browser ──► web (Next.js 16, App Router) ──REST + read token──► 
 
 Blocks are components in `cms/src/components/blocks/`, shared parts in `cms/src/components/shared/`. To add a block: create its schema, add it to the `blocks` dynamic zone of Page and Integration, add its populate rule in `web/src/lib/strapi.js` (`BLOCK_POPULATE`), its component in `web/src/components/blocks/` and its entry in `web/src/components/Blocks.js`.
 
-Seed content (`cms/src/seed/`) is created only when a type is empty. The integration list mirrors the plugin list in the plugin conventions; when that list changes, update the Integration entries in the CMS (and the seed for fresh installs).
+Seed content (`cms/src/seed/`) is created only when a type is empty. Integration screenshots are separate: on every start, `cms/src/screenshots.js` downloads the image listed in `seed/screenshots.js` from the plugin repo (raw.githubusercontent.com) for each integration that has no screenshot yet, uploads it to the media library and publishes it (unless the entry has unpublished edits, which stay for the editor to publish). Once all are set it does nothing. To use a different image, replace it in the admin; to change the default, edit `seed/screenshots.js`. The integration list mirrors the plugin list in the plugin conventions; when that list changes, update the Integration entries in the CMS (and the seed for fresh installs).
 
 ## Local setup
 
@@ -47,7 +47,7 @@ npm install
 npm run dev                       # http://localhost:3000
 ```
 
-With `DATABASE_URL` (and `INTEGRATIONS_DB_NAME`), `npm start` first creates the database on that server (`scripts/ensure-db.js`, URL helper in `lib/database-url.js`). Without `DATABASE_URL`, Strapi uses SQLite in `cms/.tmp/` (delete the folder to start over with fresh seed content).
+With `DATABASE_URL` (and `INTEGRATIONS_DB_NAME`), `npm start` first creates the database on that server (`scripts/ensure-db.js`, URL helper in `lib/database-url.js`). Locally (Strapi on `localhost`) the website serves images unoptimised, because Next.js doesn't optimise images from private addresses. Without `DATABASE_URL`, Strapi uses SQLite in `cms/.tmp/` (delete the folder to start over with fresh seed content).
 
 For the shop, use Stripe test keys and forward webhooks with the Stripe CLI: `stripe listen --forward-to localhost:1337/api/shop/webhook`, then put the printed `whsec_…` in `STRIPE_WEBHOOK_SECRET`.
 

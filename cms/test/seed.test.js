@@ -19,3 +19,12 @@ test('preview paths', () => {
   assert.equal(previewPath('api::integration.integration', { slug: 'strapi' }, 'fr'), '/fr/integrations/strapi');
   assert.equal(previewPath('api::subscription.subscription', {}, 'en'), null);
 });
+
+test('every screenshot source belongs to a seeded integration with a repo', () => {
+  const screenshots = require('../src/seed/screenshots');
+  const bySlug = new Map(integrations.map((i) => [i.slug, i]));
+  for (const [slug, source] of Object.entries(screenshots)) {
+    assert.ok(bySlug.get(slug)?.repo, `${slug} has a repo`);
+    assert.match(source, /^docs\/[\w./-]+\.(png|jpe?g)$/, slug);
+  }
+});

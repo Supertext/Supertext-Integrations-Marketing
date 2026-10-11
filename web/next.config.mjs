@@ -5,6 +5,9 @@ const nextConfig = {
   output: 'standalone',
   images: {
     remotePatterns: [new URL(`${strapiUrl}/uploads/**`)],
+    // Local development (Strapi on localhost): Next.js won't optimise images from a
+    // private address, so serve them as they are.
+    unoptimized: /^https?:\/\/(localhost|127\.0\.0\.1)(:|\/|$)/.test(strapiUrl),
   },
   async headers() {
     return [

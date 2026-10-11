@@ -10,7 +10,7 @@ import Notice from './blocks/Notice';
 import LogoStrip from './blocks/LogoStrip';
 import IntegrationGrid from './blocks/IntegrationGrid';
 import PlanCards from './blocks/PlanCards';
-import { getIntegrations, mediaUrl } from '@/lib/strapi';
+import { getIntegrations, imageProps, mediaUrl } from '@/lib/strapi';
 
 const STATIC = {
   'blocks.hero': Hero,
@@ -31,7 +31,7 @@ export default async function Blocks({ blocks, locale, t, searchParams = {} }) {
   const integrations = needsIntegrations
     ? (await getIntegrations(locale)).map((i) => ({
         slug: i.slug, system: i.system, category: i.category, stage: i.stage, summary: i.summary,
-        logoUrl: mediaUrl(i.logo), release: i.release ? { version: i.release.version } : null,
+        logoUrl: mediaUrl(i.logo), screenshot: imageProps(i.screenshot), release: i.release ? { version: i.release.version } : null,
       }))
     : [];
 

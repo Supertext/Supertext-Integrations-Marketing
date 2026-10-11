@@ -1,20 +1,23 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import Blocks from '@/components/Blocks';
 import Markdown from '@/components/Markdown';
 import Mark from '@/components/Mark';
 import IntegrationCard from '@/components/IntegrationCard';
-import { getIntegration, getIntegrations, mediaUrl } from '@/lib/strapi';
+import { getIntegration, getIntegrations, imageProps, mediaUrl } from '@/lib/strapi';
 import { ACCOUNT_URL, API_KEY_URL, format, isLocale, strings } from '@/lib/i18n';
 
 export async function generateMetadata({ params }) {
   const { locale, slug } = await params;
   const item = await getIntegration(slug, locale).catch(() => null);
   if (!item) return {};
+  const image = mediaUrl(item.seo?.ogImage) || mediaUrl(item.screenshot);
   return {
     title: item.seo?.metaTitle || `${item.system}`,
     description: item.seo?.metaDescription || item.summary,
     alternates: { canonical: `/${locale}/integrations/${slug}` },
+    ...(image && { openGraph: { images: [image] } }),
   };
 }
 
@@ -29,7 +32,8 @@ export default async function IntegrationPage({ params }) {
   const t = strings(locale);
   const release = all.find((i) => i.slug === slug)?.release;
   const related = all.filter((i) => i.category === item.category && i.slug !== slug).slice(0, 4)
-    .map((i) => ({ ...i, logoUrl: mediaUrl(i.logo) }));
+    .map((i) => ({ ...i, logoUrl: mediaUrl(i.logo), screenshot: imageProps(i.screenshot) }));
+  const screenshot = imageProps(item.screenshot);
   const docs = item.repo ? `https://github.com/${item.repo}/blob/main/docs` : null;
 
   return (
@@ -57,6 +61,11 @@ export default async function IntegrationPage({ params }) {
       <section className="section" style={{ paddingTop: 0 }}>
         <div className="container detail">
           <div style={{ display: 'grid', gap: 24 }}>
+            {screenshot && (
+              <figure className="screenshot">
+                <Image src={screenshot.src} alt={screenshot.alt} width={screenshot.width} height={screenshot.height} sizes="(max-width: 960px) 100vw, 860px" priority />
+              </figure>
+            )}
             {item.description && <div className="card"><Markdown locale={locale}>{item.description}</Markdown></div>}
             <div className="notice highlight" style={{ margin: 0, maxWidth: 'none' }}>
               <h2 style={{ fontSize: 20, marginBottom: 8 }}>{t.gettingStarted}</h2>

@@ -53,6 +53,7 @@ Not translated yet? Visitors see the English version of that page or integration
 - *category* decides the filter button; *order* the position in the grid.
 - *stage* `in_development` adds an "In development" label and takes the integration out of the platform list at checkout.
 - *repo* is the GitHub repository (`Supertext/<name>`). It links the guides and brings in the latest version every night.
+- *screenshot*: the image on the integration's card and at the top of its page, ideally the Supertext panel or dialog in that system. New integrations get one automatically if `cms/src/seed/screenshots.js` lists it; replace it any time in the admin. Without a screenshot, the card shows the initials instead.
 - *logo*: without one, the site shows the initials.
 - *blocks*: optional extra sections on the integration's page.
 

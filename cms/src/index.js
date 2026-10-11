@@ -2,6 +2,7 @@
 
 const integrations = require('./seed/integrations');
 const content = require('./seed/content');
+const { importScreenshots } = require('./screenshots');
 
 const LOCALES = [
   { code: 'de', name: 'German (de)' },
@@ -160,6 +161,9 @@ module.exports = {
     if (codes) await step('Editor locales', () => grantEditorAllLocales(strapi, codes));
     await step('Web API token', () => ensureWebToken(strapi));
     await step('Seed content', () => seed(strapi));
+
+    // Screenshots come from GitHub; don't hold up the start for them.
+    importScreenshots(strapi).catch((e) => strapi.log.warn(`[setup] Screenshots: ${e.message}`));
 
     // First start: fetch the release info right away instead of waiting for the night.
     if ((await strapi.db.query('api::github-release.github-release').count()) === 0) {
