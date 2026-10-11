@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "description": "Next.js website of the Supertext integrations site (content from the Strapi CMS)",
+  "license": "MIT",
+  "author": "Supertext AG <info@supertext.com>",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

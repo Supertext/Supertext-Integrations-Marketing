@@ -17,6 +17,10 @@ Both run on Railway. Each integration's latest version comes from GitHub every n
 
 No Supertext account yet? [Create one at supertext.com](https://www.supertext.com/person/en/account/signin). Generate your API key at [supertext.com → Integrations → API](https://www.supertext.com/en/integrations/api) (requires the Admin role).
 
+## License
+
+The code is [MIT licensed](LICENSE). The Supertext name and logo and the site's content (texts, images, prices) are not covered by the license: © Supertext AG, all rights reserved.
+
 ## Security
 
 See [SECURITY.md](SECURITY.md).

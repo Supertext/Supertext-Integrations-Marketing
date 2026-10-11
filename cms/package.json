@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "description": "Strapi 5 CMS and shop back end for the Supertext integrations site",
+  "license": "MIT",
+  "author": "Supertext AG <info@supertext.com>",
   "scripts": {
     "build": "strapi build",
     "develop": "strapi develop",
