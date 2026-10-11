@@ -18,10 +18,11 @@ module.exports = ({ env }) => ({
       config: {
         // apiKey and endpoint come from SUPERTEXT_API_KEY / SUPERTEXT_API_ENDPOINT (plugin defaults).
         contentTypes: ['api::page.page', 'api::integration.integration', 'api::service-plan.service-plan', 'api::global.global'],
+        // Supertext needs a regional target code (de-CH, not de); the site's locales stay de/fr/it.
         locales: {
-          de: { politeness: 'more' },
-          fr: { politeness: 'more' },
-          it: { politeness: 'more' },
+          de: { code: 'de-CH', politeness: 'more' },
+          fr: { code: 'fr-CH', politeness: 'more' },
+          it: { code: 'it-CH', politeness: 'more' },
         },
       },
     },

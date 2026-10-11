@@ -73,6 +73,8 @@ Account passwords need 8+ characters with an upper-case letter, a lower-case let
 
 No Supertext account yet? Create one at [supertext.com](https://www.supertext.com/person/en/account/signin). Generate your API key at [supertext.com → Integrations → API](https://www.supertext.com/en/integrations/api) (requires the Admin role). Set it as `SUPERTEXT_API_KEY` on `cms`. Until then, the edit view shows "Supertext is not configured yet".
 
+Translations go out as Swiss German, French and Italian (`de-CH`, `fr-CH`, `it-CH`) in formal address; the site's own language codes stay `de`, `fr`, `it`. Supertext rejects plain `de`/`fr`/`it` as a target ("INVALID_LANGUAGE_PAIR"). To change the variety, edit `locales` in `cms/config/plugins.js`.
+
 The plugin isn't on npm: the Docker build clones [Strapi-Supertext-Translation](https://github.com/Supertext/Strapi-Supertext-Translation), builds it and installs it (`cms/scripts/fetch-plugin.sh`). To pin a version, set the build argument `PLUGIN_REF` to its tag.
 
 ## Stripe
