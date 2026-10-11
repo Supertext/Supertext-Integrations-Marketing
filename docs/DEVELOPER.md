@@ -33,6 +33,13 @@ Seed content (`cms/src/seed/`) is created only when a type is empty. Integration
 
 Other one-time changes to existing content (the seed only fills an empty site) live in `cms/src/content-updates.js`: each runs once and is recorded in the CMS store (`plugin_site-setup` → `contentUpdates`), so editors can change or remove the result afterwards. The SDK announcement, the SDK page (`seed/sdk.js`) and its start-page section, menu and footer links, and the integration details (`seed/integration-details.json`: technology, supported versions, licence, about text, features and description, taken from each plugin's docs; only empty fields are filled) were added this way. When a plugin's requirements change, update its entry in the CMS (and the JSON for new installs). The integration list mirrors the plugin list in the plugin conventions; when that list changes, update the Integration entries in the CMS (and the seed for fresh installs).
 
+## SEO and GEO
+
+- Metadata per page in `web/src/lib/page.js` and the integration page: titles (no double brand), descriptions, canonical and hreflang (`lib/seo.js` → `alternates`). A language without its own translation shows the English text, so its canonical points to the English page and it isn't listed as an alternate.
+- Open Graph and Twitter tags on every page; default image `app/[locale]/opengraph-image.js`.
+- Structured data (JSON-LD): Organization and WebSite on every page, SoftwareApplication and BreadcrumbList on integration pages, FAQPage wherever a page has an FAQ block.
+- `app/robots.js`, `app/sitemap.js`, `app/llms.txt/route.js`: generated on request from the CMS; `ALLOW_INDEXING` switches indexing on.
+
 ## Local setup
 
 ```sh

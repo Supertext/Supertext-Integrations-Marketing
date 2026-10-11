@@ -59,7 +59,8 @@ Account passwords need 8+ characters with an upper-case letter, a lower-case let
 | `STRAPI_API_TOKEN` | Same value as on `cms` (`${{cms.STRAPI_API_TOKEN}}`) |
 | `PREVIEW_SECRET` | Same value as on `cms` (`${{cms.PREVIEW_SECRET}}`) |
 | `REVALIDATE_SECRET` | Secret of the Strapi webhook that refreshes the cache |
-| `SITE_URL` | Public URL of the website |
+| `SITE_URL` | Public URL of the website (canonical links, sitemap, structured data) |
+| `ALLOW_INDEXING` | `true` lets search engines and AI crawlers index the site (robots.txt, `noindex` tags). Leave unset until the site runs on its real domain with final prices. |
 | `STRIPE_PORTAL_URL` | Optional: Stripe customer portal login link, shown after checkout |
 
 ## First deployment
@@ -88,6 +89,12 @@ The plugin isn't on npm: the Docker build clones [Strapi-Supertext-Translation](
 Test with test keys first: card `4242 4242 4242 4242`, any future date, any CVC.
 
 ![Plan cards with monthly and annual prices](images/pricing.png)
+
+## Search engines and AI assistants
+
+- `robots.txt`, `sitemap.xml` (every page and integration in each translated language, with hreflang) and `llms.txt` (a plain-text summary for AI assistants, built from the CMS) are generated on request.
+- While `ALLOW_INDEXING` isn't `true`, robots.txt blocks everything and every page carries `noindex`. When you switch it on, AI crawlers (GPTBot, ClaudeBot, PerplexityBot, Google-Extended …) are allowed explicitly.
+- After launching on the real domain: set `SITE_URL` and `ALLOW_INDEXING=true` on `web`, then submit `https://<domain>/sitemap.xml` in Google Search Console and Bing Webmaster Tools.
 
 ## Updating
 

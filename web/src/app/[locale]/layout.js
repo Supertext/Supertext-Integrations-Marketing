@@ -7,6 +7,7 @@ import Footer from '@/components/Footer';
 import PreviewListener from '@/components/PreviewListener';
 import { getGlobal } from '@/lib/strapi';
 import { LOCALES, isLocale, strings } from '@/lib/i18n';
+import { JsonLd, ORG, SITE_URL, indexingAllowed } from '@/lib/seo';
 import '../globals.css';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'swap' });
@@ -20,10 +21,11 @@ export async function generateMetadata({ params }) {
   const global = await getGlobal(locale).catch(() => null);
   const seo = global?.defaultSeo;
   return {
-    metadataBase: new URL(process.env.SITE_URL || 'http://localhost:3000'),
+    metadataBase: new URL(SITE_URL),
     title: { default: seo?.metaTitle || 'Supertext integrations', template: '%s | Supertext' },
     description: seo?.metaDescription,
-    alternates: { languages: Object.fromEntries(LOCALES.map((l) => [l, `/${l}`])) },
+    applicationName: 'Supertext',
+    robots: indexingAllowed() ? undefined : { index: false, follow: true },
   };
 }
 
@@ -36,6 +38,22 @@ export default async function LocaleLayout({ children, params }) {
   return (
     <html lang={locale} className={`${inter.variable} ${archivo.variable}`}>
       <body>
+        <JsonLd
+          data={{
+            '@context': 'https://schema.org',
+            '@graph': [
+              ORG,
+              {
+                '@type': 'WebSite',
+                '@id': `${SITE_URL}/#website`,
+                url: `${SITE_URL}/${locale}`,
+                name: 'Supertext integrations',
+                inLanguage: locale,
+                publisher: { '@id': ORG['@id'] },
+              },
+            ],
+          }}
+        />
         {preview && (
           <div className="preview-bar">
             {t.previewMode}

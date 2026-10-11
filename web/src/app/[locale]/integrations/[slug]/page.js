@@ -6,19 +6,27 @@ import Markdown from '@/components/Markdown';
 import Mark from '@/components/Mark';
 import IntegrationCard from '@/components/IntegrationCard';
 import { Check } from '@/components/Icons';
-import { getIntegration, getIntegrations, imageProps, mediaUrl } from '@/lib/strapi';
+import { getIntegration, getIntegrations, imageProps, mediaUrl, translatedLocales } from '@/lib/strapi';
+import { JsonLd, ORG, SITE_URL, alternates, indexingAllowed, social } from '@/lib/seo';
 import { ACCOUNT_URL, API_KEY_URL, format, isLocale, strings } from '@/lib/i18n';
 
 export async function generateMetadata({ params }) {
   const { locale, slug } = await params;
   const item = await getIntegration(slug, locale).catch(() => null);
   if (!item) return {};
+  const t = strings(locale);
+  const title = item.seo?.metaTitle || `${format(t, 'integrationTitle', { system: item.system })} | Supertext`;
+  const description =
+    item.seo?.metaDescription ||
+    [item.summary, item.supportedVersions].filter(Boolean).join('. ').slice(0, 160);
+  const alt = alternates(locale, `/integrations/${slug}`, await translatedLocales('/integrations', slug));
   const image = mediaUrl(item.seo?.ogImage) || mediaUrl(item.screenshot);
   return {
-    title: item.seo?.metaTitle || `${item.system}`,
-    description: item.seo?.metaDescription || item.summary,
-    alternates: { canonical: `/${locale}/integrations/${slug}` },
-    ...(image && { openGraph: { images: [image] } }),
+    title: { absolute: title },
+    description,
+    alternates: alt,
+    robots: item.seo?.noIndex || !indexingAllowed() ? { index: false, follow: !item.seo?.noIndex } : undefined,
+    ...social({ title, description, path: alt.canonical, locale, image }),
   };
 }
 
@@ -35,10 +43,46 @@ export default async function IntegrationPage({ params }) {
   const related = all.filter((i) => i.category === item.category && i.slug !== slug).slice(0, 4)
     .map((i) => ({ ...i, logoUrl: mediaUrl(i.logo), screenshot: imageProps(i.screenshot) }));
   const screenshot = imageProps(item.screenshot);
+  const pageUrl = `${SITE_URL}/${locale}/integrations/${slug}`;
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'SoftwareApplication',
+        '@id': `${pageUrl}#software`,
+        name: format(t, 'integrationName', { system: item.system }),
+        description: item.summary,
+        url: pageUrl,
+        applicationCategory: 'BusinessApplication',
+        applicationSubCategory: 'Translation plugin',
+        inLanguage: locale,
+        ...(item.supportedVersions && { softwareRequirements: item.supportedVersions }),
+        ...(release?.version && { softwareVersion: release.version }),
+        ...(release?.releasedAt && { datePublished: release.releasedAt }),
+        ...(item.license && { license: item.license }),
+        ...(item.url && { downloadUrl: item.url }),
+        ...(screenshot && { screenshot: screenshot.src, image: screenshot.src }),
+        ...(item.features?.length && { featureList: item.features.map((f) => f.text) }),
+        isAccessibleForFree: true,
+        offers: { '@type': 'Offer', price: '0', priceCurrency: 'CHF' },
+        publisher: ORG,
+        dateModified: item.updatedAt,
+      },
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Supertext', item: `${SITE_URL}/${locale}` },
+          { '@type': 'ListItem', position: 2, name: t.allIntegrations, item: `${SITE_URL}/${locale}/integrations` },
+          { '@type': 'ListItem', position: 3, name: item.system, item: pageUrl },
+        ],
+      },
+    ],
+  };
   const docs = item.repo ? `https://github.com/${item.repo}/blob/main/docs` : null;
 
   return (
     <>
+      <JsonLd data={jsonLd} />
       <section className="hero">
         <div className="container">
           <p style={{ marginBottom: 24 }}>

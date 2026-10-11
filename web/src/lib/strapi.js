@@ -86,6 +86,27 @@ export async function getIntegrations(locale) {
   });
 }
 
+/** Locales in which a page / integration has its own (translated) version, e.g. ['en', 'de']. */
+export async function translatedLocales(path, slug) {
+  const { LOCALES } = await import('./i18n');
+  const found = await Promise.all(
+    LOCALES.map(async (locale) => {
+      try {
+        const list = await strapi(path, { locale, filters: { slug: { $eq: slug } }, fields: ['slug'], pagination: { pageSize: 1 } });
+        return list?.length ? locale : null;
+      } catch {
+        return locale === 'en' ? 'en' : null;
+      }
+    })
+  );
+  return found.filter(Boolean);
+}
+
+/** Slugs and last changes of everything in one locale, for the sitemap and llms.txt. */
+export async function listAll(path, locale, fields = ['slug', 'updatedAt']) {
+  return (await strapi(path, { locale, fields, pagination: { pageSize: 100 } }).catch(() => [])) || [];
+}
+
 export async function getReleases() {
   try {
     const list = (await strapi('/github-releases', { pagination: { pageSize: 100 } })) || [];
