@@ -38,6 +38,15 @@ const LIST = [
   ['CorelDRAW', 'design', GH('CorelDRAW-Supertext-Translation'), 'CorelDRAW VBA macro.', 'Exports all text to XLIFF 1.2 for any CAT tool and imports the translations with formatting intact'],
 ];
 
+const DETAILS = require('./integration-details.json');
+
+/** Technology, versions, licence, about-the-system text, features and description per integration. */
+const details = (slug) => {
+  const d = DETAILS[slug];
+  if (!d) return {};
+  return { ...d, features: d.features.map((text) => ({ text, included: true })) };
+};
+
 const slugify = (s) => s.toLowerCase().replace(/\(.*?\)/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
 module.exports = LIST.map(([system, category, link, integrationType, summary, stage = 'live'], index) => ({
@@ -50,4 +59,5 @@ module.exports = LIST.map(([system, category, link, integrationType, summary, st
   order: (index + 1) * 10,
   integrationType,
   summary,
+  ...details(slugify(system)),
 }));

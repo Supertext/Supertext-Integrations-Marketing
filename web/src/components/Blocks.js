@@ -30,7 +30,7 @@ export default async function Blocks({ blocks, locale, t, searchParams = {} }) {
   const needsIntegrations = blocks.some((b) => b.__component === 'blocks.integration-grid' || b.__component === 'blocks.plan-cards');
   const integrations = needsIntegrations
     ? (await getIntegrations(locale)).map((i) => ({
-        slug: i.slug, system: i.system, category: i.category, stage: i.stage, summary: i.summary,
+        slug: i.slug, system: i.system, category: i.category, stage: i.stage, summary: i.summary, supportedVersions: i.supportedVersions,
         logoUrl: mediaUrl(i.logo), screenshot: imageProps(i.screenshot), release: i.release ? { version: i.release.version } : null,
       }))
     : [];

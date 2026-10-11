@@ -5,6 +5,7 @@ import Blocks from '@/components/Blocks';
 import Markdown from '@/components/Markdown';
 import Mark from '@/components/Mark';
 import IntegrationCard from '@/components/IntegrationCard';
+import { Check } from '@/components/Icons';
 import { getIntegration, getIntegrations, imageProps, mediaUrl } from '@/lib/strapi';
 import { ACCOUNT_URL, API_KEY_URL, format, isLocale, strings } from '@/lib/i18n';
 
@@ -66,7 +67,28 @@ export default async function IntegrationPage({ params }) {
                 <Image src={screenshot.src} alt={screenshot.alt} width={screenshot.width} height={screenshot.height} sizes="(max-width: 960px) 100vw, 860px" priority />
               </figure>
             )}
-            {item.description && <div className="card"><Markdown locale={locale}>{item.description}</Markdown></div>}
+            {item.description && (
+              <section className="card detail-section">
+                <h2>{t.howItWorks}</h2>
+                <Markdown locale={locale}>{item.description}</Markdown>
+              </section>
+            )}
+            {item.features?.length > 0 && (
+              <section className="card detail-section">
+                <h2>{format(t, 'whatItDoes', { system: item.system })}</h2>
+                <ul className="check-list">
+                  {item.features.map((f, i) => (
+                    <li key={f.id ?? i}><Check /><span>{f.text}</span></li>
+                  ))}
+                </ul>
+              </section>
+            )}
+            {item.aboutSystem && (
+              <section className="card detail-section">
+                <h2>{format(t, 'aboutSystem', { system: item.system })}</h2>
+                <Markdown locale={locale}>{item.aboutSystem}</Markdown>
+              </section>
+            )}
             <div className="notice highlight" style={{ margin: 0, maxWidth: 'none' }}>
               <h2 style={{ fontSize: 20, marginBottom: 8 }}>{t.gettingStarted}</h2>
               <Markdown locale={locale}>{format(t, 'gettingStartedText', { account: ACCOUNT_URL, apiKey: API_KEY_URL })}</Markdown>
@@ -76,6 +98,9 @@ export default async function IntegrationPage({ params }) {
             <div className="card">
               <dl>
                 {item.integrationType && (<div><dt>{t.typeOfIntegration}</dt><dd>{item.integrationType}</dd></div>)}
+                {item.supportedVersions && (<div><dt>{t.supportedVersions}</dt><dd>{item.supportedVersions}</dd></div>)}
+                {item.technology && (<div><dt>{t.technology}</dt><dd>{item.technology}</dd></div>)}
+                {item.license && (<div><dt>{t.license}</dt><dd>{item.license}</dd></div>)}
                 {release?.version && (
                   <div>
                     <dt>{t.latestRelease}</dt>

@@ -362,3 +362,12 @@ a.announcement-inner:hover .announcement-cta { text-decoration: underline; text-
 .prose pre code { background: none; border: 0; padding: 0; color: inherit; font-size: 13px; line-height: 1.6; }
 .feature-card .prose code { word-break: break-word; }
 .sdk-card .tag.version { background: transparent; color: var(--mint); border-color: var(--mint); }
+
+/* Integration details */
+.integration-text { display: grid; gap: 8px; align-content: start; }
+.integration .versions { font-size: 12px; color: var(--grey-two); }
+.detail-section { display: grid; gap: 14px; }
+.detail-section h2 { font-size: 20px; }
+.check-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.check-list li { display: grid; grid-template-columns: 18px 1fr; gap: 10px; align-items: start; color: var(--grey-three); }
+.check-list svg { width: 18px; height: 18px; margin-top: 2px; }

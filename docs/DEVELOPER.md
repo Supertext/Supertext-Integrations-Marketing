@@ -21,7 +21,7 @@ Browser ──► web (Next.js 16, App Router) ──REST + read token──► 
 | Type | Notes |
 | --- | --- |
 | `api::page.page` | `title`, `slug` (localized, may contain `/`), `seo`, `blocks` (dynamic zone) |
-| `api::integration.integration` | Shared across languages: `system`, `slug`, `category`, `stage`, `repo`, `url`, `logo`, `order`. Localized: `integrationType`, `summary`, `description`, `seo`, `blocks`. (`status` is reserved by draft & publish, hence `stage`.) |
+| `api::integration.integration` | Shared across languages: `system`, `slug`, `category`, `stage`, `repo`, `url`, `logo`, `screenshot`, `order`, `technology`, `supportedVersions`, `license`. Localized: `integrationType`, `summary`, `aboutSystem`, `features`, `description`, `seo`, `blocks`. (`status` is reserved by draft & publish, hence `stage`.) |
 | `api::service-plan.service-plan` | Shared: prices, `currency`, flags, Stripe price IDs, `platforms`, `order`. Localized: names, texts, `features`. |
 | `api::global.global` | Single type: navigation, header links, footer, default SEO |
 | `api::github-release.github-release` | No i18n, no drafts; written by the sync |
@@ -31,7 +31,7 @@ Blocks are components in `cms/src/components/blocks/`, shared parts in `cms/src/
 
 Seed content (`cms/src/seed/`) is created only when a type is empty. Integration screenshots are separate: on every start, `cms/src/screenshots.js` brings the automatic screenshots in line with `seed/screenshots.js` (full-screen views only), downloading from the plugin repos (raw.githubusercontent.com). It fills empty ones, replaces automatic imports whose source changed and removes automatic imports no longer listed, then publishes (unless the entry has unpublished edits, which stay for the editor). Automatic imports are recognised by their file name (`<slug>-supertext-<file>`), so images an editor uploaded are never touched. Once everything matches it does nothing.
 
-Other one-time changes to existing content (the seed only fills an empty site) live in `cms/src/content-updates.js`: each runs once and is recorded in the CMS store (`plugin_site-setup` → `contentUpdates`), so editors can change or remove the result afterwards. The SDK announcement, the SDK page (`seed/sdk.js`) and its start-page section, menu and footer links were added this way. The integration list mirrors the plugin list in the plugin conventions; when that list changes, update the Integration entries in the CMS (and the seed for fresh installs).
+Other one-time changes to existing content (the seed only fills an empty site) live in `cms/src/content-updates.js`: each runs once and is recorded in the CMS store (`plugin_site-setup` → `contentUpdates`), so editors can change or remove the result afterwards. The SDK announcement, the SDK page (`seed/sdk.js`) and its start-page section, menu and footer links, and the integration details (`seed/integration-details.json`: technology, supported versions, licence, about text, features and description, taken from each plugin's docs; only empty fields are filled) were added this way. When a plugin's requirements change, update its entry in the CMS (and the JSON for new installs). The integration list mirrors the plugin list in the plugin conventions; when that list changes, update the Integration entries in the CMS (and the seed for fresh installs).
 
 ## Local setup
 

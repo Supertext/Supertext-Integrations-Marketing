@@ -28,3 +28,10 @@ test('every screenshot source belongs to a seeded integration with a repo', () =
     assert.match(source, /^docs\/[\w./-]+\.(png|jpe?g)$/, slug);
   }
 });
+
+test('every seeded integration has details', () => {
+  for (const i of integrations) {
+    assert.ok(i.technology && i.aboutSystem && i.description, `${i.slug}: technology, about, description`);
+    assert.ok(i.features.length >= 3, `${i.slug}: features`);
+  }
+});

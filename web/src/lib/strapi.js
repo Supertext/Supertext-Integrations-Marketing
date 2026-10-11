@@ -64,7 +64,7 @@ export const getPage = (slug, locale) =>
   localized('/pages', { filters: { slug: { $eq: slug } }, populate: { seo: { populate: '*' }, blocks: BLOCK_POPULATE } }, locale);
 
 export const getIntegration = (slug, locale) =>
-  localized('/integrations', { filters: { slug: { $eq: slug } }, populate: { logo: true, screenshot: true, seo: { populate: '*' }, blocks: BLOCK_POPULATE } }, locale);
+  localized('/integrations', { filters: { slug: { $eq: slug } }, populate: { logo: true, screenshot: true, features: true, seo: { populate: '*' }, blocks: BLOCK_POPULATE } }, locale);
 
 export const getGlobal = (locale) =>
   localized('/global', {

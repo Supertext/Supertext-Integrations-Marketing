@@ -19,6 +19,32 @@ const mediaToIds = (value) =>
         : Object.fromEntries(Object.entries(value).map(([k, v]) => [k, mediaToIds(v)]))
       : value;
 
+const INTEGRATION = 'api::integration.integration';
+
+/** Technology, versions, licence, about text, features and description: only fills empty fields. */
+async function addIntegrationDetails(strapi) {
+  const DETAILS = require('./seed/integration-details.json');
+  const items = await strapi.documents(INTEGRATION).findMany({ locale: 'en', status: 'draft', populate: ['features'], limit: 500 });
+  let changed = 0;
+  for (const item of items) {
+    const d = DETAILS[item.slug];
+    if (!d) continue;
+    const data = {};
+    for (const key of ['technology', 'supportedVersions', 'license', 'aboutSystem', 'description']) {
+      if (!item[key] && d[key]) data[key] = d[key];
+    }
+    if (!(item.features || []).length && d.features?.length) data.features = d.features.map((text) => ({ text, included: true }));
+    if (!Object.keys(data).length) continue;
+    const published = await strapi.documents(INTEGRATION).findOne({ documentId: item.documentId, locale: 'en', status: 'published', fields: ['updatedAt'] });
+    const edited = !published || new Date(item.updatedAt) - new Date(published.updatedAt) > 1000;
+    await strapi.documents(INTEGRATION).update({ documentId: item.documentId, locale: 'en', data });
+    if (!edited) await strapi.documents(INTEGRATION).publish({ documentId: item.documentId, locale: 'en' });
+    changed++;
+  }
+  strapi.log.info(`[setup] Added details to ${changed} integrations`);
+  return true;
+}
+
 const usesSdkLink = (value) => JSON.stringify(value || null).includes('"/en/sdk"');
 
 /** Every block type, populated one level deep (enough for the start page's blocks). */
@@ -108,6 +134,7 @@ const UPDATES = [
       }),
   },
   { id: '2026-10-sdk-page', run: (strapi) => addSdkPage(strapi) },
+  { id: '2026-10-integration-details', run: (strapi) => addIntegrationDetails(strapi) },
 ];
 
 async function runContentUpdates(strapi) {

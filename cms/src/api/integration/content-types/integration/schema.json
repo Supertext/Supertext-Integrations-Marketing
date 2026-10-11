@@ -114,6 +114,30 @@
         }
       }
     },
+    "technology": {
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      }
+    },
+    "supportedVersions": {
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      }
+    },
+    "license": {
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      }
+    },
     "integrationType": {
       "type": "text",
       "pluginOptions": {
@@ -125,6 +149,24 @@
     "summary": {
       "type": "text",
       "required": true,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "aboutSystem": {
+      "type": "richtext",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "features": {
+      "type": "component",
+      "component": "shared.feature-line",
+      "repeatable": true,
       "pluginOptions": {
         "i18n": {
           "localized": true

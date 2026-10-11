@@ -24,7 +24,10 @@ export default function IntegrationCard({ item, locale, t }) {
         <Mark name={item.system} logo={item.logoUrl} />
         <h3>{item.system}</h3>
       </div>
-      <p>{item.summary}</p>
+      <div className="integration-text">
+        <p>{item.summary}</p>
+        {item.supportedVersions && <p className="versions">{item.supportedVersions}</p>}
+      </div>
       <div className="integration-meta">
         <span className="tag">{t[`category_${item.category}`]}</span>
         {item.stage === 'in_development' && <span className="tag dev">{t.inDevelopment}</span>}

@@ -1,0 +1,435 @@
+{
+  "adobe-experience-manager": {
+    "technology": "Java · two AEM content packages (Maven build)",
+    "supportedVersions": "AEM 6.5",
+    "license": "Apache-2.0",
+    "aboutSystem": "Adobe Experience Manager (AEM) is Adobe's commercial enterprise content management system for websites and digital assets. It is built on Java and Apache Sling and is used by large organisations running many sites and languages. Its Translation Integration Framework lets external translation providers plug into AEM translation projects.",
+    "features": [
+      "Connects Supertext to AEM's Translation Cloud Services",
+      "Orders human translations from AEM translation projects",
+      "Shows the scope of a job before it starts",
+      "Translations come back for review, accept or reject in AEM",
+      "Converts AEM language codes, including regional variants like de_ch"
+    ],
+    "description": "Editors create a Translation Project in AEM, choose the source and target languages, *Human Translation* as the method and Supertext as the provider, then add the pages to the translation job. *Request Scope* shows the scope of the job, and *Start* sends it to Supertext.\n\nWhen the translation is done, the person who ordered it is notified by e-mail and the job shows *Ready for review*. Editors preview each page in Sites and accept or reject the translation, unless automatic approval was chosen when creating the project."
+  },
+  "adobe-illustrator": {
+    "technology": "ExtendScript scripts for the Illustrator Scripts menu",
+    "supportedVersions": "Adobe Illustrator CC 2019 or later, Windows or macOS",
+    "license": "",
+    "aboutSystem": "Adobe Illustrator is commercial vector graphics software, part of Adobe Creative Cloud. Designers use it for logos, illustrations, packaging, posters and infographics. Its vector-based artwork scales to any size without losing quality.",
+    "features": [
+      "Exports point, area and path text from all artboards to XLIFF 1.2",
+      "Imports translations into the same text frames with formatting intact",
+      "Threaded text is exported once per story",
+      "Creates one translated copy per language; the original stays untouched",
+      "Context notes for translators; overset frames are listed and selected"
+    ],
+    "description": "Designers or project managers open the final document and choose File › Scripts › Translation Export, entering the source and target language codes. One XLIFF file per language is written next to the .ai file, ready for Supertext or any CAT tool.\n\nWhen the translations are back, Translation Import is run on the same original document. It creates a translated copy per language, restores bold words, colours and sizes, and reports frames that changed since export or whose text no longer fits. A designer then checks line breaks and overset text in each copy."
+  },
+  "adobe-indesign": {
+    "technology": "ExtendScript scripts for the InDesign Scripts panel",
+    "supportedVersions": "Adobe InDesign CC 2019 or later, Windows or macOS",
+    "license": "",
+    "aboutSystem": "Adobe InDesign is commercial desktop publishing software, part of Adobe Creative Cloud. Designers and agencies use it to lay out brochures, magazines, catalogues, books and other print and digital publications. Its precise control over typography and multi-page layouts makes it a standard tool in publishing.",
+    "features": [
+      "Exports all text to XLIFF 1.2 for any CAT tool or TMS",
+      "Covers stories, threaded frames, text on paths, parent pages, tables, footnotes",
+      "Imports translations with character formatting and anchored objects intact",
+      "Creates one translated copy per language; the original stays untouched",
+      "Context notes for translators and an overset text check after import"
+    ],
+    "description": "Designers or project managers open the final document and run Translation Export from the Scripts panel, entering the source and target language codes. The script writes one XLIFF file per language next to the document, ready for Supertext or any CAT tool.\n\nOnce the translated files come back, Translation Import is run on the same original document. It creates a translated copy per language, with paragraph styles and character formatting kept, and reports paragraphs that were skipped, left untranslated or no longer fit their frames. A designer then reviews each copy for line breaks, hyphenation and overset text."
+  },
+  "akeneo-pim": {
+    "technology": "PHP 8.3 · Composer package (Symfony bundle for Akeneo PIM)",
+    "supportedVersions": "Akeneo PIM Community Edition 2026.4 (2026.3 should work) · PHP 8.3",
+    "license": "MIT",
+    "aboutSystem": "Akeneo PIM is a product information management system that helps brands, manufacturers and retailers centralise and enrich product data for every sales channel. It is built in PHP on the Symfony framework and is available as an open source Community Edition and as commercial SaaS editions. Product attributes can be localizable and scoped per channel, which makes translation a core part of catalogue work.",
+    "features": [
+      "Translate with Supertext action in the product page's menu",
+      "Translates products, product models and variants into other locales",
+      "Covers localizable text and text area attributes, rich text included",
+      "Writes values per channel into that channel's locales",
+      "Saves through Akeneo's validation and history, keeping existing translations"
+    ],
+    "description": "Editors open a product or product model, save it and choose Translate with Supertext from the menu next to Save. In the dialog they pick the source locale and the target locales, with locales that have no text yet preselected, and click Translate. Each language usually takes a few seconds and the dialog shows how many values were translated.\n\nThe new values appear when editors switch the locale in the product header, where they can review and edit them like any other value. The change is recorded in the History tab. Existing translations are kept unless Overwrite existing translations is ticked."
+  },
+  "apostrophecms": {
+    "technology": "JavaScript · npm package (Apostrophe module)",
+    "supportedVersions": "ApostropheCMS 4.13 or later · Node.js 22.12+",
+    "license": "MIT",
+    "aboutSystem": "ApostropheCMS is an open source content management system built on Node.js. It is known for in-context editing, where editors change content directly on the page, and is used by agencies and organisations building custom websites. Pages and reusable content pieces can be localised into several locales.",
+    "features": [
+      "Adds Supertext to Apostrophe's own Localize step",
+      "Translates pages and pieces, one at a time or in batches",
+      "Rich text translated a paragraph at a time, formatting and links kept",
+      "Translates widget text, arrays and objects at any depth",
+      "Gives new localizations a translated URL"
+    ],
+    "description": "Supertext works inside Apostrophe's own *Localize…* step, so there is no separate button. Editors open a page or piece, choose *Localize…* from the More Options menu, select the target locales and tick *Translate text content*. Several pieces can be localized at once from the list.\n\nEach copy is translated by Supertext AI and saved as a draft in its locale; nothing is published automatically. Editors switch to the locale, review and edit the draft, then publish or submit it. Localizing again replaces the existing draft with a fresh translation."
+  },
+  "atropim": {
+    "technology": "PHP 8.4 · AtroCore module (Composer, via the AtroCore installer)",
+    "supportedVersions": "AtroCore 2.4 or later with AtroPIM 1.16 or later",
+    "license": "MIT",
+    "aboutSystem": "AtroPIM is an open source product information management (PIM) system built on the AtroCore data platform. Manufacturers, retailers and distributors use it to centralise product data and attributes and syndicate them to shops and other channels. It is highly configurable, so any kind of record can be modelled alongside products.",
+    "features": [
+      "Translate with Supertext button on products and other AtroCore records",
+      "Mass action in the product list, optionally run in the background",
+      "Translates multilingual text, Markdown and rich text fields and attribute values",
+      "Keeps bold text, links and lists; existing translations kept unless overwritten",
+      "API key stored in an encrypted AtroCore connection with a connection test"
+    ],
+    "description": "Editors open a product and click Translate with Supertext, next to Edit or in the More menu. The record's multilingual texts go to Supertext AI and come back into each target language's fields after a few seconds. In the product list, several products can be selected and translated at once through the Actions menu; large selections run in the background with a notification.\n\nTranslations are saved through AtroCore's own permissions, validation and history, so they appear under Activities. Editors review each language, correct with Edit where needed and change the status. Translating again keeps fields that already have text, so corrections are never lost."
+  },
+  "contao": {
+    "technology": "PHP 8.3+ · Composer package (Contao bundle)",
+    "supportedVersions": "Contao 5.7 and 6.0 · PHP 8.3+",
+    "license": "MIT",
+    "aboutSystem": "Contao is an open source content management system written in PHP and built on Symfony. It is popular with agencies and organisations in German-speaking countries and is known for its focus on accessibility, security and a structured back end. Multilingual sites use one website root per language.",
+    "features": [
+      "Translates pages with their articles and content elements",
+      "Translates a single page, a branch or a whole website",
+      "Keeps formatting, links and insert tags",
+      "Creates new pages unpublished for review",
+      "Links translations for the language switcher"
+    ],
+    "description": "In the site structure (*Content → Pages*), editors click the green translate icon on a page or website root, tick the target languages and, if wanted, *Also translate all subpages*. Supertext copies the pages with their articles and content elements into the other language roots and translates the texts.\n\nNew pages are created unpublished, so editors can check and adjust them before publishing. Translating again updates existing translations in place; previous versions stay in the version history and can be restored."
+  },
+  "coreldraw": {
+    "technology": "VBA macro module for CorelDRAW (Windows)",
+    "supportedVersions": "CorelDRAW Graphics Suite 2020 or later on Windows, with VBA",
+    "license": "",
+    "aboutSystem": "CorelDRAW Graphics Suite is commercial vector graphics and layout software. It is widely used for signage, print shop work, marketing material and technical illustration. It runs on Windows and macOS and can be automated with macros.",
+    "features": [
+      "Exports artistic and paragraph text from all pages to XLIFF 1.2",
+      "Includes text in groups, PowerClips and master layers",
+      "Imports translations with fonts, sizes, colours and fills carried over",
+      "Creates one translated copy per language; the original stays untouched",
+      "Context notes for translators and an overflow check after import"
+    ],
+    "description": "Designers or project managers open the final document and run the TranslationExport macro from the Scripts docker, entering the source and target language codes. One XLIFF file per language is written next to the .cdr file, ready for Supertext or any CAT tool.\n\nWhen the translations are back, TranslationImport is run on the same original document. It creates a translated copy per language, with the original formatting carried over, and reports text that changed since export or overflows its frame. A designer then checks line breaks and overflowing text in each copy."
+  },
+  "craft-cms": {
+    "technology": "PHP 8.2+ · Composer package (Craft plugin)",
+    "supportedVersions": "Craft CMS 5 · PHP 8.2+",
+    "license": "MIT",
+    "aboutSystem": "Craft CMS is a content management system written in PHP on the Yii framework, made by Pixel & Tonic. It is known for flexible custom content modelling and is widely used by agencies building bespoke websites. Its source is available, with a free Solo edition and paid Team and Pro editions.",
+    "features": [
+      "Translates entries into your other sites, right on the entry page",
+      "Rich text keeps headings, bold text, links and lists",
+      "Translates Matrix content and slugs for translated URLs",
+      "Asks before overwriting sites with their own text",
+      "Bulk translation from the entry index, formal or informal tone per site"
+    ],
+    "description": "Editors open an entry in the source site, save it and use the *Translate with Supertext* box in the sidebar to tick the target sites. Supertext translates the title, slug, text and rich-text fields and Matrix content, and saves each result as that site's version of the entry, as a new revision.\n\nSites that already have their own text are skipped unless the editor chooses to overwrite them. Several entries can be translated at once from the entry index, in the background. Editors review and adjust translations in Craft as usual."
+  },
+  "directus": {
+    "technology": "TypeScript · npm package (Directus extension bundle)",
+    "supportedVersions": "Directus 12 · Node.js 22+",
+    "license": "MIT",
+    "aboutSystem": "Directus is an open source data platform and headless CMS that puts an API and a no-code app on top of any SQL database. It is written in TypeScript on Node.js and is used by developers and content teams to manage structured content for websites and apps. Translations are stored per language in a dedicated Translations field.",
+    "features": [
+      "Translate with Supertext box on the item form",
+      "Fills Directus's own Translations field",
+      "Translates text, rich text and markdown, formatting and links kept",
+      "Nothing is saved until the editor clicks Save",
+      "Flow operation for bulk and automatic translation"
+    ],
+    "description": "Editors open a saved item and use the *Translate with Supertext* box: choose the source language, tick the target languages and click *Translate*. Supertext fills the translations into the item's Translations field and asks before replacing existing text.\n\nEditors switch languages in the Translations field to check and edit each translation, then click *Save*. Until then nothing is stored, and previous versions stay in the item's revisions. Administrators can also translate in bulk or automatically with a Flow."
+  },
+  "django-cms": {
+    "technology": "Python 3.10+ · Python package (Django app)",
+    "supportedVersions": "django CMS 4.1 or later · Django 4.2+ · Python 3.10+",
+    "license": "MIT",
+    "aboutSystem": "django CMS is an open source content management system built on the Django web framework in Python. It is used by developers and organisations who want an editor-friendly CMS inside a Django project, with frontend editing and a plugin-based page structure. It supports multiple languages per page out of the box.",
+    "features": [
+      "Translate with Supertext from the django CMS toolbar",
+      "Translates page titles, meta descriptions and the texts of plugins",
+      "Text plugins keep headings, bold text, links and lists",
+      "New languages are drafts with djangocms-versioning",
+      "Asks before overwriting existing languages, formal or informal tone"
+    ],
+    "description": "In edit mode, editors choose *Language → Translate with Supertext…* in the toolbar, pick the source language and tick the languages to create. Supertext translates the page's title, menu title, meta description and the texts of its plugins, and creates a new language version with all plugins in place.\n\nEditors open each version to review and adjust it like any other page content. With djangocms-versioning, new languages are drafts to publish as usual. Existing languages are skipped unless the editor chooses to overwrite them."
+  },
+  "drupal": {
+    "technology": "PHP · Drupal module (Composer), a TMGMT translator provider",
+    "supportedVersions": "Drupal 9, 10, 11 and 12",
+    "license": "GPL-2.0-or-later",
+    "aboutSystem": "Drupal is an open source content management system written in PHP, used by governments, universities, media and large organisations for complex, multilingual websites. It has a large module ecosystem and strong built-in content translation. The Translation Management Tool (TMGMT) module adds translation jobs and provider workflows on top.",
+    "features": [
+      "Supertext AI as a translator provider for TMGMT",
+      "Sends content for machine translation from the TMGMT interface",
+      "Fits into TMGMT's existing job and review workflow",
+      "Maintained by MD Systems, supported by Supertext"
+    ],
+    "description": "The module adds Supertext AI as a translator in Drupal's Translation Management Tool (TMGMT). Editors and site managers select content in TMGMT, create a translation job and choose Supertext AI as the translator to send it for machine translation.\n\nThe translations come back into TMGMT's usual workflow, where they can be reviewed and accepted like any other TMGMT job."
+  },
+  "ghost": {
+    "technology": "TypeScript · Node.js connector service (Docker image available)",
+    "supportedVersions": "Ghost 6 · Node.js 20.9+ for the connector",
+    "license": "MIT",
+    "aboutSystem": "Ghost is an open source publishing platform built on Node.js, designed for blogs, newsletters and paid memberships. It is used by independent creators and media organisations, and is available self-hosted or as the managed Ghost(Pro) service. It has no plugin system for its admin, so integrations work through its APIs and webhooks.",
+    "features": [
+      "Request a translation by adding a tag such as #translate-de-ch",
+      "Translates posts and pages, including SEO and social fields",
+      "Keeps formatting, links and cards intact",
+      "Translations arrive as drafts linked to the original",
+      "Never overwrites edited or published translations unless asked"
+    ],
+    "description": "Editors open a post or page in Ghost Admin, open *Post settings* and add a tag such as `#translate-de-ch`, or `#translate-all` for every language. A few seconds later a translated draft appears in the posts list; the original is never changed.\n\nEditors review and correct the draft, then publish it as usual. Unchanged drafts are updated when the tag is added again; edited or published translations are only replaced with `#retranslate-…`. Staff can follow requests on a Supertext status page."
+  },
+  "grav": {
+    "technology": "PHP 8.3+ · Grav plugin (Composer) with an Admin2 panel",
+    "supportedVersions": "Grav 2.0 or later with Admin2 · PHP 8.3+",
+    "license": "MIT",
+    "aboutSystem": "Grav is an open source, flat-file content management system written in PHP. It needs no database: pages are Markdown files, which makes it popular with developers for fast, simple websites and documentation. It uses Twig templates and has a large plugin and theme ecosystem.",
+    "features": [
+      "Supertext panel in the Admin2 page editor",
+      "Translates content, title, menu label and meta description",
+      "Keeps Markdown, links, code, Twig and shortcodes intact",
+      "New translations are created unpublished for review",
+      "Asks before replacing translations edited by hand"
+    ],
+    "description": "In the page editor, editors click the Supertext button in the toolbar. A panel lists every site language and its translation state; editors tick the languages and click *Translate*, and all chosen languages are translated at the same time.\n\nNew translations are saved unpublished. Editors switch to the language in the editor, check and correct the text, then publish it. When the source changes, translations are marked out of date and can be updated; translations edited by hand are only replaced after confirmation."
+  },
+  "joomla": {
+    "technology": "PHP · Joomla system plugin (installable zip package)",
+    "supportedVersions": "Joomla 5.4 and 6.1",
+    "license": "GPL-2.0-or-later",
+    "aboutSystem": "Joomla is an open source content management system written in PHP, used for websites of all sizes from small businesses to organisations and communities. It has built-in multilingual support with content languages and associations between translated items. It is developed by a volunteer community.",
+    "features": [
+      "Translates articles from the Articles list or the article editor",
+      "Keeps formatting, links, lists and plugin tags such as {loadmodule}",
+      "Translates meta data, image alt texts, captions and custom fields",
+      "Saves linked translations unpublished for review",
+      "Overwrites existing translations only on request, formal or informal tone"
+    ],
+    "description": "Editors tick one or more articles in *Content → Articles*, or open an article in the editor, and click *Supertext* in the toolbar. They tick the target languages and click *Translate*; the dialog lists each new translation with an *Open* link.\n\nEach translation is a new article linked to the original through Joomla's associations, unpublished by default. Editors review and adjust it, then set the status to *Published*. Existing translations are skipped unless the editor chooses to overwrite them."
+  },
+  "magento": {
+    "technology": "PHP 8.2–8.5 · Magento 2 module (Composer or app/code)",
+    "supportedVersions": "Magento Open Source / Adobe Commerce 2.4.7–2.4.9, Mage-OS 1.x–3.x",
+    "license": "MIT",
+    "aboutSystem": "Magento is a PHP e-commerce platform for building and running online shops, from mid-sized retailers to large B2C and B2B businesses. It is available as the open source Magento Open Source, the commercial Adobe Commerce and the community-driven fork Mage-OS. Multiple websites, stores and store views make it well suited to multilingual and multi-market commerce.",
+    "features": [
+      "Translate with Supertext mass action in the product, page and block lists",
+      "Button on product, category, CMS page and block edit pages",
+      "Translates names, descriptions, SEO fields and page and block content",
+      "Keeps formatting, Page Builder layouts and Magento directives intact",
+      "URL keys follow the translated name, with redirects from the old URL"
+    ],
+    "description": "Editors select products in Catalog → Products, or pages and blocks under Content, and choose Translate with Supertext in the Actions menu. A page lists the items with their translation status per store view; editors tick the target store views and click Translate. Categories and single items are translated with a button on their edit page.\n\nProduct and category texts are saved as each store view's own values, while CMS pages and blocks get a translated copy per store view. Only untranslated fields are filled unless editors tick Overwrite existing translations. Editors review the result by switching the scope to the store view."
+  },
+  "magnolia": {
+    "technology": "Java · Magnolia module (single jar, Maven)",
+    "supportedVersions": "Magnolia 6.4 (Community Edition or DX Core) · Java 17/21",
+    "license": "",
+    "aboutSystem": "Magnolia is a Java-based content management system from Switzerland, used by enterprises for multi-site and multilingual digital experiences. It comes as an open source Community Edition and the commercial DX Core. All languages of a page live in the same page and editors switch between them in the page editor.",
+    "features": [
+      "Translate with Supertext action in the Pages app",
+      "Translates pages, areas and components, optionally with subpages",
+      "Formatting and links in rich text stay intact",
+      "Keeps existing translations unless you choose to overwrite them",
+      "Supertext app for API key, form of address and language codes"
+    ],
+    "description": "In the Pages app, editors select a page and click *Translate with Supertext* in the action bar, or use the same action in the page editor. They tick the target languages and, if wanted, *Also translate all subpages*, then click *Translate*.\n\nThe translations are saved into the page's language versions; nothing changes on the public site until the page is published. Editors pick the language in the page editor's language selector, review and correct the texts, then publish. Existing translations are kept unless *Overwrite existing translations* is ticked."
+  },
+  "mailchimp": {
+    "technology": "Node.js · hosted app connected to Mailchimp via OAuth",
+    "supportedVersions": "Any Mailchimp account",
+    "license": "MIT",
+    "aboutSystem": "Mailchimp is a commercial, cloud-based email marketing and marketing automation platform. Small and mid-sized businesses use it to manage audiences, design newsletters and send campaigns. It records each subscriber's language, which makes it possible to send the right version to each reader.",
+    "features": [
+      "One translated draft per language, next to the original campaign",
+      "Translates subject line, preview text, content, alt texts and link titles",
+      "Keeps layout, images, links and Mailchimp merge tags exactly as they are",
+      "Each draft is segmented to the subscribers who speak that language",
+      "Start from a Supertext folder in Mailchimp or from the app's Translate page"
+    ],
+    "description": "Editors finish a campaign in Mailchimp and move it into a Supertext folder, such as Supertext → German or Supertext → All languages. Within a minute or two, a translated draft per language appears next to the original. Alternatively, they pick the campaign and languages on the app's Translate page. The integration is currently in development and not yet in the Mailchimp Marketplace.\n\nEach draft is sent only to subscribers with that language, and the original can go only to those without a translation. Editors open the drafts in Mailchimp, check them, send a test and send or schedule as usual. Supertext never sends anything to subscribers itself."
+  },
+  "neos": {
+    "technology": "PHP 8.2+ · Composer package (Neos package, content repository hook)",
+    "supportedVersions": "Neos 9.0 or newer (tested on 9.1) · PHP 8.2+",
+    "license": "GPL-3.0-or-later",
+    "aboutSystem": "Neos is an open source content application platform built on the PHP Flow framework. It is known for true inline editing and content dimensions, which let editors manage languages and other variants of the same content in one structure. Agencies and organisations in the German-speaking market often use it for multilingual corporate sites.",
+    "features": [
+      "Translates automatically when an editor creates a page in another language",
+      "Sends a whole page as one HTML document per target language",
+      "Covers inline texts with formatting and Inspector fields such as SEO texts",
+      "Rebuilds the page's URL path segment from the translated title",
+      "Writes results into the editor's workspace for review before publishing"
+    ],
+    "description": "Editors translate exactly as they always do in Neos: select a page in the Document Tree, switch the language menu to a language the page does not exist in yet, and choose Create and copy. Supertext translates the page title, headlines, body text, captions and SEO fields in a single request, usually within a few seconds.\n\nThe translation lands in the editor's own workspace like any other change, so nothing is visible to visitors until it is reviewed and published. If Supertext cannot translate, Neos still creates the page as an untranslated copy and logs the reason."
+  },
+  "orchard-core": {
+    "technology": "C# · .NET 10 · Orchard Core module (NuGet package)",
+    "supportedVersions": "Orchard Core 3.0 (tested with 3.0.1) · .NET 10",
+    "license": "MIT",
+    "aboutSystem": "Orchard Core is an open source, modular application framework and CMS built on ASP.NET Core. It is maintained by a community under the .NET Foundation and is popular with .NET teams that want a multi-tenant CMS they can extend in C#. Content is modelled from reusable parts and fields, and each language version is its own linked content item.",
+    "features": [
+      "Translate with Supertext button in the content list and the editor",
+      "Translates into several cultures at once, each saved as a draft",
+      "Automatically translates copies created via Orchard Core's Localizations menu",
+      "Covers titles, HTML and Markdown bodies, text and link fields, media alt texts",
+      "Translates widgets in Flow, Bag and Widgets List parts, keeping Liquid intact"
+    ],
+    "description": "In Content Items, translatable pages show a Supertext button next to Localizations, and the editor offers Translate with Supertext at the bottom. Editors tick the target languages and click Translate; Supertext translates them one after the other and links to each result.\n\nEvery translation is saved as a draft, so the published version stays online until an editor reviews and publishes it. Translating again asks before overwriting an existing language version. Creating a culture version through Orchard Core's own Localizations menu also translates the copy automatically."
+  },
+  "payload-cms": {
+    "technology": "TypeScript · npm package (Payload plugin)",
+    "supportedVersions": "Payload 3.x (tested with 3.90) · Node.js 20.9+",
+    "license": "MIT",
+    "aboutSystem": "Payload is an open source, headless CMS and application framework written in TypeScript. It installs directly into a Next.js app and is configured in code, which makes it a favourite of developers building content-driven web applications. Localization is built in, with each field able to hold a value per locale.",
+    "features": [
+      "Translate button for localized collections and globals in the admin panel",
+      "Translates into one or several target locales in one step",
+      "Covers localized text, textarea and Lexical rich text fields",
+      "Includes fields inside groups, tabs, arrays and blocks",
+      "Saves translations as drafts for review when drafts are enabled"
+    ],
+    "description": "Editors open a page, post or global, set the locale selector to the source language and click Translate next to the Save and Publish buttons. They tick the target languages and Supertext translates the saved document, confirming each language with a message.\n\nWhen the collection uses drafts, every translation is saved as a draft and the published version stays unchanged until an editor reviews it and publishes that language. Rich text keeps its formatting and links, while slugs and non-localized fields are left to the editor."
+  },
+  "pimcore": {
+    "technology": "PHP 8.4+ · Pimcore bundle for Pimcore Studio (Composer)",
+    "supportedVersions": "Pimcore 2026.1 or later with Pimcore Studio",
+    "license": "MIT",
+    "aboutSystem": "Pimcore is an open source data and experience management platform that combines PIM, master data management, digital asset management and a CMS in one system. It is used by mid-sized and large companies to manage product data and multilingual web content. It is built on PHP and Symfony and is available as a community and a commercial edition.",
+    "features": [
+      "Translate with Supertext button in the Pimcore Studio toolbar",
+      "Creates unpublished, linked page translations in each language's document tree",
+      "Fills data objects' localized fields as a new, unpublished version",
+      "Translates titles, descriptions, navigation and page texts; HTML formatting kept",
+      "Existing translations are kept unless the editor chooses to overwrite them"
+    ],
+    "description": "Editors open a page or data object in Pimcore Studio and click Translate with Supertext in the bottom toolbar. A dialog shows the source language and ticks the languages that have no translation yet; one click on Translate sends the content to Supertext AI and reports the result per language.\n\nPages come back as unpublished copies linked to the original in each language's tree, with URLs made from the translated navigation name. Data objects get their localized fields filled in a new draft version. Editors review, adjust and publish as usual, and every translation is recorded as a note on the original."
+  },
+  "prestashop": {
+    "technology": "PHP 8.1+ · PrestaShop module (zip upload)",
+    "supportedVersions": "PrestaShop 8.1, 8.2 and 9.x",
+    "license": "MIT",
+    "aboutSystem": "PrestaShop is an open source e-commerce platform written in PHP, widely used by small and mid-sized online shops, particularly in Europe. Merchants run it on their own hosting and extend it with modules and themes. Multiple languages and currencies are built into the core.",
+    "features": [
+      "Translate with Supertext bulk action in the products, categories and pages lists",
+      "Translates product names, summaries, descriptions, SEO fields and delivery texts",
+      "Translates category texts and CMS page titles, SEO fields and content",
+      "Keeps formatting, links and lists; friendly URLs follow the translated name",
+      "Fills only untranslated fields unless editors choose to overwrite"
+    ],
+    "description": "Editors tick items in Catalog → Products, Catalog → Categories or Design → Pages and choose Translate with Supertext in the bulk actions, or use the row menu for a single item. A page shows the translation status per language; editors pick the source and target languages and click Translate, and the results appear as each item is done.\n\nThe translation is written straight into each item's own language fields, without changing its status. Editors review it by switching the language in the item or in the shop. Fields that already have their own translation are kept unless Overwrite existing translations is ticked."
+  },
+  "shopify": {
+    "technology": "Node.js · embedded Shopify app hosted by Supertext",
+    "supportedVersions": "Any Shopify plan, or a free development store",
+    "license": "MIT",
+    "aboutSystem": "Shopify is a commercial, hosted e-commerce platform that lets businesses of every size set up and run an online store without managing their own servers. Merchants extend their store with apps from the Shopify App Store. Multiple languages are managed in the Shopify admin and stored in Shopify's own translation store.",
+    "features": [
+      "Translates products, collections, pages, blog posts and blogs in bulk",
+      "Translates into all of the shop's languages at once, in the background",
+      "Descriptions keep their headings, lists, bold text, links and images",
+      "Saves to Shopify's translation store, ready to review in Translate & Adapt",
+      "Keeps existing translations unless overwritten; outdated ones are refreshed"
+    ],
+    "description": "In the Shopify admin, users open Apps → Supertext Translation, choose products, collections, pages, blog posts or blogs, tick the items and the target languages, and click Translate with Supertext. The translation runs in the background, and Recent translations shows the progress until it says Done.\n\nThe results are saved in Shopify's own translation store, so they can be reviewed and edited in Shopify's free Translate & Adapt app. Customers see a language once it is published under Settings → Languages. Fields that already have a translation are kept unless Overwrite existing translations is ticked."
+  },
+  "silverstripe": {
+    "technology": "PHP 8.3+ · Composer package (Silverstripe module for Fluent)",
+    "supportedVersions": "Silverstripe CMS 6 (tested with 6.2), Fluent 8 · PHP 8.3+",
+    "license": "MIT",
+    "aboutSystem": "Silverstripe CMS is an open source content management system and framework written in PHP, originally developed in New Zealand. It is used by government agencies, universities and companies that want an editor-friendly CMS on top of a solid MVC framework. Multilingual sites are typically built with the Fluent module, often combined with Elemental content blocks.",
+    "features": [
+      "Supertext tab on every page to translate into the other Fluent locales",
+      "Translates page name, navigation label, meta description and HTML content",
+      "Includes Elemental content blocks localised with Fluent",
+      "Creates translated URL segments for new locales",
+      "Keeps existing translations unless the editor explicitly overwrites them"
+    ],
+    "description": "Editors open a page in the source locale, save it and switch to the Supertext tab. They tick the locales to create and click Translate; each locale takes a few seconds and is then marked as translated with Supertext on that date.\n\nThe result is a draft in each locale, with formatting, links and lists in place. Editors review and adjust it, then publish as usual. Locales that already exist are skipped unless Overwrite existing translations is switched on, and every run is recorded in the Supertext translation log in the CMS menu."
+  },
+  "strapi": {
+    "technology": "TypeScript · npm package (Strapi 5 plugin)",
+    "supportedVersions": "Strapi 5.x (tested with 5.56) · Node.js 20+",
+    "license": "MIT",
+    "aboutSystem": "Strapi is an open source headless CMS written in JavaScript and TypeScript on Node.js. Developers use it to model content and deliver it through REST and GraphQL APIs to websites, apps and other front ends. Its built-in internationalization feature stores a separate version of each entry per locale.",
+    "features": [
+      "Supertext translation panel in the Content Manager's right-hand column",
+      "Translates all localized text fields, including components and dynamic zones",
+      "Keeps rich text formatting and links in Markdown and Blocks fields",
+      "Copies numbers, dates and media, and builds URL slugs for new translations",
+      "Respects Strapi's role permissions per locale"
+    ],
+    "description": "Editors open an entry in the Content Manager, save it and use the Supertext translation panel in the right-hand column. They tick the target languages and click Translate with Supertext; after a few seconds the panel lists each language with an Open link to the result.\n\nTranslations are saved as drafts, so nothing goes live unreviewed. Editors check and adjust the text, save and publish. Languages that already exist are marked, and re-translating one shows a clear warning before it is replaced, while its URL slug is kept."
+  },
+  "typo3": {
+    "technology": "PHP 8.2+ · Composer package (TYPO3 extension, DataHandler hook)",
+    "supportedVersions": "TYPO3 13.4 LTS and 14.3 LTS · PHP 8.2+",
+    "license": "GPL-2.0-or-later",
+    "aboutSystem": "TYPO3 is an open source enterprise content management system written in PHP. It is widely used in German-speaking countries by companies, universities and public institutions for large, multilingual and multi-site websites. Long-term support releases and a fine-grained permission system make it a common choice for complex organisations.",
+    "features": [
+      "Translates automatically when editors localize pages and content elements",
+      "Works with TYPO3's own Translate wizard, List module and CLI, no new UI",
+      "Sends a whole page as one HTML document per target language",
+      "Covers page titles, SEO texts, headers, rich text, captions and tables",
+      "Rebuilds page slugs from the translated title"
+    ],
+    "description": "Editors translate exactly as they always do in TYPO3: in the Page module they choose Create new translation, pick the content elements in the Localize wizard and select Translate or Copy mode. When they click Localize, Supertext translates the page and its elements in a few seconds and a green message confirms what was translated.\n\nNew translations stay hidden, which is TYPO3's default, so editors can review and correct them before unhiding the page and elements. If Supertext cannot translate, the records are still created as untranslated copies with a warning."
+  },
+  "umbraco": {
+    "technology": "C# · .NET 10 · NuGet package with backoffice extension",
+    "supportedVersions": "Umbraco 17 LTS (tested) and 18 · .NET 10",
+    "license": "MIT",
+    "aboutSystem": "Umbraco is an open source content management system built on Microsoft .NET and written in C#. It is known for its flexible, editor-friendly backoffice and is popular with agencies and organisations that work in the Microsoft ecosystem. Umbraco offers long-term support releases and a commercial cloud hosting option alongside the free core.",
+    "features": [
+      "Translate with Supertext button next to Save and publish",
+      "Translates page name, text fields, text areas and rich text",
+      "Includes text inside block lists and block grids",
+      "Saves each language version as a draft for review",
+      "Asks for confirmation before replacing languages that already have content"
+    ],
+    "description": "Editors open a page in the Content section, save it and click Translate with Supertext next to Save and publish. In the dialog they choose the source language and the target languages, with missing languages preselected, and click Translate. Each language takes a few seconds and a message confirms which ones were saved.\n\nThe translations are saved as drafts, so visitors see nothing until an editor reviews them and uses Save and publish for that language. Umbraco derives the language URL from the translated page name, and the published version stays online until a new draft is published."
+  },
+  "wagtail": {
+    "technology": "Python 3.10+ · pip package (wagtail-localize machine translator)",
+    "supportedVersions": "Wagtail 8.0 and 7.0–7.4, wagtail-localize 1.12+ · Python 3.10+",
+    "license": "BSD-3-Clause",
+    "aboutSystem": "Wagtail is an open source content management system built on the Django web framework and written in Python. It is used by newsrooms, universities, public bodies and companies that want a clean editing experience with a flexible StreamField content model. Multilingual sites typically use wagtail-localize, the official translation add-on.",
+    "features": [
+      "Translate with Supertext button inside wagtail-localize's translation editor",
+      "Translates titles, rich text, text fields, StreamField blocks and SEO texts",
+      "Sends whole paragraphs with bold, italic and link markup for natural sentences",
+      "Translates page slugs and snippets set up for translation",
+      "Fills in only missing texts, never overwriting existing translations"
+    ],
+    "description": "Editors choose Translate this page from the page's More actions menu and tick the target languages, and Wagtail creates a draft in each. In wagtail-localize's translation editor for a language, a click on Translate with Supertext fills in all texts within a few seconds, with formatting and links in place.\n\nEditors check the texts, edit any of them and then publish that language or save a draft. When the original page changes and is synced, Supertext translates only the new or changed texts, so earlier edits are kept."
+  },
+  "wix": {
+    "technology": "Node.js · Wix app with a dashboard page, hosted by Supertext",
+    "supportedVersions": "Any Wix or Wix Studio site with Wix Multilingual",
+    "license": "MIT",
+    "aboutSystem": "Wix is a commercial, cloud-based website builder that lets businesses and individuals create websites with a visual editor and no code. Wix Studio is its platform for agencies and professional designers. Online shops, blogs and multilingual sites are covered by Wix's own apps, such as Wix Stores, Wix Blog and Wix Multilingual.",
+    "features": [
+      "Translate with Supertext page in the Wix dashboard",
+      "Translates Wix Stores products and categories and Wix Blog posts",
+      "Covers other content that Wix Multilingual lists for translation",
+      "Rich text keeps headings, lists, bold, italics and links",
+      "Leaves manual translations untouched unless overwriting is chosen"
+    ],
+    "description": "In the site's dashboard, editors open Apps → Supertext Translation, choose a content type such as products, tick the items and the target languages, and click Translate with Supertext. The page shows the translation status per language and reports the result for each item as it goes. The integration is currently in development and not yet in the Wix App Market.\n\nTranslations are saved in Wix Multilingual, where editors review and correct them in the Translation Manager. A setting decides whether they are marked ready to publish right away or wait for review. Original texts in the main language are never changed."
+  },
+  "wordpress": {
+    "technology": "PHP 8.1+ · WordPress plugin (Polylang Pro translation service)",
+    "supportedVersions": "WordPress 6.0+ with Polylang Pro (Machine Translation) · PHP 8.1+",
+    "license": "GPL-2.0-or-later",
+    "aboutSystem": "WordPress is the most widely used open source content management system, written in PHP and powering everything from personal blogs to large corporate sites. Its large ecosystem of themes and plugins lets site owners extend it without custom development. Multilingual WordPress sites often use Polylang Pro, a commercial plugin that links posts, pages and terms across languages.",
+    "features": [
+      "Adds Supertext as a machine translation service in Polylang Pro",
+      "Translates single posts from Polylang's buttons or many at once via bulk action",
+      "Orders professional human translation with a live price quote from WordPress",
+      "Covers Gutenberg, classic editor, ACF, terms and SEO meta via Polylang's pipeline",
+      "Adds translation support for YOOtheme Pro layouts and Gravity Forms"
+    ],
+    "description": "For AI translation, editors use Polylang's usual translate button, marked with the Supertext logo, to create a linked translation of a post or page. In the Posts or Pages list they can also select several items, choose Supertext AI Translation as the bulk action and pick a target language.\n\nFor professional translation, editors choose Supertext Human Translation, pick a language and translation type, and select a delivery option with its quoted price. When Supertext completes the order, the translation is written back automatically as a draft or published post, depending on the settings, and tracked on the Orders page."
+  }
+}
