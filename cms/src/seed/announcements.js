@@ -6,12 +6,12 @@ const sdkAnnouncement = {
   enabled: true,
   label: 'New',
   text: 'Supertext SDKs for TypeScript, PHP, Python, .NET and Java, with an integration guide built from 30+ plugins',
-  link: { label: 'Get the SDK', url: SDK_REPO, style: 'text', newTab: true },
+  link: { label: 'Get the SDK', url: '/en/sdk', style: 'text', newTab: false },
 };
 
 const sdkNavLink = {
   label: 'SDKs and integration guide',
-  url: SDK_REPO,
+  url: '/en/sdk',
   description: 'Build your own integration: TypeScript, PHP, Python, .NET, Java',
 };
 

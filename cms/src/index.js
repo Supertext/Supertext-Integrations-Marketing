@@ -133,10 +133,10 @@ async function seed(strapi) {
     if (!planIds.length) {
       planIds = (await docs('api::service-plan.service-plan').findMany({ locale: 'en', sort: 'order', fields: ['id'] })).map((p) => p.documentId);
     }
-    for (const data of [content.home, content.integrationsPage, content.pricingPage(planIds)]) {
+    for (const data of [content.home, content.integrationsPage, content.pricingPage(planIds), content.sdkPage]) {
       await docs('api::page.page').create({ locale: 'en', data, status: 'published' });
     }
-    strapi.log.info('[setup] Created the home, integrations and pricing pages');
+    strapi.log.info('[setup] Created the home, integrations, pricing and SDK pages');
   }
 
   if (!(await docs('api::global.global').findFirst({ locale: 'en' }))) {

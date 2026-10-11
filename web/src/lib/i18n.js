@@ -50,6 +50,9 @@ const STRINGS = {
     previewMode: 'Preview: you are seeing unpublished changes.',
     exitPreview: 'Exit preview',
     noResults: 'No integrations in this category yet.',
+    sdkCardTitle: 'Build your own integration',
+    sdkCardText: 'Build the integration yourself with the Supertext SDKs for TypeScript, PHP, Python, .NET and Java.',
+    sdkCardCta: 'See the SDKs',
   },
   de: {
     monthly: 'Monatlich',
@@ -94,6 +97,9 @@ const STRINGS = {
     previewMode: 'Vorschau: Sie sehen unveröffentlichte Änderungen.',
     exitPreview: 'Vorschau beenden',
     noResults: 'In dieser Kategorie gibt es noch keine Integrationen.',
+    sdkCardTitle: 'Eigene Integration bauen',
+    sdkCardText: 'Bauen Sie die Integration selbst, mit den Supertext-SDKs für TypeScript, PHP, Python, .NET und Java.',
+    sdkCardCta: 'Zu den SDKs',
   },
   fr: {
     monthly: 'Mensuel',
@@ -138,6 +144,9 @@ const STRINGS = {
     previewMode: 'Aperçu : vous voyez des modifications non publiées.',
     exitPreview: 'Quitter l’aperçu',
     noResults: 'Pas encore d’intégration dans cette catégorie.',
+    sdkCardTitle: 'Créez votre propre intégration',
+    sdkCardText: 'Créez l’intégration vous-même avec les SDK Supertext pour TypeScript, PHP, Python, .NET et Java.',
+    sdkCardCta: 'Voir les SDK',
   },
   it: {
     monthly: 'Mensile',
@@ -182,6 +191,9 @@ const STRINGS = {
     previewMode: 'Anteprima: sta vedendo modifiche non pubblicate.',
     exitPreview: 'Esci dall’anteprima',
     noResults: 'Ancora nessuna integrazione in questa categoria.',
+    sdkCardTitle: 'Crei la Sua integrazione',
+    sdkCardText: 'Crei Lei stesso l’integrazione con gli SDK Supertext per TypeScript, PHP, Python, .NET e Java.',
+    sdkCardCta: 'Vedere gli SDK',
   },
 };
 

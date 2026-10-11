@@ -8,6 +8,7 @@
 - All Supertext integrations as content, with their latest GitHub release synced every night and a full-screen view of each plugin in its system (imported from its repo where one exists) on the cards and integration pages.
 - Service plans with monthly and annual prices and a Stripe Checkout shop; subscriptions recorded through the Stripe webhook.
 - Next.js website in the style of supertext.com: start, integrations, pricing and one page per integration.
+- SDK page (`/sdk`) for the Supertext SDKs and integration guide, with an SDK item in the main menu, a start-page section, a footer link and a *Build your own integration* card at the end of the integration grid.
 - Announcement bar at the top of every page (Global → announcement), launched with the new Supertext SDKs; SDKs and integration guide in the Resources menu.
 - Runs on Railway in its own project (supertext-integrations-site): CMS, website and Postgres in the ams region.
 - MIT license for the code; the Supertext brand and site content stay all rights reserved.

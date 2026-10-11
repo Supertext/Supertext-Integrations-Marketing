@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useMemo, useState } from 'react';
 import IntegrationCard from '../IntegrationCard';
 import SectionHead from './SectionHead';
@@ -43,6 +44,17 @@ export default function IntegrationGrid({ block, integrations, locale, t, initia
         {shown.length ? (
           <div className="integrations">
             {shown.map((item) => <IntegrationCard key={item.slug} item={item} locale={locale} t={t} />)}
+            <Link href={`/${locale}/sdk`} className="tile integration sdk-card">
+              <div className="shot sdk-shot" aria-hidden="true">
+                <code>
+                  <span>import</span> {'{ SupertextClient }'} <span>from</span> &apos;supertext-sdk&apos;{'\n\n'}
+                  <span>await</span> client.translateTexts(texts, &apos;de-CH&apos;)
+                </code>
+              </div>
+              <h3>{t.sdkCardTitle}</h3>
+              <p>{t.sdkCardText}</p>
+              <div className="integration-meta"><span className="tag version">{t.sdkCardCta} →</span></div>
+            </Link>
           </div>
         ) : (
           <p className="empty">{t.noResults}</p>

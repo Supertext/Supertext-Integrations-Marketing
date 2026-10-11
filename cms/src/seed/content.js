@@ -56,6 +56,7 @@ const plans = [
 ];
 
 const { sdkAnnouncement, sdkNavLink } = require('./announcements');
+const { sdkPage, homeSdkBlock, navSdk, footerSdk } = require('./sdk');
 
 const link = (label, url, style = 'primary', newTab = false) => ({ label, url, style, newTab });
 
@@ -71,6 +72,7 @@ const home = {
       secondaryCta: link('See plans', '/en/pricing', 'secondary'),
     },
     { __component: 'blocks.integration-grid', title: 'Works with the systems you already use', category: 'all', showFilters: true },
+    homeSdkBlock,
     {
       __component: 'blocks.feature-cards', title: 'How it works', columns: 'three',
       cards: [
@@ -167,6 +169,7 @@ const global = {
       ],
     },
     { label: 'Pricing', url: '/en/pricing' },
+    navSdk,
     {
       label: 'Resources',
       links: [
@@ -180,6 +183,7 @@ const global = {
     { label: 'Integrations', links: [
       { label: 'All integrations', url: '/en/integrations' },
       { label: 'Pricing', url: '/en/pricing' },
+      footerSdk,
     ] },
     { label: 'Get started', links: [
       { label: 'Create a Supertext account', url: ACCOUNT_URL },
@@ -200,4 +204,4 @@ const global = {
   defaultSeo: { metaTitle: 'Supertext integrations', metaDescription: 'Supertext AI translation for your CMS, PIM, shop and design tools.' },
 };
 
-module.exports = { plans, home, integrationsPage, pricingPage, global };
+module.exports = { plans, home, integrationsPage, pricingPage, sdkPage, global };

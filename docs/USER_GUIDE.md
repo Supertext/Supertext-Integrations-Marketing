@@ -48,9 +48,13 @@ The site is in English, German, French and Italian. English is the source.
 
 Not translated yet? Visitors see the English version of that page or integration. Names, categories, repositories, prices and Stripe IDs are shared by all languages and only edited in English.
 
+## SDK page
+
+The Supertext SDKs have a permanent place on the site: the page **sdk** (`/sdk`, built from blocks like any page), the **SDK** item in the main menu, the section *Your system isn’t listed?* on the start page, a link in the footer and a *Build your own integration* card at the end of every integration grid. The card's texts are part of the website (all four languages); everything else is edited in the CMS.
+
 ## Announcement bar
 
-The dark bar at the very top of every page, for news like a new SDK. Edit it in **Global → announcement**: a short *label* ("New"), the *text* and a *link*. Untick *enabled* to hide it. It's translated like the rest of Global.
+The dark bar at the very top of every page, for short-lived news like the SDK launch. Untick *enabled* once the news is old; the SDK stays on the site through the SDK page and menu. Edit it in **Global → announcement**: a short *label* ("New"), the *text* and a *link*. Untick *enabled* to hide it. It's translated like the rest of Global.
 
 ## Integrations
 
