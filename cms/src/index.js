@@ -3,6 +3,7 @@
 const integrations = require('./seed/integrations');
 const content = require('./seed/content');
 const { importScreenshots } = require('./screenshots');
+const { runContentUpdates } = require('./content-updates');
 
 const LOCALES = [
   { code: 'de', name: 'German (de)' },
@@ -161,6 +162,7 @@ module.exports = {
     if (codes) await step('Editor locales', () => grantEditorAllLocales(strapi, codes));
     await step('Web API token', () => ensureWebToken(strapi));
     await step('Seed content', () => seed(strapi));
+    await step('Content updates', () => runContentUpdates(strapi));
 
     // Screenshots come from GitHub; don't hold up the start for them.
     importScreenshots(strapi).catch((e) => strapi.log.warn(`[setup] Screenshots: ${e.message}`));

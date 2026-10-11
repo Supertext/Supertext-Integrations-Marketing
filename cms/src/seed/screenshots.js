@@ -1,33 +1,25 @@
 'use strict';
 
-// Screenshot of each plugin in action, from the docs/images folder of its GitHub repo.
-// Imported once (src/screenshots.js) for integrations that have no screenshot yet;
-// editors can replace them in the admin. Integrations without an entry keep the monogram.
+// Full-screen view of each plugin in its system, from the docs folder of its GitHub repo.
+// Only whole-window views (the system's own interface with Supertext in it), no cropped
+// dialogs. Integrations without an entry show the monogram tile until a full-screen
+// capture exists. src/screenshots.js imports these and replaces earlier automatic imports;
+// images an editor uploaded are never touched.
 module.exports = {
-  'adobe-experience-manager': 'docs/assets/featured1.png',
-  apostrophecms: 'docs/images/localize-translate.png',
-  contao: 'docs/images/02-translate-screen.png',
-  'craft-cms': 'docs/images/01-translate-box.png',
-  directus: 'docs/images/01-translate-box.png',
-  'django-cms': 'docs/images/02-translate-dialog.png',
-  ghost: 'docs/images/translated-de.png',
-  grav: 'docs/images/panel-before.png',
-  joomla: 'docs/images/translate-dialog.png',
-  magnolia: 'docs/images/translate-dialog.png',
+  'adobe-experience-manager': 'docs/assets/featured2.png',
+  apostrophecms: 'docs/images/translated-page-german.png',
+  'craft-cms': 'docs/images/05-index-action.png',
+  ghost: 'docs/images/tags.png',
+  grav: 'docs/images/translated-editor.png',
+  joomla: 'docs/images/articles-translated.png',
+  magnolia: 'docs/images/translated-de.png',
   neos: 'docs/images/translated-page.png',
-  'orchard-core': 'docs/images/translate-before.png',
-  'payload-cms': 'docs/images/translate-menu.png',
+  'orchard-core': 'docs/images/translated-editor.png',
+  'payload-cms': 'docs/images/edit-view.png',
   silverstripe: 'docs/images/01-supertext-tab.png',
   strapi: 'docs/images/edit-view.png',
-  typo3: 'docs/images/wizard-mode.png',
-  umbraco: 'docs/images/translate-dialog.png',
+  typo3: 'docs/images/translated-page.png',
+  umbraco: 'docs/images/translated-german.png',
   wagtail: 'docs/images/translation-editor.png',
   wordpress: 'docs/images/orders.png',
-  'akeneo-pim': 'docs/images/02-translate-dialog.png',
-  atropim: 'docs/images/product-description.png',
-  pimcore: 'docs/images/document-translate-dialog.png',
-  magento: 'docs/images/translate-page.png',
-  prestashop: 'docs/images/translate-page.png',
-  wix: 'docs/images/translate-page.png',
-  mailchimp: 'docs/images/translate-page.png',
 };

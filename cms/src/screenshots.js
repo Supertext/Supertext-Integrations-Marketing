@@ -17,9 +17,22 @@ async function hasUnpublishedChanges(strapi, documentId) {
   return new Date(draft.updatedAt) - new Date(published.updatedAt) > 1000;
 }
 
+/** File name of an automatic import: <slug>-supertext-<source file>. Editors' uploads never match. */
+const autoName = (slug, source) => `${slug}-supertext-${path.basename(source)}`;
+const isAutoImport = (slug, file) => Boolean(file?.name) && file.name.startsWith(`${slug}-supertext`);
+
+/** Sets (or clears) an integration's screenshot; publishes unless an editor has unpublished changes. */
+async function setScreenshot(strapi, item, fileId) {
+  const publish = !(await hasUnpublishedChanges(strapi, item.documentId));
+  await strapi.documents(UID).update({ documentId: item.documentId, locale: 'en', data: { screenshot: fileId } });
+  if (publish) await strapi.documents(UID).publish({ documentId: item.documentId, locale: 'en' });
+}
+
 /**
- * Gives each integration without a screenshot the one listed in seed/screenshots.js,
- * downloaded from its GitHub repo. Runs on every start; does nothing once all are set.
+ * Keeps the automatic screenshots in line with seed/screenshots.js, downloading from each
+ * plugin's GitHub repo: fills empty ones, replaces earlier automatic imports whose source
+ * changed and removes automatic imports no longer listed. Runs on every start; does nothing
+ * once everything matches.
  */
 async function importScreenshots(strapi) {
   const items = await strapi.documents(UID).findMany({
@@ -29,7 +42,18 @@ async function importScreenshots(strapi) {
     populate: ['screenshot'],
     limit: 500,
   });
-  const todo = items.filter((i) => !i.screenshot && SOURCES[i.slug] && i.repo);
+  // Automatic imports no longer listed: back to the monogram tile.
+  for (const item of items.filter((i) => isAutoImport(i.slug, i.screenshot) && !SOURCES[i.slug])) {
+    await setScreenshot(strapi, item, null);
+    await strapi.plugin('upload').service('upload').remove({ id: item.screenshot.id }).catch(() => undefined);
+    strapi.log.info(`[setup] Removed the automatic screenshot of ${item.slug}`);
+  }
+  const todo = items.filter(
+    (i) =>
+      SOURCES[i.slug] &&
+      i.repo &&
+      (!i.screenshot || (isAutoImport(i.slug, i.screenshot) && i.screenshot.name !== autoName(i.slug, SOURCES[i.slug])))
+  );
   if (!todo.length) return;
 
   const upload = strapi.plugin('upload').service('upload');
@@ -43,7 +67,7 @@ async function importScreenshots(strapi) {
         if (!res.ok) throw new Error(`GitHub ${res.status}`);
         const buffer = Buffer.from(await res.arrayBuffer());
         const ext = path.extname(source).toLowerCase();
-        const filename = `${item.slug}-supertext${ext}`;
+        const filename = autoName(item.slug, source);
         const filepath = path.join(dir, filename);
         fs.writeFileSync(filepath, buffer);
         const [file] = await upload.upload({
@@ -61,9 +85,10 @@ async function importScreenshots(strapi) {
             size: buffer.length,
           },
         });
-        const publish = !(await hasUnpublishedChanges(strapi, item.documentId));
-        await strapi.documents(UID).update({ documentId: item.documentId, locale: 'en', data: { screenshot: file.id } });
-        if (publish) await strapi.documents(UID).publish({ documentId: item.documentId, locale: 'en' });
+        const previous = isAutoImport(item.slug, item.screenshot) ? item.screenshot.id : null;
+        await setScreenshot(strapi, item, file.id);
+        // Old automatic file: delete it, unless something else uses it.
+        if (previous) await strapi.plugin('upload').service('upload').remove({ id: previous }).catch(() => undefined);
         done++;
       } catch (error) {
         strapi.log.warn(`[setup] Screenshot for ${item.slug}: ${error.message}`);

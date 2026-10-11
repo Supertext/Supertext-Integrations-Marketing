@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import { draftMode } from 'next/headers';
 import { Archivo, Inter } from 'next/font/google';
+import Announcement from '@/components/Announcement';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import PreviewListener from '@/components/PreviewListener';
@@ -42,6 +43,7 @@ export default async function LocaleLayout({ children, params }) {
             <PreviewListener strapiOrigin={new URL(strapiOrigin).origin} />
           </div>
         )}
+        <Announcement announcement={global?.announcement} locale={locale} />
         <Header global={global} locale={locale} t={t} />
         <main>{children}</main>
         <Footer global={global} locale={locale} t={t} />

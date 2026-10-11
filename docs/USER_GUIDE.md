@@ -7,7 +7,7 @@ Log in to the Strapi admin at `https://<cms>/admin`. All content is under **Cont
 | **Page** | A page of the site, built from blocks. The slug `home` is the start page; `pricing` and `integrations` are the other main pages. |
 | **Integration** | One Supertext plugin: its name, category, description and GitHub repository. Each one gets its own page under `/integrations/<slug>`. |
 | **Service plan** | A subscription in the shop: name, prices, features and the Stripe price IDs. |
-| **Global** | Header menu, header buttons, footer columns and default SEO texts. |
+| **Global** | Announcement bar, header menu, header buttons, footer columns and default SEO texts. |
 | **GitHub release** | Filled in automatically every night. Don't edit it. |
 | **Subscription** | Orders from the shop, written by Stripe. Stripe is the reference; changes here aren't sent back. |
 
@@ -48,12 +48,16 @@ The site is in English, German, French and Italian. English is the source.
 
 Not translated yet? Visitors see the English version of that page or integration. Names, categories, repositories, prices and Stripe IDs are shared by all languages and only edited in English.
 
+## Announcement bar
+
+The dark bar at the very top of every page, for news like a new SDK. Edit it in **Global → announcement**: a short *label* ("New"), the *text* and a *link*. Untick *enabled* to hide it. It's translated like the rest of Global.
+
 ## Integrations
 
 - *category* decides the filter button; *order* the position in the grid.
 - *stage* `in_development` adds an "In development" label and takes the integration out of the platform list at checkout.
 - *repo* is the GitHub repository (`Supertext/<name>`). It links the guides and brings in the latest version every night.
-- *screenshot*: the image on the integration's card and at the top of its page, ideally the Supertext panel or dialog in that system. New integrations get one automatically if `cms/src/seed/screenshots.js` lists it; replace it any time in the admin. Without a screenshot, the card shows the initials instead.
+- *screenshot*: the image on the integration's card and at the top of its page: a full-screen view of the system with Supertext in it, no cropped dialogs. Integrations listed in `cms/src/seed/screenshots.js` get one automatically from their plugin's repo; replace it any time in the admin (your upload is never overwritten). Without a screenshot, the card shows the initials instead.
 - *logo*: without one, the site shows the initials.
 - *blocks*: optional extra sections on the integration's page.
 

@@ -55,6 +55,8 @@ const plans = [
   },
 ];
 
+const { sdkAnnouncement, sdkNavLink } = require('./announcements');
+
 const link = (label, url, style = 'primary', newTab = false) => ({ label, url, style, newTab });
 
 const home = {
@@ -150,6 +152,7 @@ const pricingPage = (planIds) => ({
 
 const global = {
   siteName: 'Supertext',
+  announcement: sdkAnnouncement,
   loginLink: link('Login', ACCOUNT_URL, 'text', true),
   headerCta: link('Get your API key', API_KEY_URL, 'primary', true),
   navigation: [
@@ -167,6 +170,7 @@ const global = {
     {
       label: 'Resources',
       links: [
+        sdkNavLink,
         { label: 'API documentation', url: 'https://www.supertext.com/en/documentation/api', description: 'The Supertext API behind every plugin' },
         { label: 'GitHub', url: 'https://github.com/Supertext', description: 'Source code, guides and releases' },
       ],

@@ -25,6 +25,16 @@
         }
       }
     },
+    "announcement": {
+      "type": "component",
+      "component": "shared.announcement",
+      "repeatable": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
     "navigation": {
       "type": "component",
       "component": "shared.nav-group",

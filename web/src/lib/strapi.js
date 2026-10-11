@@ -68,7 +68,7 @@ export const getIntegration = (slug, locale) =>
 
 export const getGlobal = (locale) =>
   localized('/global', {
-    populate: { navigation: { populate: '*' }, footerColumns: { populate: '*' }, loginLink: true, headerCta: true, defaultSeo: { populate: '*' } },
+    populate: { announcement: { populate: '*' }, navigation: { populate: '*' }, footerColumns: { populate: '*' }, loginLink: true, headerCta: true, defaultSeo: { populate: '*' } },
   }, locale);
 
 /** All integrations (in the language if translated, else English), with their latest GitHub release. */
