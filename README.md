@@ -19,7 +19,7 @@ No Supertext account yet? [Create one at supertext.com](https://www.supertext.co
 
 ## License
 
-The code is [MIT licensed](LICENSE). The Supertext name and logo and the site's content (texts, images, prices) are not covered by the license: © Supertext AG, all rights reserved.
+The code is [MIT licensed](LICENSE). The Supertext name and logo and the site's content (texts, images, prices) are not covered by the license: © Supertext AG, all rights reserved (see [NOTICE](NOTICE)).
 
 ## Security
 
