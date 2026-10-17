@@ -45,6 +45,30 @@ async function addIntegrationDetails(strapi) {
   return true;
 }
 
+/** HubSpot: new integration (published, in development) and the Marketing menu entry. */
+async function addHubSpot(strapi) {
+  const seed = require('./seed/integrations').find((i) => i.slug === 'hubspot');
+  const existing = await strapi.documents(INTEGRATION).findFirst({ locale: 'en', filters: { slug: 'hubspot' }, fields: ['id'] });
+  if (!existing && seed) {
+    const mailchimp = await strapi.documents(INTEGRATION).findFirst({ locale: 'en', filters: { slug: 'mailchimp' }, fields: ['order'] });
+    await strapi.documents(INTEGRATION).create({
+      locale: 'en',
+      data: { ...seed, order: mailchimp?.order ? mailchimp.order - 5 : seed.order },
+      status: 'published',
+    });
+    strapi.log.info('[setup] Created the HubSpot integration');
+  }
+  return updateGlobal(strapi, (global) => {
+    const navigation = stripIds(global.navigation || []);
+    for (const group of navigation) {
+      for (const l of group.links || []) {
+        if (/category=email$/.test(l.url) && l.label === 'Email marketing') Object.assign(l, { label: 'Marketing', description: 'HubSpot, Mailchimp' });
+      }
+    }
+    return { navigation };
+  });
+}
+
 const usesSdkLink = (value) => JSON.stringify(value || null).includes('"/en/sdk"');
 
 /** Every block type, populated one level deep (enough for the start page's blocks). */
@@ -135,6 +159,7 @@ const UPDATES = [
   },
   { id: '2026-10-sdk-page', run: (strapi) => addSdkPage(strapi) },
   { id: '2026-10-integration-details', run: (strapi) => addIntegrationDetails(strapi) },
+  { id: '2026-10-hubspot', run: (strapi) => addHubSpot(strapi) },
 ];
 
 async function runContentUpdates(strapi) {

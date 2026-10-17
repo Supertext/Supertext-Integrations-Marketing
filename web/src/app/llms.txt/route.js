@@ -4,7 +4,7 @@ import { getIntegrations, listAll } from '@/lib/strapi';
 // Built on request (the CMS isn't reachable during the build); Strapi responses are cached for a minute.
 export const dynamic = 'force-dynamic';
 
-const CATEGORY = { cms: 'Content management systems', pim: 'Product information management', ecommerce: 'E-commerce', email: 'Email marketing', design: 'Design files' };
+const CATEGORY = { cms: 'Content management systems', pim: 'Product information management', ecommerce: 'E-commerce', email: 'Marketing (email, pages and blogs)', design: 'Design files' };
 
 /**
  * llms.txt (https://llmstxt.org): a plain summary of the site for AI assistants and answer engines,
@@ -15,7 +15,7 @@ export async function GET() {
   const lines = [
     '# Supertext integrations',
     '',
-    '> Supertext is a Swiss translation company offering AI translation with optional professional review. Its open source plugins bring Supertext translation into content management systems, PIM systems, online shops, email marketing and design tools; SDKs for TypeScript, PHP, Python, .NET and Java cover everything else. All plugins are free; support and localization services are available as subscriptions.',
+    '> Supertext is a Swiss translation company offering AI translation with optional professional review. Its open source plugins bring Supertext translation into content management systems, PIM systems, online shops, marketing platforms and design tools; SDKs for TypeScript, PHP, Python, .NET and Java cover everything else. All plugins are free; support and localization services are available as subscriptions.',
     '',
     'Key facts:',
     '- Translations run on Swiss servers; editors review the results in their own system before publishing.',

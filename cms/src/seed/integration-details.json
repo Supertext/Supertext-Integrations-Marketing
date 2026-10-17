@@ -431,5 +431,19 @@
       "Adds translation support for YOOtheme Pro layouts and Gravity Forms"
     ],
     "description": "For AI translation, editors use Polylang's usual translate button, marked with the Supertext logo, to create a linked translation of a post or page. In the Posts or Pages list they can also select several items, choose Supertext AI Translation as the bulk action and pick a target language.\n\nFor professional translation, editors choose Supertext Human Translation, pick a language and translation type, and select a delivery option with its quoted price. When Supertext completes the order, the translation is written back automatically as a draft or published post, depending on the settings, and tracked on the Orders page."
+  },
+  "hubspot": {
+    "technology": "TypeScript · Node.js app hosted by Supertext, connected with OAuth",
+    "supportedVersions": "HubSpot Content Hub or Marketing Hub (Professional or Enterprise for multi-language content)",
+    "license": "MIT",
+    "aboutSystem": "HubSpot is a cloud-based customer platform for marketing, sales, service and content, with its own CMS (Content Hub) for websites, landing pages and blogs. Marketing teams use it to run campaigns, emails and websites in one place. Multi-language pages and blogs are built from language variants grouped with the original.",
+    "features": [
+      "Translates website pages, landing pages, blog posts, marketing emails and knowledge base articles",
+      "Pages and posts become HubSpot language variants in the original's multi-language group",
+      "Keeps layout, images, links, forms and HubL personalization tokens",
+      "Saves drafts only: nothing is published or sent, the original never changes",
+      "App pages in English, German, French and Italian"
+    ],
+    "description": "In the Supertext app, editors go to **Translate**, choose the kind of content (website pages, landing pages, blog posts, marketing emails or knowledge base articles) and the item, tick the target languages and click *Translate with Supertext*. The result lists each language with a link to its draft in HubSpot.\n\nEditors review the drafts in HubSpot and publish or send them as usual. Until the app is listed in the HubSpot App Marketplace, Supertext sends you the link to install it."
   }
 }
