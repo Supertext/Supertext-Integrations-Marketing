@@ -4,7 +4,7 @@ import { getIntegrations, listAll } from '@/lib/strapi';
 // Built on request (the CMS isn't reachable during the build); Strapi responses are cached for a minute.
 export const dynamic = 'force-dynamic';
 
-const CATEGORY = { cms: 'Content management systems', pim: 'Product information management', ecommerce: 'E-commerce', email: 'Marketing (email, pages and blogs)', design: 'Design files' };
+const CATEGORY = { cms: 'Content management systems', pim: 'Product information management', ecommerce: 'E-commerce', email: 'Email marketing', design: 'Design files' };
 
 /**
  * llms.txt (https://llmstxt.org): a plain summary of the site for AI assistants and answer engines,

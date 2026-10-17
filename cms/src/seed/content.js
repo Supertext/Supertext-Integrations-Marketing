@@ -161,10 +161,10 @@ const global = {
     {
       label: 'Integrations', url: '/en/integrations',
       links: [
-        { label: 'Content management', url: '/en/integrations?category=cms', description: 'WordPress, TYPO3, Strapi and 17 more' },
+        { label: 'Content management', url: '/en/integrations?category=cms', description: 'WordPress, TYPO3, Strapi, HubSpot and 17 more' },
         { label: 'Product information', url: '/en/integrations?category=pim', description: 'Akeneo, AtroPIM, Pimcore' },
         { label: 'E-commerce', url: '/en/integrations?category=ecommerce', description: 'Magento, PrestaShop, Shopify, Wix' },
-        { label: 'Marketing', url: '/en/integrations?category=email', description: 'HubSpot, Mailchimp' },
+        { label: 'Email marketing', url: '/en/integrations?category=email', description: 'Mailchimp' },
         { label: 'Design files', url: '/en/integrations?category=design', description: 'InDesign, Illustrator, CorelDRAW' },
       ],
     },

@@ -45,24 +45,28 @@ async function addIntegrationDetails(strapi) {
   return true;
 }
 
-/** HubSpot: new integration (published, in development) and the Marketing menu entry. */
+/** HubSpot: new integration in the CMS category, between Grav and Joomla (published, live). */
 async function addHubSpot(strapi) {
   const seed = require('./seed/integrations').find((i) => i.slug === 'hubspot');
-  const existing = await strapi.documents(INTEGRATION).findFirst({ locale: 'en', filters: { slug: 'hubspot' }, fields: ['id'] });
+  const [grav, joomla] = await Promise.all(
+    ['grav', 'joomla'].map((slug) => strapi.documents(INTEGRATION).findFirst({ locale: 'en', filters: { slug }, fields: ['order'] }))
+  );
+  const order = grav?.order && joomla?.order ? Math.round((grav.order + joomla.order) / 2) : seed.order;
+  const existing = await strapi.documents(INTEGRATION).findFirst({ locale: 'en', status: 'draft', filters: { slug: 'hubspot' }, fields: ['category', 'stage', 'order'] });
   if (!existing && seed) {
-    const mailchimp = await strapi.documents(INTEGRATION).findFirst({ locale: 'en', filters: { slug: 'mailchimp' }, fields: ['order'] });
-    await strapi.documents(INTEGRATION).create({
-      locale: 'en',
-      data: { ...seed, order: mailchimp?.order ? mailchimp.order - 5 : seed.order },
-      status: 'published',
-    });
+    await strapi.documents(INTEGRATION).create({ locale: 'en', data: { ...seed, order }, status: 'published' });
     strapi.log.info('[setup] Created the HubSpot integration');
+  } else if (existing && existing.category !== 'cms') {
+    // An earlier version of this update put it under Email marketing.
+    await strapi.documents(INTEGRATION).update({ documentId: existing.documentId, locale: 'en', data: { category: 'cms', stage: 'live', order, integrationType: seed.integrationType, summary: seed.summary, description: seed.description } });
+    await strapi.documents(INTEGRATION).publish({ documentId: existing.documentId, locale: 'en' });
   }
   return updateGlobal(strapi, (global) => {
     const navigation = stripIds(global.navigation || []);
     for (const group of navigation) {
       for (const l of group.links || []) {
-        if (/category=email$/.test(l.url) && l.label === 'Email marketing') Object.assign(l, { label: 'Marketing', description: 'HubSpot, Mailchimp' });
+        if (/category=email$/.test(l.url) && l.label === 'Marketing') Object.assign(l, { label: 'Email marketing', description: 'Mailchimp' });
+        if (/category=cms$/.test(l.url) && l.description === 'WordPress, TYPO3, Strapi and 17 more') l.description = 'WordPress, TYPO3, Strapi, HubSpot and 17 more';
       }
     }
     return { navigation };
@@ -159,7 +163,7 @@ const UPDATES = [
   },
   { id: '2026-10-sdk-page', run: (strapi) => addSdkPage(strapi) },
   { id: '2026-10-integration-details', run: (strapi) => addIntegrationDetails(strapi) },
-  { id: '2026-10-hubspot', run: (strapi) => addHubSpot(strapi) },
+  { id: '2026-10-hubspot-cms', run: (strapi) => addHubSpot(strapi) },
 ];
 
 async function runContentUpdates(strapi) {
