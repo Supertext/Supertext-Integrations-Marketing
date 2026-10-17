@@ -63,7 +63,7 @@ The dark bar at the very top of every page, for short-lived news like the SDK la
 - *description* ("How it works"), *features* ("What Supertext does in …") and *aboutSystem* ("About …") are the sections of the integration's page, translated per language.
 - *stage* `in_development` adds an "In development" label and takes the integration out of the platform list at checkout.
 - *repo* is the GitHub repository (`Supertext/<name>`). It links the guides and brings in the latest version every night.
-- *screenshot*: the image on the integration's card and at the top of its page: a full-screen view of the system with Supertext in it, no cropped dialogs. Integrations listed in `cms/src/seed/screenshots.js` get one automatically from their plugin's repo; replace it any time in the admin (your upload is never overwritten). Without a screenshot, the card shows the initials instead.
+- *screenshot*: the image on the integration's card and at the top of its page: a full-screen view of the system with Supertext in it. Where a plugin's repo has no full-screen view yet, the best screenshot from its guides stands in until one exists. Integrations listed in `cms/src/seed/screenshots.js` get one automatically from their plugin's repo; replace it any time in the admin (your upload is never overwritten). Without a screenshot, the card shows the initials instead.
 - *logo*: without one, the site shows the initials.
 - *blocks*: optional extra sections on the integration's page.
 

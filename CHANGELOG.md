@@ -9,6 +9,7 @@
 - Service plans with monthly and annual prices and a Stripe Checkout shop; subscriptions recorded through the Stripe webhook.
 - Next.js website in the style of supertext.com: start, integrations, pricing and one page per integration.
 - HubSpot integration added (content management systems).
+- Images for Contao, Directus, django CMS, HubSpot, Akeneo, AtroPIM, Pimcore, Magento, PrestaShop, Wix and Mailchimp: the best screenshot from each plugin's guides, until full-screen captures exist. Shopify, Drupal and the design-file tools still show initials (no screenshots in their repos).
 - SEO and GEO: titles, descriptions, canonical and hreflang per translated language, Open Graph and Twitter tags with a default image, JSON-LD (Organization, WebSite, SoftwareApplication, BreadcrumbList, FAQPage), robots.txt, sitemap.xml and llms.txt; indexing only with `ALLOW_INDEXING=true`.
 - Integration pages with technology, supported versions, license, "How it works", "What Supertext does" and "About" the system; supported versions on the cards.
 - SDK page (`/sdk`) for the Supertext SDKs and integration guide, with an SDK item in the main menu, a start-page section, a footer link and a *Build your own integration* card at the end of the integration grid.
