@@ -8,6 +8,8 @@ export const isLocale = (value) => LOCALES.includes(value);
 
 const STRINGS = {
   en: {
+    comparedWithBuiltIn: 'Compared with built-in translation',
+    compareLink: 'Supertext vs DeepL and Google Translate',
     monthly: 'Monthly',
     annual: 'Annual',
     perMonth: '/month',
@@ -66,6 +68,8 @@ const STRINGS = {
     sdkCardCta: 'See the SDKs',
   },
   de: {
+    comparedWithBuiltIn: 'Im Vergleich zur eingebauten Übersetzung',
+    compareLink: 'Supertext im Vergleich zu DeepL und Google Translate',
     monthly: 'Monatlich',
     annual: 'Jährlich',
     perMonth: '/Monat',
@@ -124,6 +128,8 @@ const STRINGS = {
     sdkCardCta: 'Zu den SDKs',
   },
   fr: {
+    comparedWithBuiltIn: 'Comparé à la traduction intégrée',
+    compareLink: 'Supertext comparé à DeepL et Google Traduction',
     monthly: 'Mensuel',
     annual: 'Annuel',
     perMonth: '/mois',
@@ -182,6 +188,8 @@ const STRINGS = {
     sdkCardCta: 'Voir les SDK',
   },
   it: {
+    comparedWithBuiltIn: 'Rispetto alla traduzione integrata',
+    compareLink: 'Supertext a confronto con DeepL e Google Traduttore',
     monthly: 'Mensile',
     annual: 'Annuale',
     perMonth: '/mese',

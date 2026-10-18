@@ -163,6 +163,14 @@
         }
       }
     },
+    "builtInTranslation": {
+      "type": "richtext",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
     "features": {
       "type": "component",
       "component": "shared.feature-line",

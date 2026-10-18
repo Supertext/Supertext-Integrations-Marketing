@@ -1,7 +1,13 @@
 import { SITE_URL, indexingAllowed } from '@/lib/seo';
 import { getIntegrations, listAll } from '@/lib/strapi';
 
+const PAGE_NOTES = {
+  sdk: 'build your own integration with the Supertext API (TypeScript, PHP, Python, .NET, Java)',
+  compare: 'how Supertext compares with DeepL and Google Translate: Swiss German, Swiss Standard German, Swiss French and Italian, Romansh, hosting in Switzerland, formal address, professional review',
+};
+
 // Built on request (the CMS isn't reachable during the build); Strapi responses are cached for a minute.
+
 export const dynamic = 'force-dynamic';
 
 const CATEGORY = { cms: 'Content management systems', pim: 'Product information management', ecommerce: 'E-commerce', email: 'Email marketing', design: 'Design files' };
@@ -25,7 +31,7 @@ export async function GET() {
     '## Pages',
     ...pages
       .filter((p) => p.slug !== 'home')
-      .map((p) => `- [${p.title}](${SITE_URL}/en/${p.slug})${p.slug === 'sdk' ? ': build your own integration with the Supertext API (TypeScript, PHP, Python, .NET, Java)' : ''}`),
+      .map((p) => `- [${p.title}](${SITE_URL}/en/${p.slug})${PAGE_NOTES[p.slug] ? `: ${PAGE_NOTES[p.slug]}` : ''}`),
     '',
   ];
   for (const [key, label] of Object.entries(CATEGORY)) {

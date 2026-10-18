@@ -281,6 +281,69 @@ async function addIntegrationFaqs(strapi) {
   return true;
 }
 
+/** Reviewed translations (English text → translation) for content added after the first translation. */
+const translationsFor = (locale) => {
+  try {
+    return require(`./seed/translations/${locale}.json`);
+  } catch {
+    return {};
+  }
+};
+
+/**
+ * Comparisons (October 2026): the /compare page, "Compared with built-in translation" on every
+ * integration (English and, where the language version exists, its reviewed translation) and a
+ * footer link in every language.
+ */
+async function addComparisons(strapi) {
+  const { comparePage, builtIn, footerCompare } = require('./seed/comparison');
+  const LOCALES = ['de', 'fr', 'it'];
+
+  if (!(await strapi.documents(PAGE).findFirst({ locale: 'en', filters: { slug: 'compare' }, fields: ['id'] }))) {
+    await strapi.documents(PAGE).create({ locale: 'en', data: comparePage, status: 'published' });
+    strapi.log.info('[setup] Created the comparison page');
+  }
+
+  const items = await strapi.documents(INTEGRATION).findMany({ locale: 'en', status: 'draft', fields: ['slug', 'builtInTranslation', 'updatedAt'], limit: 500 });
+  for (const item of items) {
+    const text = item.builtInTranslation || builtIn[item.slug];
+    if (!text) continue;
+    const published = await strapi.documents(INTEGRATION).findOne({ documentId: item.documentId, locale: 'en', status: 'published', fields: ['updatedAt'] });
+    if (!item.builtInTranslation) {
+      const edited = !published || new Date(item.updatedAt) - new Date(published.updatedAt) > 1000;
+      await strapi.documents(INTEGRATION).update({ documentId: item.documentId, locale: 'en', data: { builtInTranslation: text } });
+      if (!edited) await strapi.documents(INTEGRATION).publish({ documentId: item.documentId, locale: 'en' });
+    }
+    for (const locale of LOCALES) {
+      const translated = translationsFor(locale)[text];
+      if (!translated) continue;
+      const version = await strapi.documents(INTEGRATION).findOne({ documentId: item.documentId, locale, status: 'draft', fields: ['builtInTranslation', 'updatedAt'] });
+      if (!version || version.builtInTranslation) continue;
+      const live = await strapi.documents(INTEGRATION).findOne({ documentId: item.documentId, locale, status: 'published', fields: ['updatedAt'] });
+      const edited = live && new Date(version.updatedAt) - new Date(live.updatedAt) > 1000;
+      await strapi.documents(INTEGRATION).update({ documentId: item.documentId, locale, data: { builtInTranslation: translated } });
+      if (live && !edited) await strapi.documents(INTEGRATION).publish({ documentId: item.documentId, locale });
+    }
+  }
+
+  // Footer: the comparison next to the SDK link, in every language that has its own Global.
+  for (const locale of ['en', ...LOCALES]) {
+    const label = locale === 'en' ? footerCompare.label : translationsFor(locale)[footerCompare.label];
+    if (!label) continue;
+    const draft = await strapi.documents(GLOBAL).findFirst({ locale, status: 'draft', populate: { footerColumns: { populate: '*' } } });
+    if (!draft) continue;
+    const footerColumns = stripIds(draft.footerColumns || []);
+    const column = footerColumns.find((c) => (c.links || []).some((l) => /\/(integrations|sdk)$/.test(l.url)));
+    if (!column || column.links.some((l) => l.url === footerCompare.url)) continue;
+    column.links = [...column.links, { label, url: footerCompare.url }];
+    const live = await strapi.documents(GLOBAL).findFirst({ locale, status: 'published', fields: ['updatedAt'] });
+    const edited = !live || new Date(draft.updatedAt) - new Date(live.updatedAt) > 1000;
+    await strapi.documents(GLOBAL).update({ documentId: draft.documentId, locale, data: { footerColumns } });
+    if (!edited) await strapi.documents(GLOBAL).publish({ documentId: draft.documentId, locale });
+  }
+  return true;
+}
+
 const UPDATES = [
   {
     id: '2026-10-sdk-announcement',
@@ -299,6 +362,7 @@ const UPDATES = [
   { id: '2026-10-hubspot-cms', run: (strapi) => addHubSpot(strapi) },
   { id: '2026-10-seo-pages', run: (strapi) => seoPages(strapi) },
   { id: '2026-10-integration-faq', run: (strapi) => addIntegrationFaqs(strapi) },
+  { id: '2026-10-comparisons', run: (strapi) => addComparisons(strapi) },
 ];
 
 async function runContentUpdates(strapi) {

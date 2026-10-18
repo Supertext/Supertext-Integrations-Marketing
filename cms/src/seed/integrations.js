@@ -40,6 +40,7 @@ const LIST = [
 ];
 
 const DETAILS = require('./integration-details.json');
+const { builtIn } = require('./comparison');
 
 /** Technology, versions, licence, about-the-system text, features and description per integration. */
 const details = (slug) => {
@@ -61,4 +62,5 @@ module.exports = LIST.map(([system, category, link, integrationType, summary, st
   integrationType,
   summary,
   ...details(slugify(system)),
+  builtInTranslation: builtIn[slugify(system)],
 }));

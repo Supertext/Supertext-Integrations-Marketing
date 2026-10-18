@@ -54,6 +54,10 @@ Not translated yet? Visitors see the English version of that page or integration
 
 The Supertext SDKs have a permanent place on the site: the page **sdk** (`/sdk`, built from blocks like any page), the **SDK** item in the main menu, the section *Your system isn’t listed?* on the start page, a link in the footer and a *Build your own integration* card at the end of every integration grid. The card's texts are part of the website (all four languages); everything else is edited in the CMS.
 
+## Comparison page
+
+The page **compare** (`/compare`) compares Supertext with DeepL and Google Translate: what sets Supertext apart, a side-by-side table, questions. It's linked from the footer and from every integration page. The facts are as of October 2026 (sources in the project document *comparison-research*); check them when you change the page, as DeepL and Google change quickly.
+
 ## Announcement bar
 
 The dark bar at the very top of every page, for short-lived news like the SDK launch. Untick *enabled* once the news is old; the SDK stays on the site through the SDK page and menu. Edit it in **Global → announcement**: a short *label* ("New"), the *text* and a *link*. Untick *enabled* to hide it. It's translated like the rest of Global.
@@ -67,6 +71,7 @@ The dark bar at the very top of every page, for short-lived news like the SDK la
 - *repo* is the GitHub repository (`Supertext/<name>`). It links the guides and brings in the latest version every night.
 - *screenshot*: the image on the integration's card and at the top of its page: a full-screen view of the system with Supertext in it. Where a plugin's repo has no full-screen view yet, the best screenshot from its guides stands in until one exists. Integrations listed in `cms/src/seed/screenshots.js` get one automatically from their plugin's repo; replace it any time in the admin (your upload is never overwritten). Without a screenshot, the card shows the initials instead.
 - *logo*: without one, the site shows the initials.
+- *builtInTranslation*: the section *Compared with built-in translation*: what the system offers for translation itself and what Supertext adds (Markdown, translated per language), with a link to the comparison page.
 - *blocks*: optional extra sections on the integration's page. Each integration starts with a *Questions about Supertext for …* block (requirements, what's translated, languages, cost), shown on the page and to search engines; edit or extend it freely.
 
 ![An integration page](images/integration.png)

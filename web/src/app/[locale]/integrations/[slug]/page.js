@@ -138,6 +138,13 @@ export default async function IntegrationPage({ params }) {
                 <Markdown locale={locale}>{item.aboutSystem}</Markdown>
               </section>
             )}
+            {item.builtInTranslation && (
+              <section className="card detail-section">
+                <h2>{t.comparedWithBuiltIn}</h2>
+                <Markdown locale={locale}>{item.builtInTranslation}</Markdown>
+                <p><Link href={`/${locale}/compare`} className="btn btn-text">{t.compareLink} →</Link></p>
+              </section>
+            )}
             <div className="notice highlight" style={{ margin: 0, maxWidth: 'none' }}>
               <h2 style={{ fontSize: 20, marginBottom: 8 }}>{t.gettingStarted}</h2>
               <Markdown locale={locale}>{format(t, 'gettingStartedText', { account: ACCOUNT_URL, apiKey: API_KEY_URL })}</Markdown>
