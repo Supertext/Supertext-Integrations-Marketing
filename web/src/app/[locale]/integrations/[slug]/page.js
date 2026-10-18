@@ -10,6 +10,7 @@ import { Check } from '@/components/Icons';
 import { getIntegration, getIntegrations, imageProps, mediaUrl, translatedLocales } from '@/lib/strapi';
 import { JsonLd, ORG, SITE_URL, alternates, indexingAllowed, metaDescription, social } from '@/lib/seo';
 import { faqJsonLd } from '@/lib/page';
+import { localizeVersions } from '@/lib/versions';
 import { ACCOUNT_URL, API_KEY_URL, format, isLocale, strings } from '@/lib/i18n';
 
 export async function generateMetadata({ params }) {
@@ -18,7 +19,7 @@ export async function generateMetadata({ params }) {
   if (!item) return {};
   const t = strings(locale);
   const title = item.seo?.metaTitle || `${format(t, 'integrationTitle', { system: item.system })} | Supertext`;
-  const description = item.seo?.metaDescription ? metaDescription([item.seo.metaDescription]) : metaDescription([item.summary, item.supportedVersions], t.metaTail);
+  const description = item.seo?.metaDescription ? metaDescription([item.seo.metaDescription]) : metaDescription([item.summary, localizeVersions(item.supportedVersions, locale)], t.metaTail);
   const alt = alternates(locale, `/integrations/${slug}`, await translatedLocales('/integrations', slug));
   const image = mediaUrl(item.seo?.ogImage) || mediaUrl(item.screenshot);
   return {
@@ -146,7 +147,7 @@ export default async function IntegrationPage({ params }) {
             <div className="card">
               <dl>
                 {item.integrationType && (<div><dt>{t.typeOfIntegration}</dt><dd>{item.integrationType}</dd></div>)}
-                {item.supportedVersions && (<div><dt>{t.supportedVersions}</dt><dd>{item.supportedVersions}</dd></div>)}
+                {item.supportedVersions && (<div><dt>{t.supportedVersions}</dt><dd>{localizeVersions(item.supportedVersions, locale)}</dd></div>)}
                 {item.technology && (<div><dt>{t.technology}</dt><dd>{item.technology}</dd></div>)}
                 {item.license && (<div><dt>{t.license}</dt><dd>{item.license}</dd></div>)}
                 {release?.version && (

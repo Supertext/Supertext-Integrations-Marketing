@@ -1,3 +1,4 @@
+import { localizeVersions } from '@/lib/versions';
 import Image from 'next/image';
 import Link from 'next/link';
 import Mark from './Mark';
@@ -26,7 +27,7 @@ export default function IntegrationCard({ item, locale, t }) {
       </div>
       <div className="integration-text">
         <p>{item.summary}</p>
-        {item.supportedVersions && <p className="versions">{item.supportedVersions}</p>}
+        {item.supportedVersions && <p className="versions">{localizeVersions(item.supportedVersions, locale)}</p>}
       </div>
       <div className="integration-meta">
         <span className="tag">{t[`category_${item.category}`]}</span>

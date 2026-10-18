@@ -46,7 +46,7 @@ The site is in English, German, French and Italian. English is the source.
 1. Open the English entry and choose the target language in the language menu at the top right.
 2. In the **Supertext translation** panel, translate the entry. Check the result and publish it.
 
-The first German, French and Italian versions of all pages and integrations were made automatically with Supertext and published. Review them and correct what needs it; your changes are never overwritten. When you change the English text later, translate again with the panel.
+The first German, French and Italian versions of all pages and integrations were made with Supertext and then rewritten by translators (Swiss spelling, formal address), and published. Review them and correct what needs it; your changes are never overwritten. When you change the English text later, translate again with the panel.
 
 Not translated yet? Visitors see the English version of that page or integration. Names, categories, repositories, prices and Stripe IDs are shared by all languages and only edited in English.
 

@@ -112,13 +112,92 @@ async function translateEntry(strapi, uid, documentId, locale) {
   if (published) await documents.publish({ documentId, locale });
 }
 
+/**
+ * Reviewed wording (seed/translations/<locale>.json: English text → translation, written by
+ * translators) replaces the machine translation text by text, matched by the English original.
+ * Texts without a reviewed version keep the machine translation. Returns the localized data.
+ */
+function reviewedData(strapi, attributes, source, target, dict, top = true) {
+  const data = {};
+  for (const [name, attribute] of Object.entries(attributes)) {
+    if (SKIP.has(name) || attribute.type === 'relation') continue;
+    const src = source?.[name];
+    const tgt = target?.[name];
+    if (src === undefined || src === null) {
+      if (src === null) data[name] = null;
+      continue;
+    }
+    if (top && attribute.pluginOptions?.i18n?.localized === false) data[name] = toData(src);
+    else if (['string', 'text', 'richtext'].includes(attribute.type)) {
+      data[name] = KEEP.has(name) ? src : dict[src] ?? (typeof tgt === 'string' && tgt ? tgt : src);
+    } else if (attribute.type === 'component') {
+      const attrs = strapi.components[attribute.component].attributes;
+      data[name] = attribute.repeatable
+        ? src.map((item, i) => reviewedData(strapi, attrs, item, tgt?.[i], dict, false))
+        : reviewedData(strapi, attrs, src, tgt, dict, false);
+    } else if (attribute.type === 'dynamiczone') {
+      data[name] = src.map((item, i) => ({
+        __component: item.__component,
+        ...reviewedData(strapi, strapi.components[item.__component].attributes, item, tgt?.[i]?.__component === item.__component ? tgt[i] : null, dict, false),
+      }));
+    } else data[name] = toData(src);
+  }
+  return data;
+}
+
+async function applyReviewed(strapi, uid, documentId, locale, dict) {
+  const model = strapi.contentType(uid);
+  const populate = populateAll(strapi, model.attributes);
+  const documents = strapi.documents(uid);
+  const [source, target] = await Promise.all([
+    documents.findOne({ documentId, locale: 'en', status: 'draft', populate }),
+    documents.findOne({ documentId, locale, status: 'draft', populate }),
+  ]);
+  if (!source || !target) return false;
+  await documents.update({ documentId, locale, data: reviewedData(strapi, model.attributes, source, target, dict) });
+  const published = await documents.findOne({ documentId, locale: 'en', status: 'published', fields: ['id'] });
+  if (published) await documents.publish({ documentId, locale });
+  return true;
+}
+
+const dictionary = (locale) => {
+  try {
+    return require(`./seed/translations/${locale}.json`);
+  } catch {
+    return {};
+  }
+};
+
+/** Machine translations made here get the reviewed wording (once; unpublished edits are left alone). */
+async function reviewTranslations(strapi, state, save) {
+  let reviewed = 0;
+  for (const [key, value] of Object.entries(state)) {
+    if (value !== 'done') continue;
+    const parts = key.split(':'); // api::type.type:documentId:locale
+    const locale = parts.pop();
+    const documentId = parts.pop();
+    const uid = parts.join(':');
+    const target = await strapi.documents(uid).findOne({ documentId, locale, status: 'draft', fields: ['updatedAt'] });
+    const live = await strapi.documents(uid).findOne({ documentId, locale, status: 'published', fields: ['updatedAt'] });
+    if (target && live && new Date(target.updatedAt) - new Date(live.updatedAt) > 1000) continue; // an editor is working on it
+    try {
+      if (await applyReviewed(strapi, uid, documentId, locale, dictionary(locale))) reviewed++;
+      state[key] = 'reviewed';
+      await save();
+    } catch (error) {
+      strapi.log.warn(`[translate] Reviewed wording for ${key}: ${error.message}`);
+    }
+  }
+  if (reviewed) strapi.log.info(`[translate] Applied the reviewed wording to ${reviewed} language versions`);
+}
+
 async function translateSite(strapi) {
   if (process.env.AUTO_TRANSLATE === 'false' || !strapi.plugin('supertext')) return;
-  if (!strapi.plugin('supertext').service('translator').status().configured) return;
   const store = strapi.store({ type: 'plugin', name: 'site-setup' });
   const state = (await store.get({ key: 'autoTranslations' })) || {};
   const save = () => store.set({ key: 'autoTranslations', value: state });
   let translated = 0;
+  if (!strapi.plugin('supertext').service('translator').status().configured) return reviewTranslations(strapi, state, save);
 
   for (const uid of TYPES) {
     const entries = await strapi.documents(uid).findMany({ locale: 'en', status: 'draft', fields: ['documentId'], limit: 500 });
@@ -131,7 +210,7 @@ async function translateSite(strapi) {
       );
       for (const locale of TARGETS) {
         const key = `${uid}:${documentId}:${locale}`;
-        if (state[key] === 'done' || state[key] === 'skipped') continue;
+        if (['done', 'reviewed', 'skipped'].includes(state[key])) continue;
         // Published already and not started here: an editor's translation, leave it.
         // (An unpublished draft was never live and is replaced.)
         if (live.has(locale) && state[key] !== 'started') {
@@ -155,6 +234,7 @@ async function translateSite(strapi) {
     }
   }
   if (translated) strapi.log.info(`[translate] Translated ${translated} entries into German, French and Italian`);
+  await reviewTranslations(strapi, state, save);
 }
 
-module.exports = { translateSite, restore, restoreText };
+module.exports = { translateSite, restore, restoreText, reviewedData };
