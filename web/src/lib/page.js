@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 import Blocks from '@/components/Blocks';
 import { getPage, mediaUrl, translatedLocales } from './strapi';
 import { isLocale, strings } from './i18n';
-import { JsonLd, alternates, indexingAllowed, social } from './seo';
+import { JsonLd, alternates, indexingAllowed, metaDescription, social } from './seo';
 
 const pathOf = (slug) => (slug === 'home' ? '' : `/${slug}`);
 
@@ -14,7 +14,8 @@ export async function pageMetadata(slug, locale) {
   if (!page) return {};
   const seo = page.seo || {};
   const title = seo.metaTitle || page.title;
-  const description = seo.metaDescription;
+  // Translations run longer than English: cut to search-result length at a word.
+  const description = seo.metaDescription ? metaDescription([seo.metaDescription]) : undefined;
   const path = pathOf(slug);
   const locales = await translatedLocales('/pages', slug);
   const alt = alternates(locale, path, locales);

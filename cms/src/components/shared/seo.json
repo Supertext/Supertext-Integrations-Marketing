@@ -9,11 +9,11 @@
   "attributes": {
     "metaTitle": {
       "type": "string",
-      "maxLength": 70
+      "maxLength": 120
     },
     "metaDescription": {
       "type": "text",
-      "maxLength": 170
+      "maxLength": 320
     },
     "ogImage": {
       "type": "media",

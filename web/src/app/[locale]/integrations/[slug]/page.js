@@ -18,7 +18,7 @@ export async function generateMetadata({ params }) {
   if (!item) return {};
   const t = strings(locale);
   const title = item.seo?.metaTitle || `${format(t, 'integrationTitle', { system: item.system })} | Supertext`;
-  const description = item.seo?.metaDescription || metaDescription([item.summary, item.supportedVersions], t.metaTail);
+  const description = item.seo?.metaDescription ? metaDescription([item.seo.metaDescription]) : metaDescription([item.summary, item.supportedVersions], t.metaTail);
   const alt = alternates(locale, `/integrations/${slug}`, await translatedLocales('/integrations', slug));
   const image = mediaUrl(item.seo?.ogImage) || mediaUrl(item.screenshot);
   return {

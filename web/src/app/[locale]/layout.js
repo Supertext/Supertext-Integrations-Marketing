@@ -7,7 +7,7 @@ import Footer from '@/components/Footer';
 import PreviewListener from '@/components/PreviewListener';
 import { getGlobal } from '@/lib/strapi';
 import { LOCALES, isLocale, strings } from '@/lib/i18n';
-import { JsonLd, ORG, SITE_URL, indexingAllowed } from '@/lib/seo';
+import { JsonLd, ORG, SITE_URL, indexingAllowed, metaDescription } from '@/lib/seo';
 import '../globals.css';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'swap' });
@@ -23,7 +23,7 @@ export async function generateMetadata({ params }) {
   return {
     metadataBase: new URL(SITE_URL),
     title: { default: seo?.metaTitle || 'Supertext integrations', template: '%s | Supertext' },
-    description: seo?.metaDescription,
+    description: seo?.metaDescription ? metaDescription([seo.metaDescription]) : undefined,
     applicationName: 'Supertext',
     robots: indexingAllowed() ? undefined : { index: false, follow: true },
   };
