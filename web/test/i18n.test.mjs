@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { STRING_TABLES } from '../src/lib/i18n.js';
 
 const placeholders = (s) => (s.match(/\{\w+\}/g) || []).sort();
-const urls = (s) => (s.match(/\(\{?[\w:/.-]+\}?\)/g) || []).sort();
+const urls = (s) => (s.match(/\]\(\{?[\w:/.-]+\}?\)/g) || []).sort(); // Markdown link targets
 
 test('every language has the same keys, placeholders and links as English', () => {
   const en = STRING_TABLES.en;

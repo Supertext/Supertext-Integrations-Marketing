@@ -379,3 +379,28 @@ a.announcement-inner:hover .announcement-cta { text-decoration: underline; text-
 .footer-langs { display: flex; gap: 16px; flex-wrap: wrap; }
 .footer-langs a { color: inherit; text-decoration: none; opacity: .8; }
 .footer-langs a:hover, .footer-langs a[aria-current] { opacity: 1; text-decoration: underline; }
+
+/* Support form */
+.support-form { display: grid; gap: 20px; padding: 32px; }
+.support-form label, .support-form fieldset { display: grid; gap: 6px; font-size: 14px; font-weight: 500; }
+.support-form fieldset { border: 0; padding: 0; margin: 0; }
+.support-form legend { margin-bottom: 6px; }
+.support-form input:not([type=radio]), .support-form select, .support-form textarea {
+  width: 100%; border: 1px solid var(--green-grey); background: var(--white); border-radius: 12px;
+  padding: 11px 13px; font: inherit; font-weight: 400; color: var(--dark-green);
+}
+.support-form textarea { resize: vertical; min-height: 160px; }
+.support-form input:focus, .support-form select:focus, .support-form textarea:focus { outline: 2px solid var(--cold-green-blue); outline-offset: 1px; }
+.support-form small { font-weight: 400; color: var(--grey-two); font-size: 13px; }
+.support-form .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.support-form .kind-options { display: flex; flex-wrap: wrap; gap: 8px; }
+.support-form .kind { display: flex; align-items: center; gap: 8px; border: 1px solid var(--green-grey); border-radius: 999px; padding: 8px 14px; font-weight: 400; cursor: pointer; }
+.support-form .kind:has(input:checked) { border-color: var(--dark-green); background: var(--mint-alpha); }
+.support-form .support-note { font-size: 13px; color: var(--grey-three); background: var(--grey); border-radius: 12px; padding: 12px 14px; }
+.support-form .error { color: #ce0112; font-size: 14px; }
+.support-form button { justify-self: start; }
+.support-form .hp { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+.support-done { padding: 32px; display: grid; gap: 12px; text-align: center; justify-items: center; }
+.support-link { color: var(--mint) !important; padding-left: 0; padding-right: 0; }
+@media (max-width: 640px) { .support-form { padding: 20px; } .support-form .form-row { grid-template-columns: 1fr; } }
+.support-form input[type=radio] { accent-color: var(--dark-green); }

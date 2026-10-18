@@ -14,6 +14,7 @@ Browser ──► web (Next.js 16, App Router) ──REST + read token──► 
 - **Website** pages are rendered on request and cached for 60 s (tag `strapi`); the Strapi webhook to `/api/revalidate` clears the cache on publish. Missing translations fall back to English.
 - **Preview**: `cms/config/admin.js` maps each document to its front-end path (`cms/src/preview.js`) and opens `web/api/preview?secret=…&url=…&status=…`. That route turns on Next.js draft mode, so Strapi is queried with `status=draft` and nothing is cached. `PreviewListener` reloads the page when Strapi posts `strapiUpdate` after a save. The site allows framing only by the CMS origin (`frame-ancestors`); Strapi's CSP allows framing only the site (`frame-src`).
 - **Shop**: everything that talks to Stripe is in the CMS (`cms/src/api/shop`). The website forwards checkout requests, so the Stripe key lives in one service. The webhook checks Stripe's signature on the raw body (`strapi::body` with `includeUnparsed`) and mirrors subscriptions by their Stripe ID. Stripe stays the source of truth.
+- **Support** (`cms/src/api/support`, `web/src/app/[locale]/support`): the form posts to `web/api/support`, which forwards to `POST /api/support/requests` with the shared token and the visitor's address (only the website may call it). The CMS checks the honeypot, filling time, rate limit (5/hour/address) and optional Turnstile, stores a *Support request*, opens a GitHub issue in the integration's repo (`redact.js` removes emails, phone numbers, keys, passwords and non-GitHub/Supertext links; contact details never leave the CMS) with the label `support`, and emails a confirmation (`messages.js`, four languages, SMTP via nodemailer). `POST /api/support/github` (HMAC-checked organisation webhook) handles `issues.labeled` (`question`, `bug`, `feature-request`), `issues.closed` and `issue_comment.created`: comments marked `<!-- supertext:reply -->` (Claude's answers) and comments by organisation members (unless `<!-- internal -->`) are stored and emailed. In every plugin repo, `.github/workflows/support-triage.yml` runs Claude when the `support` label is added (only possible with triage rights): answer and close, or fix as a pull request, or label `feature-request`. The workflow file is the same everywhere; update it in all repos together.
 - **Release sync** (`cms/src/api/github-release`): every night at 03:17, and on the first start, the newest non-draft release of each integration's `repo` (pre-releases included, since the plugins are 0.x) goes into the GitHub release collection. Editorial content is never touched; the website joins releases to integrations by repo.
 
 ## Content model
@@ -26,6 +27,7 @@ Browser ──► web (Next.js 16, App Router) ──REST + read token──► 
 | `api::global.global` | Single type: navigation, header links, footer, default SEO |
 | `api::github-release.github-release` | No i18n, no drafts; written by the sync |
 | `api::subscription.subscription` | No i18n, no drafts, no API routes; written by the webhook |
+| `api::support-request.support-request` | No i18n, no drafts, no API routes; written by `api::support` (form and GitHub webhook) |
 
 Blocks are components in `cms/src/components/blocks/`, shared parts in `cms/src/components/shared/`. To add a block: create its schema, add it to the `blocks` dynamic zone of Page and Integration, add its populate rule in `web/src/lib/strapi.js` (`BLOCK_POPULATE`), its component in `web/src/components/blocks/` and its entry in `web/src/components/Blocks.js`.
 
@@ -72,7 +74,7 @@ The plugin isn't on npm. `cms/scripts/fetch-plugin.sh` clones [Strapi-Supertext-
 ## Tests
 
 - `cd web && npm test`: every UI language has the same keys, placeholders and links as English.
-- `cd cms && npm test`: seed integrations (unique slugs, valid categories and repos) and preview paths.
+- `cd cms && npm test`: seed integrations (unique slugs, valid categories and repos), preview paths, support redaction (contact details and secrets removed, versions and dates kept) and support emails (all languages, no unfilled placeholders).
 
 ## Screenshots
 
@@ -82,6 +84,7 @@ The plugin isn't on npm. `cms/scripts/fetch-plugin.sh` clones [Strapi-Supertext-
 
 - `.github/workflows/ci.yml`: builds the CMS (with the plugin) and the website, runs the tests.
 - `.github/workflows/checks.yml`: actionlint and zizmor on every push and PR, dependency review on PRs.
+- `.github/workflows/support-triage.yml`: Claude triage for support issues (see *Architecture → Support*); also in every plugin repo.
 - `.github/workflows/links.yml`: lychee weekly and on docs changes; broken links open the issue "Broken links in the docs".
 - All actions are pinned to commit SHAs; checkouts use `persist-credentials: false`; workflows default to `permissions: contents: read`.
 - GitHub settings (About box, ruleset "Protect main", Dependabot alerts, private vulnerability reporting, secret scanning, CodeQL) are applied with Remy's `set-github-about` script.

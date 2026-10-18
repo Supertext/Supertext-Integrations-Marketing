@@ -1,0 +1,39 @@
+{
+  "kind": "collectionType",
+  "collectionName": "support_requests",
+  "info": {
+    "singularName": "support-request",
+    "pluralName": "support-requests",
+    "displayName": "Support request",
+    "description": "Sent from the website's support form; forwarded as a GitHub issue (without contact details) and updated by the GitHub webhook."
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "reference": { "type": "string", "unique": true },
+    "subject": { "type": "string", "required": true, "maxLength": 140 },
+    "message": { "type": "text", "required": true, "maxLength": 10000 },
+    "kind": { "type": "enumeration", "enum": ["question", "bug", "feature", "other"], "default": "question" },
+    "platform": { "type": "string" },
+    "platformName": { "type": "string" },
+    "systemVersion": { "type": "string", "maxLength": 100 },
+    "pluginVersion": { "type": "string", "maxLength": 100 },
+    "name": { "type": "string", "maxLength": 120 },
+    "email": { "type": "email", "required": true },
+    "company": { "type": "string", "maxLength": 120 },
+    "locale": { "type": "string", "default": "en" },
+    "status": {
+      "type": "enumeration",
+      "enum": ["received", "forwarded", "answered", "bug", "feature_request", "closed", "failed"],
+      "default": "received"
+    },
+    "category": { "type": "enumeration", "enum": ["question", "bug", "feature"] },
+    "repo": { "type": "string" },
+    "issueNumber": { "type": "integer" },
+    "issueUrl": { "type": "string" },
+    "replies": { "type": "json" },
+    "notes": { "type": "text" }
+  }
+}

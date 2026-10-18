@@ -344,6 +344,39 @@ async function addComparisons(strapi) {
   return true;
 }
 
+/** Support (October 2026): "Support" in the main menu (after SDK) and in the footer, every language. */
+async function addSupportLinks(strapi) {
+  const LABELS = { en: 'Support', de: 'Support', fr: 'Support', it: 'Supporto' };
+  const url = '/en/support';
+  for (const [locale, label] of Object.entries(LABELS)) {
+    const draft = await strapi.documents(GLOBAL).findFirst({
+      locale,
+      status: 'draft',
+      populate: { navigation: { populate: '*' }, footerColumns: { populate: '*' } },
+    });
+    if (!draft) continue;
+    const navigation = stripIds(draft.navigation || []);
+    const footerColumns = stripIds(draft.footerColumns || []);
+    let changed = false;
+    if (!navigation.some((g) => g.url === url)) {
+      const sdk = navigation.findIndex((g) => /\/sdk$/.test(g.url || ''));
+      navigation.splice(sdk >= 0 ? sdk + 1 : navigation.length, 0, { label, url });
+      changed = true;
+    }
+    const column = footerColumns.find((c) => (c.links || []).some((l) => /integrations\/api|account\/signin/.test(l.url || ''))) || footerColumns[0];
+    if (column && !(column.links || []).some((l) => l.url === url)) {
+      column.links = [...(column.links || []), { label, url }];
+      changed = true;
+    }
+    if (!changed) continue;
+    const live = await strapi.documents(GLOBAL).findFirst({ locale, status: 'published', fields: ['updatedAt'] });
+    const edited = !live || new Date(draft.updatedAt) - new Date(live.updatedAt) > 1000;
+    await strapi.documents(GLOBAL).update({ documentId: draft.documentId, locale, data: { navigation, footerColumns } });
+    if (!edited) await strapi.documents(GLOBAL).publish({ documentId: draft.documentId, locale });
+  }
+  return true;
+}
+
 const UPDATES = [
   {
     id: '2026-10-sdk-announcement',
@@ -363,6 +396,7 @@ const UPDATES = [
   { id: '2026-10-seo-pages', run: (strapi) => seoPages(strapi) },
   { id: '2026-10-integration-faq', run: (strapi) => addIntegrationFaqs(strapi) },
   { id: '2026-10-comparisons', run: (strapi) => addComparisons(strapi) },
+  { id: '2026-10-support-links', run: (strapi) => addSupportLinks(strapi) },
 ];
 
 async function runContentUpdates(strapi) {

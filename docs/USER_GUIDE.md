@@ -10,6 +10,7 @@ Log in to the Strapi admin at `https://<cms>/admin`. All content is under **Cont
 | **Global** | Announcement bar, header menu, header buttons, footer columns and default SEO texts. |
 | **GitHub release** | Filled in automatically every night. Don't edit it. |
 | **Subscription** | Orders from the shop, written by Stripe. Stripe is the reference; changes here aren't sent back. |
+| **Support request** | Requests from the support page, with the sender's contact details and the linked GitHub issue. |
 
 ## Building pages from blocks
 
@@ -53,6 +54,21 @@ Not translated yet? Visitors see the English version of that page or integration
 ## SDK page
 
 The Supertext SDKs have a permanent place on the site: the page **sdk** (`/sdk`, built from blocks like any page), the **SDK** item in the main menu, the section *Your system isn’t listed?* on the start page, a link in the footer and a *Build your own integration* card at the end of every integration grid. The card's texts are part of the website (all four languages); everything else is edited in the CMS.
+
+## Support requests
+
+Visitors ask questions, report problems or suggest ideas on the **Support** page (`/support`, linked in the menu, the footer and on every integration page). Each request is stored under **Support request** and becomes an issue in the plugin's GitHub repository, without name, email or company. Claude then sorts it:
+
+| Status | What happened | The sender gets |
+| --- | --- | --- |
+| *forwarded* | Issue created, Claude is looking at it | A confirmation with the reference (SR-…) and the issue link |
+| *answered* | Claude (or someone from the team) answered | The answer by email, in their language |
+| *bug* | Claude found a bug and opened a pull request with the fix | "We're fixing it"; later "closed" when the fix is merged |
+| *feature_request* | An idea; the issue has the label `feature-request` for the product owner | "Thanks for the idea" |
+| *closed* | The issue was closed | A short note (none right after an answer) |
+| *failed* | The issue couldn't be created (see *notes*) | Only the confirmation; follow up by hand |
+
+**Answering yourself:** comment on the GitHub issue as a member of the Supertext organisation; the comment is emailed to the sender. Comments containing `<!-- internal -->` stay internal. **Bug fixes** arrive as pull requests: review and merge them; the issue closes with the merge. **Feature requests:** filter the issues by the label `feature-request`.
 
 ## Comparison page
 

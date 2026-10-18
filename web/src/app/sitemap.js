@@ -28,5 +28,8 @@ export default async function sitemap() {
       }
     }
   }
+  // The support page is part of the website (not the CMS) and exists in every language.
+  const languages = Object.fromEntries([...LOCALES.map((l) => [l, `${SITE_URL}/${l}/support`]), ['x-default', `${SITE_URL}/en/support`]]);
+  for (const l of LOCALES) entries.push({ url: `${SITE_URL}/${l}/support`, changeFrequency: 'monthly', priority: 0.5, alternates: { languages } });
   return entries;
 }

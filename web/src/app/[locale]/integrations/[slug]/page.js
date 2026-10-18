@@ -174,6 +174,7 @@ export default async function IntegrationPage({ params }) {
               <h2 style={{ fontSize: 20 }}>{format(t, 'supportForPlatform', { system: item.system })}</h2>
               <p style={{ color: '#c9d4d3', fontSize: 14 }}>{t.supportForPlatformText}</p>
               <Link className="btn btn-mint" href={`/${locale}/pricing?platform=${item.slug}`}>{t.seePlans}</Link>
+              <Link className="btn btn-text support-link" href={`/${locale}/support?platform=${item.slug}`}>{t.supportLink} →</Link>
             </div>
           </aside>
         </div>

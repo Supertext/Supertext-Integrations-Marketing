@@ -47,6 +47,13 @@ Generate each secret with `openssl rand -base64 32`. Never commit values; they l
 | `STRIPE_AUTOMATIC_TAX` | `true` to let Stripe Tax add Swiss VAT (Stripe Tax must be set up in Stripe) |
 | `GITHUB_TOKEN` | Optional: read-only token for the nightly release sync (raises GitHub's rate limit) |
 | `PLUGIN_REF` | Optional build argument: branch or tag of the Supertext Strapi plugin (default `main`) |
+| `GITHUB_ISSUES_TOKEN` | Support: fine-grained token that opens the GitHub issues (see *Support requests*) |
+| `GITHUB_WEBHOOK_SECRET` | Support: secret of the organisation webhook that sends labels, answers and closing back |
+| `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS` | Support: SMTP server for the emails to senders (port 465 uses TLS, others STARTTLS). Without `SMTP_HOST` emails are only logged. |
+| `SUPPORT_FROM_EMAIL` | Sender of support emails, e.g. `Supertext <support@supertext.com>` |
+| `SUPPORT_REPLY_TO` | Optional: where replies to support emails go (a mailbox your team reads) |
+| `SUPPORT_FALLBACK_REPO` | Optional: repo for requests without a platform or without a GitHub repo (default `Supertext/Supertext-Integrations-Marketing`) |
+| `TURNSTILE_SECRET_KEY` | Optional: Cloudflare Turnstile secret; with it, the support form requires the captcha |
 
 Account passwords need 8+ characters with an upper-case letter, a lower-case letter and a number. A weaker password skips that account with a warning; the CMS still starts. Existing accounts are never changed. Once `DEMO_ADMIN_*` is set, Strapi's "create the first administrator" screen no longer appears.
 
@@ -63,6 +70,7 @@ Account passwords need 8+ characters with an upper-case letter, a lower-case let
 | `SITE_URL` | Public URL of the website (canonical links, sitemap, structured data) |
 | `ALLOW_INDEXING` | `true` lets search engines and AI crawlers index the site (robots.txt, `noindex` tags). Leave unset until the site runs on its real domain with final prices. |
 | `STRIPE_PORTAL_URL` | Optional: Stripe customer portal login link, shown after checkout |
+| `TURNSTILE_SITE_KEY` | Optional: Cloudflare Turnstile site key for the support form (with `TURNSTILE_SECRET_KEY` on `cms`) |
 
 ## First deployment
 
@@ -93,6 +101,20 @@ Test with test keys first: card `4242 4242 4242 4242`, any future date, any CVC.
 
 ![Plan cards with monthly and annual prices](images/pricing.png)
 
+## Support requests
+
+The support page (`/support`) sends requests to the CMS (type *Support request*). The CMS opens an issue in the plugin's GitHub repository, without the sender's name, email or company, and with email addresses, phone numbers, keys, passwords and links to customer sites removed from the text. The issue gets the label `support`, which starts the *Support triage* workflow with Claude in that repo. Answers, labels and closing come back through a webhook and are emailed to the sender in their language.
+
+1. **Bot account (recommended):** create a GitHub user such as `supertext-bot`, add it to the Supertext organisation with **write** access to the plugin repos (Claude's workflow only starts when the person adding the label has write access). Issues the CMS opens show this account as the author.
+2. **Token:** as that account, create a fine-grained personal access token: resource owner *Supertext*, *All repositories*, permission *Issues: Read and write* (*Metadata: Read* is added), expiry one year. Set it as `GITHUB_ISSUES_TOKEN` on `cms`.
+3. **Webhook:** Supertext organisation → *Settings → Webhooks → Add webhook*: payload URL `https://<cms>/api/support/github`, content type `application/json`, a generated secret (also set as `GITHUB_WEBHOOK_SECRET` on `cms`), events *Issues* and *Issue comments*.
+4. **Claude:** the Claude GitHub app on the organisation and the organisation secret `ANTHROPIC_API_KEY`, available to public repositories.
+5. **Email:** `SMTP_*`, `SUPPORT_FROM_EMAIL` and optionally `SUPPORT_REPLY_TO` on `cms` (for example Postmark's SMTP or the Google Workspace SMTP relay).
+6. Optional: Cloudflare Turnstile (`TURNSTILE_SITE_KEY` on `web`, `TURNSTILE_SECRET_KEY` on `cms`). Without it the form is protected by a hidden field, a minimum filling time and a limit of five requests per hour and address.
+7. Recommended: in the ruleset "Protect main", require a pull request for changes to `main`, with organisation admins as bypass actors. Claude's workflow only works on branches and opens pull requests, but the rule makes sure nothing reaches `main` without review.
+
+A request that can't be forwarded (no token, GitHub error) stays in the CMS with the status *failed* and the error in *notes*; the sender still gets the confirmation email.
+
 ## Search engines and AI assistants
 
 - `robots.txt`, `sitemap.xml` (every page and integration in each translated language, with hreflang) and `llms.txt` (a plain-text summary for AI assistants, built from the CMS) are generated on request.
@@ -112,4 +134,7 @@ Pushes to `main` redeploy both services on Railway. If a push doesn't deploy, ch
 | "Checkout is not available right now" | `STRIPE_SECRET_KEY` is missing or wrong, or the price ID doesn't exist in that Stripe mode (test vs. live). See the CMS log (`[shop]`). |
 | Subscriptions don't appear in Strapi | The Stripe webhook URL or `STRIPE_WEBHOOK_SECRET` is wrong. Stripe → *Webhooks* shows the failed deliveries. |
 | No version numbers on the integration pages | The nightly sync couldn't reach GitHub (rate limit). Set `GITHUB_TOKEN`. See the log (`[github]`). |
+| Support requests stay at *failed* | `GITHUB_ISSUES_TOKEN` is missing, expired or lacks *Issues: write*; see *notes* on the request and the log (`[support]`). |
+| Answers aren't emailed | Webhook not set up or `GITHUB_WEBHOOK_SECRET` differs (GitHub → webhook → *Recent deliveries* shows 401), or `SMTP_HOST` is missing (the log says "No SMTP_HOST"). |
+| Claude doesn't react to a support issue | The `support` label was added by an account without write access, or `ANTHROPIC_API_KEY` is missing; see the repo's *Actions → Support triage*. |
 | "Error loading the plugin supertext" | The plugin isn't in `package.json`: run `npm run plugin` in `cms/`. |
