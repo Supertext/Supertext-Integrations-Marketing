@@ -41,6 +41,7 @@ Generate each secret with `openssl rand -base64 32`. Never commit values; they l
 | `DEMO_ADMIN_EMAIL`, `DEMO_ADMIN_PASSWORD` | Super Admin, created on start if it doesn't exist |
 | `DEMO_EDITOR_EMAIL`, `DEMO_EDITOR_PASSWORD` | Editor with access to all four languages, created on start if it doesn't exist |
 | `SUPERTEXT_API_KEY` | Supertext API key for the Translate panel (see below) |
+| `AUTO_TRANSLATE` | Optional: `false` stops the first automatic translation of all content into German, French and Italian (see below) |
 | `STRIPE_SECRET_KEY` | Stripe secret key (`sk_live_…`, or `sk_test_…` for testing) |
 | `STRIPE_WEBHOOK_SECRET` | Signing secret of the Stripe webhook endpoint (`whsec_…`) |
 | `STRIPE_AUTOMATIC_TAX` | `true` to let Stripe Tax add Swiss VAT (Stripe Tax must be set up in Stripe) |
@@ -73,6 +74,8 @@ Account passwords need 8+ characters with an upper-case letter, a lower-case let
 ## Supertext API key
 
 No Supertext account yet? Create one at [supertext.com](https://www.supertext.com/person/en/account/signin). Generate your API key at [supertext.com → Integrations → API](https://www.supertext.com/en/integrations/api) (requires the Admin role). Set it as `SUPERTEXT_API_KEY` on `cms`. Until then, the edit view shows "Supertext is not configured yet".
+
+With the key set, the CMS translates all content into German, French and Italian once, in the background after start-up (takes some minutes; uses Supertext credit), and publishes the language versions. Published translations made by editors are left alone. Review the results in the admin; later changes are translated with the panel as usual. Set `AUTO_TRANSLATE=false` to skip this.
 
 Translations go out as Swiss German, French and Italian (`de-CH`, `fr-CH`, `it-CH`) in formal address; the site's own language codes stay `de`, `fr`, `it`. Supertext rejects plain `de`/`fr`/`it` as a target ("INVALID_LANGUAGE_PAIR"). To change the variety, edit `locales` in `cms/config/plugins.js`.
 

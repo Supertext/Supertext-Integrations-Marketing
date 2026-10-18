@@ -2,12 +2,14 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import Blocks from '@/components/Blocks';
+import SectionHead from '@/components/blocks/SectionHead';
 import Markdown from '@/components/Markdown';
 import Mark from '@/components/Mark';
 import IntegrationCard from '@/components/IntegrationCard';
 import { Check } from '@/components/Icons';
 import { getIntegration, getIntegrations, imageProps, mediaUrl, translatedLocales } from '@/lib/strapi';
-import { JsonLd, ORG, SITE_URL, alternates, indexingAllowed, social } from '@/lib/seo';
+import { JsonLd, ORG, SITE_URL, alternates, indexingAllowed, metaDescription, social } from '@/lib/seo';
+import { faqJsonLd } from '@/lib/page';
 import { ACCOUNT_URL, API_KEY_URL, format, isLocale, strings } from '@/lib/i18n';
 
 export async function generateMetadata({ params }) {
@@ -16,9 +18,7 @@ export async function generateMetadata({ params }) {
   if (!item) return {};
   const t = strings(locale);
   const title = item.seo?.metaTitle || `${format(t, 'integrationTitle', { system: item.system })} | Supertext`;
-  const description =
-    item.seo?.metaDescription ||
-    [item.summary, item.supportedVersions].filter(Boolean).join('. ').slice(0, 160);
+  const description = item.seo?.metaDescription || metaDescription([item.summary, item.supportedVersions], t.metaTail);
   const alt = alternates(locale, `/integrations/${slug}`, await translatedLocales('/integrations', slug));
   const image = mediaUrl(item.seo?.ogImage) || mediaUrl(item.screenshot);
   return {
@@ -78,11 +78,13 @@ export default async function IntegrationPage({ params }) {
       },
     ],
   };
+  const faq = faqJsonLd(item.blocks);
   const docs = item.repo ? `https://github.com/${item.repo}/blob/main/docs` : null;
 
   return (
     <>
       <JsonLd data={jsonLd} />
+      {faq && <JsonLd data={faq} />}
       <section className="hero">
         <div className="container">
           <p style={{ marginBottom: 24 }}>
@@ -91,7 +93,9 @@ export default async function IntegrationPage({ params }) {
           <div className="integration-hero">
             <Mark name={item.system} logo={mediaUrl(item.logo)} large />
             <div style={{ display: 'grid', gap: 16 }}>
-              <h1 className="display">{item.system}</h1>
+              <h1 className="display">
+                <span className="h1-kicker">{t.integrationHeading}</span> {item.system}
+              </h1>
               <p className="hero-sub">{item.summary}</p>
               <div className="integration-meta">
                 <span className="tag">{t[`category_${item.category}`]}</span>
@@ -172,7 +176,7 @@ export default async function IntegrationPage({ params }) {
       {related.length > 0 && (
         <section className="section">
           <div className="container">
-            <div className="section-head"><h2 className="section-title">{t[`category_${item.category}`]}</h2></div>
+            <SectionHead title={t.moreIntegrations} subtitle={t[`category_${item.category}`]} />
             <div className="integrations">
               {related.map((r) => <IntegrationCard key={r.slug} item={r} locale={locale} t={t} />)}
             </div>

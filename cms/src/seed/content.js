@@ -62,11 +62,11 @@ const link = (label, url, style = 'primary', newTab = false) => ({ label, url, s
 
 const home = {
   title: 'Home', slug: 'home',
-  seo: { metaTitle: 'Supertext integrations', metaDescription: 'Supertext AI translation inside the CMS, PIM, shop and design tools you already use.' },
+  seo: { metaTitle: 'AI translation plugins for CMS, PIM and shops | Supertext', metaDescription: 'Supertext AI translation inside TYPO3, WordPress, Shopify, Strapi and 25+ other systems. Swiss quality, free plugins, optional support and localization.' },
   blocks: [
     {
       __component: 'blocks.hero', layout: 'centered', eyebrow: '30+ integrations',
-      title: 'Translate where your content lives',
+      title: 'AI translation where your content lives',
       subtitle: 'Supertext AI translation inside your CMS, PIM, shop and design tools. Pick the languages, click translate, review the result.',
       primaryCta: link('Browse integrations', '/en/integrations'),
       secondaryCta: link('See plans', '/en/pricing', 'secondary'),
@@ -91,10 +91,10 @@ const home = {
 
 const integrationsPage = {
   title: 'Integrations', slug: 'integrations',
-  seo: { metaTitle: 'Integrations | Supertext', metaDescription: 'All Supertext plugins for CMS, PIM, e-commerce, email marketing and design files.' },
+  seo: { metaTitle: 'Translation plugins for CMS, PIM and shops | Supertext', metaDescription: 'All Supertext translation plugins: TYPO3, WordPress, Drupal, Shopify, Magento, Akeneo, HubSpot and more. Free and open source, translate in your system.' },
   blocks: [
     {
-      __component: 'blocks.hero', layout: 'centered', title: 'All Supertext integrations',
+      __component: 'blocks.hero', layout: 'centered', title: 'All Supertext translation plugins',
       subtitle: 'Open source plugins that bring Supertext AI translation into the tools your teams already use.',
     },
     { __component: 'blocks.integration-grid', category: 'all', showFilters: true },
@@ -107,7 +107,7 @@ const integrationsPage = {
 
 const pricingPage = (planIds) => ({
   title: 'Pricing', slug: 'pricing',
-  seo: { metaTitle: 'Plans | Supertext integrations', metaDescription: 'Support and localization subscriptions for the Supertext plugins.' },
+  seo: { metaTitle: 'Plugin support and localization plans | Supertext', metaDescription: 'Support and localization subscriptions for the Supertext translation plugins: setup, update checks and answers for your platform. The plugins stay free.' },
   blocks: [
     {
       __component: 'blocks.hero', layout: 'centered', title: 'Choose the support that fits your platform',
@@ -143,6 +143,8 @@ const pricingPage = (planIds) => ({
       items: [
         { question: 'Do I need a subscription to use a plugin?', answer: 'No. All plugins are free and open source. You need a Supertext account and API key for the translations.' },
         { question: 'Can I cancel?', answer: 'Yes. Monthly plans end with the current month, annual plans with the current year. Manage your subscription in the customer portal.' },
+        { question: 'Which platforms does a subscription cover?', answer: 'One subscription covers one platform: choose it at checkout from the Supertext integrations. Running several platforms? [Talk to us](https://www.supertext.com/en/contact) about a plan for all of them.' },
+        { question: 'What happens to the plugin if I cancel?', answer: 'It keeps working. The plugins are free and open source; only the support and services of your plan end.' },
       ],
     },
     {

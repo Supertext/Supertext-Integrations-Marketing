@@ -1,6 +1,7 @@
 import { Suspense } from 'react';
 import CmsLink from './CmsLink';
 import LanguageSwitcher from './LanguageSwitcher';
+import { LANGUAGE_NAMES, LOCALES } from '@/lib/i18n';
 
 export default function Footer({ global, locale, t }) {
   return (
@@ -24,6 +25,12 @@ export default function Footer({ global, locale, t }) {
         </div>
         <div className="footer-bottom">
           <span>{global?.footerNote}</span>
+          {/* Plain links as well as the dropdown, so search engines find every language. */}
+          <nav className="footer-langs" aria-label={t.language}>
+            {LOCALES.map((code) => (
+              <a key={code} href={`/${code}`} lang={code} hrefLang={code} aria-current={code === locale ? 'true' : undefined}>{LANGUAGE_NAMES[code]}</a>
+            ))}
+          </nav>
           <span>© {new Date().getFullYear()} Supertext AG</span>
         </div>
       </div>

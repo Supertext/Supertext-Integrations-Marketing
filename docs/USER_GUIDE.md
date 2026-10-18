@@ -46,6 +46,8 @@ The site is in English, German, French and Italian. English is the source.
 1. Open the English entry and choose the target language in the language menu at the top right.
 2. In the **Supertext translation** panel, translate the entry. Check the result and publish it.
 
+The first German, French and Italian versions of all pages and integrations were made automatically with Supertext and published. Review them and correct what needs it; your changes are never overwritten. When you change the English text later, translate again with the panel.
+
 Not translated yet? Visitors see the English version of that page or integration. Names, categories, repositories, prices and Stripe IDs are shared by all languages and only edited in English.
 
 ## SDK page
@@ -65,7 +67,7 @@ The dark bar at the very top of every page, for short-lived news like the SDK la
 - *repo* is the GitHub repository (`Supertext/<name>`). It links the guides and brings in the latest version every night.
 - *screenshot*: the image on the integration's card and at the top of its page: a full-screen view of the system with Supertext in it. Where a plugin's repo has no full-screen view yet, the best screenshot from its guides stands in until one exists. Integrations listed in `cms/src/seed/screenshots.js` get one automatically from their plugin's repo; replace it any time in the admin (your upload is never overwritten). Without a screenshot, the card shows the initials instead.
 - *logo*: without one, the site shows the initials.
-- *blocks*: optional extra sections on the integration's page.
+- *blocks*: optional extra sections on the integration's page. Each integration starts with a *Questions about Supertext for …* block (requirements, what's translated, languages, cost), shown on the page and to search engines; edit or extend it freely.
 
 ![An integration page](images/integration.png)
 

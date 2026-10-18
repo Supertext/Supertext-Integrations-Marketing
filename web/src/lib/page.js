@@ -27,14 +27,25 @@ export async function pageMetadata(slug, locale) {
   };
 }
 
+/** Markdown answer → plain text for structured data (links keep their text, list items become sentences). */
+const plainText = (md = '') =>
+  md
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+    .replace(/[*_`]/g, '')
+    .split('\n')
+    .map((line) => line.replace(/^\s*[-*]\s+/, '').trim())
+    .filter(Boolean)
+    .map((line) => (/[.!?:]$/.test(line) ? line : `${line}.`))
+    .join(' ');
+
 /** FAQ blocks as schema.org FAQPage, so search and answer engines can quote them. */
-function faqJsonLd(blocks) {
+export function faqJsonLd(blocks) {
   const items = (blocks || []).filter((b) => b.__component === 'blocks.faq').flatMap((b) => b.items || []);
   if (!items.length) return null;
   return {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
-    mainEntity: items.map((i) => ({ '@type': 'Question', name: i.question, acceptedAnswer: { '@type': 'Answer', text: i.answer } })),
+    mainEntity: items.map((i) => ({ '@type': 'Question', name: i.question, acceptedAnswer: { '@type': 'Answer', text: plainText(i.answer) } })),
   };
 }
 

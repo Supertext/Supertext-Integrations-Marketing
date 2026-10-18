@@ -21,7 +21,7 @@ const sdkPage = {
   title: 'Supertext SDKs',
   slug: 'sdk',
   seo: {
-    metaTitle: 'Supertext SDKs and integration guide',
+    metaTitle: 'Translation API SDKs and integration guide | Supertext',
     metaDescription: 'Build your own Supertext integration: SDKs for TypeScript, PHP, Python, .NET and Java, and a guide built from 30+ plugins.',
   },
   blocks: [

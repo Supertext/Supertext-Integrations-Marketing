@@ -4,6 +4,7 @@ const integrations = require('./seed/integrations');
 const content = require('./seed/content');
 const { importScreenshots } = require('./screenshots');
 const { runContentUpdates } = require('./content-updates');
+const { translateSite } = require('./translate-site');
 
 const LOCALES = [
   { code: 'de', name: 'German (de)' },
@@ -165,7 +166,11 @@ module.exports = {
     await step('Content updates', () => runContentUpdates(strapi));
 
     // Screenshots come from GitHub; don't hold up the start for them.
-    importScreenshots(strapi).catch((e) => strapi.log.warn(`[setup] Screenshots: ${e.message}`));
+    // Then the first German, French and Italian versions (in the background, takes a while).
+    importScreenshots(strapi)
+      .catch((e) => strapi.log.warn(`[setup] Screenshots: ${e.message}`))
+      .then(() => translateSite(strapi))
+      .catch((e) => strapi.log.warn(`[translate] ${e.message}`));
 
     // First start: fetch the release info right away instead of waiting for the night.
     if ((await strapi.db.query('api::github-release.github-release').count()) === 0) {

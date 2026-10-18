@@ -148,6 +148,139 @@ async function updateGlobal(strapi, change) {
   return true;
 }
 
+
+// SEO pass (October 2026): titles, descriptions and H1s around how people search, with
+// Supertext in every title. Only values that are still the seed's are changed.
+const SEO_PAGES = {
+  home: {
+    'seo.metaTitle': ['Supertext integrations', 'AI translation plugins for CMS, PIM and shops | Supertext'],
+    'seo.metaDescription': [
+      'Supertext AI translation inside the CMS, PIM, shop and design tools you already use.',
+      'Supertext AI translation inside TYPO3, WordPress, Shopify, Strapi and 25+ other systems. Swiss quality, free plugins, optional support and localization.',
+    ],
+    hero: ['Translate where your content lives', 'AI translation where your content lives'],
+  },
+  integrations: {
+    'seo.metaTitle': ['Integrations | Supertext', 'Translation plugins for CMS, PIM and shops | Supertext'],
+    'seo.metaDescription': [
+      'All Supertext plugins for CMS, PIM, e-commerce, email marketing and design files.',
+      'All Supertext translation plugins: TYPO3, WordPress, Drupal, Shopify, Magento, Akeneo, HubSpot and more. Free and open source, translate in your system.',
+    ],
+    hero: ['All Supertext integrations', 'All Supertext translation plugins'],
+  },
+  pricing: {
+    'seo.metaTitle': ['Plans | Supertext integrations', 'Plugin support and localization plans | Supertext'],
+    'seo.metaDescription': [
+      'Support and localization subscriptions for the Supertext plugins.',
+      'Support and localization subscriptions for the Supertext translation plugins: setup, update checks and answers for your platform. The plugins stay free.',
+    ],
+    faq: [
+      {
+        question: 'Which platforms does a subscription cover?',
+        answer: 'One subscription covers one platform: choose it at checkout from the Supertext integrations. Running several platforms? [Talk to us](https://www.supertext.com/en/contact) about a plan for all of them.',
+      },
+      {
+        question: 'What happens to the plugin if I cancel?',
+        answer: 'It keeps working. The plugins are free and open source; only the support and services of your plan end.',
+      },
+    ],
+  },
+  sdk: {
+    'seo.metaTitle': ['Supertext SDKs and integration guide', 'Translation API SDKs and integration guide | Supertext'],
+  },
+};
+
+async function seoPages(strapi) {
+  for (const [slug, change] of Object.entries(SEO_PAGES)) {
+    const page = await strapi.documents(PAGE).findFirst({
+      locale: 'en',
+      status: 'draft',
+      filters: { slug },
+      populate: { seo: { populate: '*' }, blocks: blocksPopulate(strapi) },
+    });
+    if (!page) continue;
+    const published = await strapi.documents(PAGE).findOne({ documentId: page.documentId, locale: 'en', status: 'published', fields: ['updatedAt'] });
+    const edited = !published || new Date(page.updatedAt) - new Date(published.updatedAt) > 1000;
+    const seo = page.seo ? stripIds(mediaToIds(page.seo)) : {};
+    const blocks = stripIds(mediaToIds(page.blocks || []));
+    let changed = false;
+    for (const field of ['metaTitle', 'metaDescription']) {
+      const pair = change[`seo.${field}`];
+      if (pair && seo[field] === pair[0]) { seo[field] = pair[1]; changed = true; }
+    }
+    const hero = blocks.find((b) => b.__component === 'blocks.hero');
+    if (change.hero && hero?.title === change.hero[0]) { hero.title = change.hero[1]; changed = true; }
+    const faq = blocks.find((b) => b.__component === 'blocks.faq');
+    if (change.faq && faq) {
+      const known = new Set((faq.items || []).map((i) => i.question));
+      const add = change.faq.filter((i) => !known.has(i.question));
+      if (add.length) { faq.items = [...(faq.items || []), ...add]; changed = true; }
+    }
+    if (!changed) continue;
+    await strapi.documents(PAGE).update({ documentId: page.documentId, locale: 'en', data: { seo, blocks } });
+    if (!edited) await strapi.documents(PAGE).publish({ documentId: page.documentId, locale: 'en' });
+  }
+  return true;
+}
+
+/** Questions for an integration's page, built from its own fields. */
+function integrationFaq(item) {
+  const s = item.system;
+  const design = item.category === 'design';
+  const list = (item.features || []).map((f) => f.text.replace(/\.$/, '')).filter(Boolean);
+  const items = [];
+  const needs = [
+    item.supportedVersions && `${item.supportedVersions}.`,
+    item.integrationType && `Type of integration: ${item.integrationType.replace(/\.?$/, '.')}`,
+    design
+      ? 'No Supertext account is needed for the XLIFF export and import itself; send the file to Supertext or any translator or CAT tool.'
+      : 'You also need a Supertext account and an API key: generate it at [supertext.com → Integrations → API](https://www.supertext.com/en/integrations/api) (requires the Admin role).',
+  ].filter(Boolean);
+  items.push({ question: `What do I need to use Supertext with ${s}?`, answer: needs.join(' ') });
+  if (list.length) {
+    items.push({ question: `What does Supertext translate in ${s}?`, answer: list.map((f) => `- ${f}`).join('\n') });
+  }
+  items.push(
+    design
+      ? { question: 'Which languages are supported?', answer: 'Any language: the XLIFF 1.2 files work with every CAT tool and translator, and the import puts the translated text back with its formatting.' }
+      : {
+          question: 'Which languages are supported?',
+          answer: `All Supertext languages, with regional variants such as Swiss German (de-CH), French (fr-CH) and Italian (it-CH) and, where the language has one, formal or informal address. Editors review the result in ${s} before publishing.`,
+        }
+  );
+  items.push({
+    question: `Is the ${s} plugin free?`,
+    answer: [
+      `Yes. The plugin is free and open source${item.license ? ` (${item.license})` : ''}.`,
+      design ? '' : 'Translations are done with your Supertext account.',
+      'Support and localization services are available as [subscriptions](/en/pricing).',
+    ].filter(Boolean).join(' '),
+  });
+  return { __component: 'blocks.faq', title: `Questions about Supertext for ${s}`, items };
+}
+
+async function addIntegrationFaqs(strapi) {
+  const zone = strapi.contentType(INTEGRATION).attributes.blocks.components;
+  const items = await strapi.documents(INTEGRATION).findMany({
+    locale: 'en',
+    status: 'draft',
+    populate: { features: true, blocks: { on: Object.fromEntries(zone.map((uid) => [uid, { populate: '*' }])) } },
+    limit: 500,
+  });
+  let changed = 0;
+  for (const item of items) {
+    if ((item.blocks || []).some((b) => b.__component === 'blocks.faq')) continue;
+    const published = await strapi.documents(INTEGRATION).findOne({ documentId: item.documentId, locale: 'en', status: 'published', fields: ['updatedAt'] });
+    const edited = !published || new Date(item.updatedAt) - new Date(published.updatedAt) > 1000;
+    const blocks = [...stripIds(mediaToIds(item.blocks || [])), integrationFaq(item)];
+    await strapi.documents(INTEGRATION).update({ documentId: item.documentId, locale: 'en', data: { blocks } });
+    if (!edited) await strapi.documents(INTEGRATION).publish({ documentId: item.documentId, locale: 'en' });
+    changed++;
+  }
+  strapi.log.info(`[setup] Added questions to ${changed} integrations`);
+  return true;
+}
+
 const UPDATES = [
   {
     id: '2026-10-sdk-announcement',
@@ -164,6 +297,8 @@ const UPDATES = [
   { id: '2026-10-sdk-page', run: (strapi) => addSdkPage(strapi) },
   { id: '2026-10-integration-details', run: (strapi) => addIntegrationDetails(strapi) },
   { id: '2026-10-hubspot-cms', run: (strapi) => addHubSpot(strapi) },
+  { id: '2026-10-seo-pages', run: (strapi) => seoPages(strapi) },
+  { id: '2026-10-integration-faq', run: (strapi) => addIntegrationFaqs(strapi) },
 ];
 
 async function runContentUpdates(strapi) {
@@ -183,4 +318,4 @@ async function runContentUpdates(strapi) {
   }
 }
 
-module.exports = { runContentUpdates };
+module.exports = { runContentUpdates, integrationFaq };

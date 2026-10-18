@@ -7,6 +7,22 @@ import SectionHead from './SectionHead';
 
 const CATEGORIES = ['cms', 'pim', 'ecommerce', 'email', 'design'];
 
+function SdkCard({ locale, t }) {
+  return (
+    <Link href={`/${locale}/sdk`} className="tile integration sdk-card">
+      <div className="shot sdk-shot" aria-hidden="true">
+        <code>
+          <span>import</span> {'{ SupertextClient }'} <span>from</span> &apos;supertext-sdk&apos;{'\n\n'}
+          <span>await</span> client.translateTexts(texts, &apos;de-CH&apos;)
+        </code>
+      </div>
+      <h3>{t.sdkCardTitle}</h3>
+      <p>{t.sdkCardText}</p>
+      <div className="integration-meta"><span className="tag version">{t.sdkCardCta} →</span></div>
+    </Link>
+  );
+}
+
 export default function IntegrationGrid({ block, integrations, locale, t, initialCategory }) {
   const fixed = block.category && block.category !== 'all' ? block.category : null;
   const [category, setCategory] = useState(
@@ -42,20 +58,20 @@ export default function IntegrationGrid({ block, integrations, locale, t, initia
           </div>
         )}
         {shown.length ? (
-          <div className="integrations">
-            {shown.map((item) => <IntegrationCard key={item.slug} item={item} locale={locale} t={t} />)}
-            <Link href={`/${locale}/sdk`} className="tile integration sdk-card">
-              <div className="shot sdk-shot" aria-hidden="true">
-                <code>
-                  <span>import</span> {'{ SupertextClient }'} <span>from</span> &apos;supertext-sdk&apos;{'\n\n'}
-                  <span>await</span> client.translateTexts(texts, &apos;de-CH&apos;)
-                </code>
+          // "All": one group per category with its own heading (h2 when the section has no title).
+          (category === 'all' ? CATEGORIES.filter((c) => counts[c]) : [category]).map((c, index, list) => {
+            const items = shown.filter((i) => i.category === c);
+            const Heading = block.title ? 'h3' : 'h2';
+            return (
+              <div key={c} className="integration-group">
+                {category === 'all' && <Heading className="group-title">{t[`category_${c}`]}</Heading>}
+                <div className="integrations">
+                  {items.map((item) => <IntegrationCard key={item.slug} item={item} locale={locale} t={t} />)}
+                  {index === list.length - 1 && <SdkCard locale={locale} t={t} />}
+                </div>
               </div>
-              <h3>{t.sdkCardTitle}</h3>
-              <p>{t.sdkCardText}</p>
-              <div className="integration-meta"><span className="tag version">{t.sdkCardCta} →</span></div>
-            </Link>
-          </div>
+            );
+          })
         ) : (
           <p className="empty">{t.noResults}</p>
         )}

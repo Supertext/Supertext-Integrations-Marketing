@@ -62,3 +62,17 @@ export function JsonLd({ data }) {
     />
   );
 }
+
+/**
+ * Meta description from parts ("summary", "versions"): sentences joined until about 155
+ * characters, cut at a word boundary, with `tail` (a short call to action) added when
+ * the text would otherwise be short.
+ */
+export function metaDescription(parts, tail = '', max = 155) {
+  const sentences = parts.filter(Boolean).map((p) => p.trim().replace(/[.\s]+$/, '') + '.');
+  let text = sentences[0] || '';
+  for (const next of sentences.slice(1)) if (`${text} ${next}`.length <= max) text = `${text} ${next}`;
+  if (tail && text.length < 120 && `${text} ${tail}`.length <= max) text = `${text} ${tail}`;
+  if (text.length > max) text = `${text.slice(0, max - 1).replace(/\s+\S*$/, '').replace(/[,;:·\s]+$/, '')}…`;
+  return text;
+}
