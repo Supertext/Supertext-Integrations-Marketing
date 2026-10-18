@@ -16,7 +16,9 @@ export async function generateMetadata({ params }) {
   if (!item?.fileExport) return {};
   const t = strings(locale);
   const xliffOnly = !/html/i.test(item.fileFormats || '');
-  const title = format(t, xliffOnly ? 'filesMetaTitleXliff' : 'filesMetaTitle', { system: item.system });
+  const full = format(t, xliffOnly ? 'filesMetaTitleXliff' : 'filesMetaTitle', { system: item.system });
+  // Search results cut titles at about 60 characters; long ones drop the brand suffix instead.
+  const title = full.length > 60 ? full.replace(/\s*\|\s*Supertext$/, '') : full;
   const description = metaDescription([item.fileIntro]);
   const alt = alternates(locale, `/integrations/${slug}/files`, await translatedLocales('/integrations', slug));
   return {
