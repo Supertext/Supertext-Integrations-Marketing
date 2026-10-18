@@ -138,6 +138,13 @@ export default async function IntegrationPage({ params }) {
                 <Markdown locale={locale}>{item.aboutSystem}</Markdown>
               </section>
             )}
+            {item.fileExport && (
+              <section className="card detail-section">
+                <h2>{t.filesTeaserTitle}</h2>
+                <p>{format(t, 'filesTeaserText', { formats: localizeVersions(item.fileFormats, locale) })}</p>
+                <p><Link href={`/${locale}/integrations/${slug}/files`} className="btn btn-text">{/html/i.test(item.fileFormats || '') ? t.filesTeaserLink : t.filesTeaserLinkXliff} →</Link></p>
+              </section>
+            )}
             {item.builtInTranslation && (
               <section className="card detail-section">
                 <h2>{t.comparedWithBuiltIn}</h2>

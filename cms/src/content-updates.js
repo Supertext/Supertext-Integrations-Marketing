@@ -377,6 +377,45 @@ async function addSupportLinks(strapi) {
   return true;
 }
 
+/**
+ * XLIFF and HTML export (October 2026): the fields behind /integrations/<slug>/files, in English
+ * and, where the language version exists, its reviewed translation. Only empty fields are filled.
+ */
+async function addFileExchange(strapi) {
+  const FILES = require('./seed/file-exchange.json');
+  const SHARED = ['fileFormats', 'fileReleased', 'fileDocs'];
+  const TEXTS = ['fileIntro', 'fileExport', 'fileImport', 'fileKeeps', 'fileLimits'];
+  const items = await strapi.documents(INTEGRATION).findMany({ locale: 'en', status: 'draft', fields: ['slug', 'updatedAt', ...SHARED, ...TEXTS], limit: 500 });
+  for (const item of items) {
+    const f = FILES[item.slug];
+    if (!f) continue;
+    const data = {};
+    for (const key of [...SHARED, ...TEXTS]) if ((item[key] === null || item[key] === undefined || item[key] === '') && f[key] !== undefined) data[key] = f[key];
+    const published = await strapi.documents(INTEGRATION).findOne({ documentId: item.documentId, locale: 'en', status: 'published', fields: ['updatedAt'] });
+    if (Object.keys(data).length) {
+      const edited = !published || new Date(item.updatedAt) - new Date(published.updatedAt) > 1000;
+      await strapi.documents(INTEGRATION).update({ documentId: item.documentId, locale: 'en', data });
+      if (!edited) await strapi.documents(INTEGRATION).publish({ documentId: item.documentId, locale: 'en' });
+    }
+    for (const locale of ['de', 'fr', 'it']) {
+      const dict = translationsFor(locale);
+      const version = await strapi.documents(INTEGRATION).findOne({ documentId: item.documentId, locale, status: 'draft', fields: ['updatedAt', ...TEXTS] });
+      if (!version) continue;
+      const local = {};
+      for (const key of TEXTS) {
+        const english = item[key] || f[key];
+        if (!version[key] && english && dict[english]) local[key] = dict[english];
+      }
+      if (!Object.keys(local).length) continue;
+      const live = await strapi.documents(INTEGRATION).findOne({ documentId: item.documentId, locale, status: 'published', fields: ['updatedAt'] });
+      const edited = live && new Date(version.updatedAt) - new Date(live.updatedAt) > 1000;
+      await strapi.documents(INTEGRATION).update({ documentId: item.documentId, locale, data: local });
+      if (live && !edited) await strapi.documents(INTEGRATION).publish({ documentId: item.documentId, locale });
+    }
+  }
+  return true;
+}
+
 const UPDATES = [
   {
     id: '2026-10-sdk-announcement',
@@ -397,6 +436,7 @@ const UPDATES = [
   { id: '2026-10-integration-faq', run: (strapi) => addIntegrationFaqs(strapi) },
   { id: '2026-10-comparisons', run: (strapi) => addComparisons(strapi) },
   { id: '2026-10-support-links', run: (strapi) => addSupportLinks(strapi) },
+  { id: '2026-10-file-exchange', run: (strapi) => addFileExchange(strapi) },
 ];
 
 async function runContentUpdates(strapi) {

@@ -39,7 +39,12 @@ export async function GET() {
     if (!items.length) continue;
     lines.push(`## ${label}`);
     for (const i of items) {
-      const facts = [i.summary, i.supportedVersions && `Supports ${i.supportedVersions}`, i.stage === 'in_development' && 'In development']
+      const facts = [
+        i.summary,
+        i.supportedVersions && `Supports ${i.supportedVersions}`,
+        i.fileFormats && `${i.fileFormats} export and import for your own CAT tool or agency: ${SITE_URL}/en/integrations/${i.slug}/files`,
+        i.stage === 'in_development' && 'In development',
+      ]
         .filter(Boolean)
         .join('. ');
       lines.push(`- [${i.system}](${SITE_URL}/en/integrations/${i.slug}): ${facts}`);

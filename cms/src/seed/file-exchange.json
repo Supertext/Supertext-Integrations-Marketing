@@ -1,0 +1,302 @@
+{
+ "adobe-illustrator": {
+  "fileFormats": "XLIFF 1.2",
+  "fileReleased": true,
+  "fileDocs": "docs/user-guide.md#step-1-export",
+  "fileIntro": "Export the text of an Illustrator document as XLIFF, translate it with your agency or CAT tool, and import the translations back as a translated copy per language.",
+  "fileExport": "1. Open the source document and choose *File › Scripts › Translation Export*.\n2. Set the *Source language* and the *Target languages* (comma-separated codes); tick *Include hidden text* if needed.\n3. You get one XLIFF file per language next to the .ai file (e.g. Brochure_fr-CH.xlf), with point text, area text and text on a path from all artboards and the pasteboard.",
+  "fileImport": "Open the original document, choose *File › Scripts › Translation Import* and select one or more translated .xlf files. By default you get a translated copy per language (e.g. Brochure_fr-CH.ai) and the original stays unchanged; with a single file you can also *Apply to the open document*. Frames whose text changed since the export are skipped, and a report per language lists translated, untranslated and skipped frames as well as overset text.",
+  "fileKeeps": "Bold, colour, size and forced line breaks travel as tags, and each text comes with context notes (artboard, layer, font, size) for the translator. On import, character and paragraph formatting is restored and the original font is kept.",
+  "fileLimits": "- Not exported: text converted to outlines, text inside symbols, linked or placed files, raster images and text in graphs.\n- XLIFF 1.2 only, one document per export.\n- Don't edit the source text between export and import.\n- Right-to-left languages need manual layout work."
+ },
+ "adobe-indesign": {
+  "fileFormats": "XLIFF 1.2",
+  "fileReleased": true,
+  "fileDocs": "docs/user-guide.md#step-1-export",
+  "fileIntro": "Export the stories of an InDesign document, including text frames, tables, footnotes and text on paths, as XLIFF, translate them with your agency or CAT tool, and import them back as a translated copy per language.",
+  "fileExport": "1. Open *Window › Utilities › Scripts* and double-click *Translation Export.jsx*.\n2. Set the *Source language* and *Target languages*; *Include text on parent pages* is on by default, *Include hidden text* is optional.\n3. You get one XLIFF file per language with every story on all pages, parent pages and the pasteboard; each table cell and footnote forms its own group.",
+  "fileImport": "Double-click *Translation Import.jsx* and select one or more translated .xlf files. By default you get a translated copy per language (e.g. Brochure_fr-CH.indd); with a single file you can *Apply to the open document* and undo it in one *Edit › Undo* step. Stories changed since the export are skipped, paragraphs with missing or reordered object tags keep the source text, and both are reported along with overset text.",
+  "fileKeeps": "Character styles and formatting travel as tags; inline images, page numbers, footnote references, tables, line breaks and tabs as placeholders. Paragraph styles and overrides stay, because only the text inside the paragraphs is replaced.",
+  "fileLimits": "- Not covered: text converted to outlines, text inside placed files (PDF, AI, images) and nested tables; hidden conditional text isn't exported.\n- XLIFF 1.2 only, one document per export (no book export).\n- Translated copies keep the source document's language settings: set the paragraph style language in each copy.\n- Right-to-left languages need manual layout work."
+ },
+ "akeneo-pim": {
+  "fileFormats": "XLIFF 1.2 and HTML",
+  "fileReleased": false,
+  "fileDocs": "docs/USER_GUIDE.md#translate-with-a-file-xliff-or-html",
+  "fileIntro": "Export the texts of a product or product model from Akeneo PIM as XLIFF or HTML, translate them with your agency or CAT tool, and import the translations back into the target locales.",
+  "fileExport": "In the product or product model edit form, open *… → Export for translation*. Choose the language to *translate from*, the *File format* and the target locales, then click *Download file*. XLIFF holds several locales in one file, HTML one language per file; the file contains the same values that *Translate with Supertext* sends when overwriting.",
+  "fileImport": "Open *… → Import translation* on any product and choose the translated file. Texts are saved like a Supertext translation, with Akeneo's validation and an entry in the History tab; values that already have their own text are kept unless you tick *Overwrite existing translations*. Translations that break, remove or add formatting aren't imported, texts whose source changed are only imported with *Also import texts whose source changed since the export*, and you get a summary per product and locale.",
+  "fileKeeps": "Rich text is exported as HTML and plain text as text; in XLIFF, formatting travels as protected tags that translators can move but not break. In HTML files, leave the header (*supertext:* lines) and the `data-st-id` attributes unchanged.",
+  "fileLimits": "- You need the same permission as for translating.\n- Files up to 10 MB.\n- Values added after the export are reported as *Not in the file*.\n- HTML files can't mark a text as untranslated: if you import a text unchanged, the source text is written into the target language."
+ },
+ "apostrophecms": {
+  "fileFormats": "XLIFF 1.2 and HTML",
+  "fileReleased": false,
+  "fileDocs": "docs/USER_GUIDE.md#translate-with-a-file-xliff-or-html",
+  "fileIntro": "Export pages and pieces from ApostropheCMS as XLIFF or HTML, translate them with your agency or CAT tool, and import the translations as drafts in the target locales.",
+  "fileExport": "Open the document in its source language and save it, then choose *Export for translation* in the *More Options* menu (⋮), next to *Localize…*. Choose the *File format*, tick the *Target languages* and click *Download file*. An XLIFF file can hold several languages; an HTML file holds exactly one.",
+  "fileImport": "Choose *Import translation* in the *More Options* menu of any page or piece and upload the file (up to 10 MB). It's saved like *Localize…*: as a draft in the target locale, and a new localization gets a translated URL. Untranslated texts keep the source text; translations that break, remove or add formatting aren't imported.",
+  "fileKeeps": "Bold, links and other formatting travels as protected tags that translators can move but not break; structure and formatting are taken from the current source. In HTML files, leave the header (*supertext:* lines) and the `data-st-id` attributes unchanged.",
+  "fileLimits": "- A document that already exists in the target locale is left alone unless you tick *Replace the draft where the document already exists in the target locale*.\n- You need edit permission.\n- Reverse proxies must allow 10 MB uploads to the import endpoint.\n- HTML files can't mark a text as untranslated: if you import a text unchanged, the source text is written into the target language."
+ },
+ "atropim": {
+  "fileFormats": "XLIFF 1.2 and HTML",
+  "fileReleased": false,
+  "fileDocs": "docs/USER_GUIDE.md#export-for-translation-and-import-the-translated-file",
+  "fileIntro": "Export products and other records from AtroPIM as XLIFF or HTML, translate them with your agency or CAT tool, and import the translations back into the target languages.",
+  "fileExport": "An administrator first adds the *Export for translation* and *Import translation* actions and sets their source and target languages and *File format*. Editors then click *Export for translation* on a product or other record and download the file (e.g. atropim-product-<id>-<language>.xlf); one XLIFF file can hold several languages. Export also works as the console command `supertext export` and via REST (`GET /api/supertext/export`).",
+  "fileImport": "*Import translation* (on a record or in the list) opens an upload page in a new tab, where you choose the *Translated file (XLIFF or HTML)*. Texts are saved in the target language like a Supertext translation, with record history and AtroPIM's field rules; fields translated since the export are kept unless you tick *Overwrite existing translations*. Translations that break, remove or add formatting aren't imported; you can also import with `supertext import` or `POST /api/supertext/import`.",
+  "fileKeeps": "In XLIFF, formatting travels as protected tags that translators can move but not break. In HTML files, leave the header (*supertext:* lines) and the `data-st-id` attributes unchanged.",
+  "fileLimits": "- An administrator sets up the actions (without *Execute in background*), and your browser must allow pop-ups.\n- PHP upload limits must be raised to allow 10 MB files.\n- Nothing is saved for a record with an error.\n- HTML files can't mark a text as untranslated: if you import a text unchanged, the source text is written into the target language."
+ },
+ "contao": {
+  "fileFormats": "XLIFF 1.2 and HTML",
+  "fileReleased": false,
+  "fileDocs": "docs/USER_GUIDE.md#translate-with-a-file-xliff-or-html",
+  "fileIntro": "Export a Contao page with its articles and content elements as XLIFF or HTML, translate it with your agency or CAT tool, and import the translation into the page's language version.",
+  "fileExport": "Open the page's *Translate with Supertext* screen (translate icon in the site structure) and go to *Export for translation*. Choose the *File format*, tick the target languages and click *Download file*. XLIFF can hold several languages in one file (contao-<page id>.xlf); HTML holds exactly one.",
+  "fileImport": "Under *Import translation* on any page's translate screen, upload the *Translated file (XLIFF or HTML)* (up to 10 MB). It's written like a Supertext translation: new pages stay unpublished, existing ones are updated with version history, and texts that aren't imported keep their current translation. Translations that break, remove or add formatting aren't imported; tick *Also import texts whose source changed since the export* to include texts whose source changed.",
+  "fileKeeps": "Formatting, links and insert tags travel as protected tags that translators can move but not break. In HTML files, leave the header (*supertext:* lines) and the `data-st-id` attributes unchanged.",
+  "fileLimits": "- Subpages aren't included: export them one by one. A website root has no texts of its own.\n- You need edit rights on the target language.\n- HTML files can't mark a text as untranslated: if you import a text unchanged, the source text is written into the target language."
+ },
+ "coreldraw": {
+  "fileFormats": "XLIFF 1.2",
+  "fileReleased": true,
+  "fileDocs": "docs/user-guide.md#step-1-export",
+  "fileIntro": "Export the artistic and paragraph text of a CorelDRAW document as XLIFF, translate it with your agency or CAT tool, and import the translations back as a translated copy or into the open document.",
+  "fileExport": "1. Run the *TranslationExport* macro from the Scripts docker (*Tools › Scripts › Scripts*), a toolbar button or Alt+F8.\n2. Answer the questions: source language, target languages and *Include text on hidden layers?*.\n3. You get one .xlf file per language next to the .cdr file, with text from all pages, master layers and the desktop, including groups, PowerClips and text on a path. The document is saved to keep the text IDs.",
+  "fileImport": "Run *TranslationImport* and select a translated .xlf file; other XLIFF files for the same document in that folder can be imported too. With one file, *Yes* creates a translated copy (e.g. Poster_fr-CH.cdr) and *No* writes into the open document as one undo step; with several files you always get a copy per language. Changed text objects are skipped, texts with missing or reordered object tags keep the source text, and overflowing frames are reported.",
+  "fileKeeps": "Formatting travels as tags; embedded objects, line breaks and tabs as placeholders. On import, the original character formatting is copied onto the translated words and the original font is kept.",
+  "fileLimits": "- Not exported: text converted to curves, text in symbols, bitmaps and placed or linked files (PDF, AI, images).\n- Windows only (CorelDRAW for Mac has no VBA).\n- XLIFF 1.2 only.\n- Don't edit the source text between export and import."
+ },
+ "craft-cms": {
+  "fileFormats": "XLIFF 1.2 and HTML",
+  "fileReleased": false,
+  "fileDocs": "docs/USER_GUIDE.md#translate-with-a-file-xliff-or-html",
+  "fileIntro": "Export Craft CMS entries, with title, slug, plain text and rich text fields and Matrix entries, as XLIFF or HTML, translate them with your agency or CAT tool, and import the translations into the target sites.",
+  "fileExport": "Open the entry in the source site and save it, then open *Export for translation* in the Supertext box in the sidebar. Choose the *File format*, tick the sites under *Into* and click *Download file*. XLIFF holds several sites in one file (craft-<entry id>.xlf); HTML holds one.",
+  "fileImport": "Use *Import translation* in the Supertext box of any entry and upload the file (up to 10 MB). The translation is saved as a new revision of the entry in the target site; a site with its own text is skipped unless you tick *Overwrite existing translations*. Translations that break, remove or add formatting aren't imported.",
+  "fileKeeps": "Bold text, links and other formatting travels as protected tags that translators can move but not break. In HTML files, leave the header (*supertext:* lines) and the `data-st-id` attributes unchanged.",
+  "fileLimits": "- You need permission to save the entry in the target site.\n- HTML files can't mark a text as untranslated: if you import a text unchanged, the source text is written into the target language."
+ },
+ "directus": {
+  "fileFormats": "XLIFF 1.2 and HTML",
+  "fileReleased": false,
+  "fileDocs": "docs/USER_GUIDE.md#translate-with-a-file-xliff-or-html",
+  "fileIntro": "Export the translatable fields of a Directus item as XLIFF or HTML, translate them with your agency or CAT tool, and import the translations back into the item's *Translations* field.",
+  "fileExport": "Save the item, then click *Export for translation* in the *Translate with Supertext* box on the item form. Pick the *From* language, the *File format* and the *Target languages*, then click *Download file*. Several languages fit into one XLIFF file (directus-<item id>.xlf).",
+  "fileImport": "Click *Import translation* on the same item and upload the file (up to 10 MB). The translations are put into the form (Directus asks before replacing a language that already has text), and nothing is saved until you review them in the *Translations* field and click *Save*. Translations that break, remove or add formatting aren't imported.",
+  "fileKeeps": "Bold, links and other formatting travels as protected tags that translators can move but not break; in HTML files, leave the header (*supertext:* lines) and the `data-st-id` attributes unchanged. A field with only some paragraphs translated keeps the source text in the others.",
+  "fileLimits": "- Import the file in the form of the item it was exported from.\n- HTML files can't mark a text as untranslated: if you import a text unchanged, the source text is written into the target language."
+ },
+ "django-cms": {
+  "fileFormats": "XLIFF 1.2 and HTML",
+  "fileReleased": false,
+  "fileDocs": "docs/USER_GUIDE.md#export-for-translation-and-import-translated-files",
+  "fileIntro": "Export a django CMS page as XLIFF or HTML, translate it with your agency or CAT tool, and import the translation as a new language version of the page.",
+  "fileExport": "Open the *Translate with Supertext* dialog from the toolbar (*Language* → *Translate with Supertext…*). At the bottom, choose *From*, the *File format* and the languages *Into*, then click *Download file*. An HTML file holds exactly one language.",
+  "fileImport": "Under *Import translation* in the dialog of any page, upload the file (up to 10 MB). The language is created like a translation through the API, with page fields, slug and copies of the source's plugins (as a draft if you use djangocms-versioning); untranslated texts keep the source text. Translations that break, remove or add formatting aren't imported.",
+  "fileKeeps": "In XLIFF, formatting travels as protected tags that translators can move but not break. In HTML files, leave the header (*supertext:* lines) and the `data-st-id` attributes unchanged.",
+  "fileLimits": "- An existing language is only replaced if you tick *Overwrite existing translations* (with djangocms-versioning, only as a draft).\n- HTML files can't mark a text as untranslated: if you import a text unchanged, the source text is written into the target language."
+ },
+ "ghost": {
+  "fileFormats": "XLIFF 1.2 and HTML",
+  "fileReleased": false,
+  "fileDocs": "docs/USER_GUIDE.md#translate-with-a-file-xliff-or-html",
+  "fileIntro": "Export Ghost posts and pages as XLIFF or HTML, translate them with your agency or CAT tool, and import each translation as a new draft linked to the original.",
+  "fileExport": "Open the connector's *Translation files* page (`/ghost/supertext/files`, linked from the status page). Under *Export for translation*, choose the *Post or page*, the *File format* and the *Target languages*, then click *Download file*. XLIFF can hold several languages in one file; HTML holds exactly one.",
+  "fileImport": "Under *Import translation*, upload the file (up to 10 MB). It's saved like a tag translation: as a new draft with the `#lang-…` tag, linked to the original (or into the existing draft if nobody edited it), and listed under *Recent translations*. Translations that break, remove or add formatting aren't imported.",
+  "fileKeeps": "Formatting and links travel as protected tags that translators can move but not break. In HTML files, leave the header (*supertext:* lines) and the `data-st-id` attributes unchanged.",
+  "fileLimits": "- Available to Owners, Administrators and Editors, not to Authors or Contributors.\n- The *Translation files* page is only available with setup A of the installation.\n- Edited or published translations are only replaced if you tick *Also replace translations that were edited or published*.\n- HTML files can't mark a text as untranslated: if you import a text unchanged, the source text is written into the target language."
+ },
+ "grav": {
+  "fileFormats": "XLIFF 1.2 and HTML",
+  "fileReleased": false,
+  "fileDocs": "docs/USER_GUIDE.md#translate-with-a-file-xliff-or-html",
+  "fileIntro": "Export Grav pages, with their content, title, menu label and meta description, as XLIFF or HTML, translate them with your agency or CAT tool, and import them back as the page's language files.",
+  "fileExport": "Open the page in the source language in the Admin2 page editor and choose *Export for translation* in the Supertext panel. Choose the *File format*, tick the languages and click *Download file* (e.g. grav-blog-hello-de.xlf). Several languages fit into one XLIFF file; HTML holds one.",
+  "fileImport": "Use *Import translation* in the Supertext panel of any page and upload the file (up to 10 MB). The translation is written as the page's language file; new ones stay unpublished. Translations edited by hand or not made with Supertext are only replaced if you tick *Replace translations edited by hand or not made with Supertext*; translations that break, remove or add formatting aren't imported.",
+  "fileKeeps": "Bold text, links and code travel as protected tags that translators can move but not break. In HTML files, leave the header (*supertext:* lines) and the `data-st-id` attributes unchanged.",
+  "fileLimits": "- Grav keeps one file per language, so texts that aren't imported are written in the source language.\n- A page that was moved (its route changed) counts as no longer existing.\n- HTML files can't mark a text as untranslated: if you import a text unchanged, the source text is written into the target language."
+ },
+ "hubspot": {
+  "fileFormats": "XLIFF 1.2 and HTML",
+  "fileReleased": false,
+  "fileDocs": "docs/USER_GUIDE.md#export-for-translation-and-import-a-translated-file",
+  "fileIntro": "Export HubSpot pages, blog posts, emails and articles as XLIFF or HTML, translate them with your agency or CAT tool, and import the translations as draft language versions.",
+  "fileExport": "On the app's *Translate* page, choose the item and tick the languages. Under *3. Or: Export for translation*, choose the *File format* and click *Download file*. XLIFF can hold several languages in one file (hubspot-<item ID>.xlf); HTML holds exactly one.",
+  "fileImport": "Open the *Import translation* page in the top bar and upload the file (up to 10 MB). Language versions are written as drafts like a Supertext translation, and the summary links to each draft; an existing version's draft is only replaced if you tick *Update existing versions*. Translations with changed formatting or a lost personalization token aren't imported.",
+  "fileKeeps": "Personalization tokens and formatting travel as protected tags in XLIFF; in HTML, tokens are empty `<span data-hs=\"…\">` placeholders that must stay. In HTML files, leave the header (*supertext:* lines) and the `data-st-id` attributes unchanged.",
+  "fileLimits": "- Files can only be imported into the HubSpot account they came from, and only for the languages chosen under Settings.\n- Nothing is written when no text could be imported.\n- HTML files can't mark a text as untranslated: if you import a text unchanged, the source text is written into the target language."
+ },
+ "joomla": {
+  "fileFormats": "XLIFF 1.2 and HTML",
+  "fileReleased": false,
+  "fileDocs": "docs/USER_GUIDE.md#export-for-translation-and-import-the-translated-file",
+  "fileIntro": "Export a Joomla article as XLIFF or HTML, translate it with your agency or CAT tool, and import the translation as a linked article in the target language.",
+  "fileExport": "Select one article in the Articles list (or open it in the editor), click *Supertext* and switch to the *Export for translation* tab. Choose the *File format*, tick the languages and click *Download file* (e.g. joomla-2-fr-FR.xlf, or joomla-2.xlf for several languages). An HTML file holds exactly one language.",
+  "fileImport": "In the *Import translation* tab of the Supertext dialog on any article, upload the file (up to 10 MB). It's saved as a linked article in that language, unpublished by default. Existing translations are skipped (*already translated, skipped*) unless you tick *Overwrite existing translations*, and then keep texts the file doesn't contain; translations that break, remove or add formatting aren't imported.",
+  "fileKeeps": "Bold, links, lists and other formatting travels as protected tags that translators can move but not break. In HTML files, leave the header (*supertext:* lines) and the `data-st-id` attributes unchanged.",
+  "fileLimits": "- Exactly one article per export.\n- PHP upload limits must allow 10 MB files.\n- HTML files can't mark a text as untranslated: if you import a text unchanged, the source text is written into the target language."
+ },
+ "magento": {
+  "fileFormats": "XLIFF 1.2 and HTML",
+  "fileReleased": false,
+  "fileDocs": "docs/USER_GUIDE.md#export-for-translation-and-import-the-translated-file",
+  "fileIntro": "Export Magento products, categories, CMS pages and blocks as XLIFF or HTML, translate them with your agency or CAT tool, and import the translations into your store views.",
+  "fileExport": "Open *Translate with Supertext* from the grid's *Actions* or an edit page and tick the store views. At the bottom, under *Export for translation*, choose the *File format* and click *Download file* (e.g. magento-product-42-store-2.xlf). One XLIFF file holds all selected items and store views; an HTML file holds one item in one store view.",
+  "fileImport": "Under *Import translation* on the *Translate with Supertext* page, upload the file. It's saved like a Supertext translation: as store-view values for products and categories (URL key included) and as a copy per store view for pages and blocks, with a summary and an *Open* link per item and store view. Translations that break, remove or add formatting aren't imported, and nothing is saved for an item with an error.",
+  "fileKeeps": "In XLIFF, formatting travels as protected tags that translators can move but not break. In HTML files, leave the header (*supertext:* lines) and the `data-st-id` attributes unchanged. Leave `{{…}}` directives as they are.",
+  "fileLimits": "- Fields already translated in a store view are left out of the export and kept on import unless you tick *Overwrite existing translations*.\n- PHP upload limits must allow 10 MB files.\n- HTML files can't mark a text as untranslated: if you import a text unchanged, the source text is written into the target language."
+ },
+ "magnolia": {
+  "fileFormats": "XLIFF 1.2 and HTML",
+  "fileReleased": false,
+  "fileDocs": "docs/USER_GUIDE.md#export-for-translation-and-import-a-translated-file",
+  "fileIntro": "Export a Magnolia page with its components as XLIFF or HTML, translate it with your agency or CAT tool, and import the translation into the page's language.",
+  "fileExport": "In the Pages app (page list or page editor), choose the *Export for translation* action next to *Translate with Supertext*. Choose the *File format*, tick the *Target languages* and click *Download file*; the download opens in a new tab (e.g. magnolia-<page id>-de_CH.xlf). The file holds the page's own texts and components in the site's main language; HTML holds one language.",
+  "fileImport": "Choose the *Import translation* action on any page and select the file (up to 10 MB). The texts are written into the page's language like a Supertext translation, so review them there before publishing. Existing translations are kept unless you tick *Overwrite existing translations*; translations that break, remove or add formatting aren't imported.",
+  "fileKeeps": "In XLIFF, formatting travels as protected tags that translators can move but not break. In HTML files, leave the header (*supertext:* lines) and the `data-st-id` attributes unchanged.",
+  "fileLimits": "- Subpages aren't included.\n- HTML files can't mark a text as untranslated: if you import a text unchanged, the source text is written into the target language."
+ },
+ "mailchimp": {
+  "fileFormats": "XLIFF 1.2 and HTML",
+  "fileReleased": false,
+  "fileDocs": "docs/USER_GUIDE.md#translation-files-export-for-translation-import-translation",
+  "fileIntro": "Export a Mailchimp campaign, with subject line, preview text and the email's texts, as XLIFF or HTML, translate it with your agency or CAT tool, and import each language as a draft next to the original.",
+  "fileExport": "On the app's *Translate* page, choose the campaign. Under *Export for translation* (below the translate button), choose the *File format* and the target languages, then click *Download file*. XLIFF holds several languages in one file (mailchimp-<campaign ID>.xlf); HTML holds one.",
+  "fileImport": "Under *Import translation*, upload the file (up to 10 MB). Each language becomes a draft next to the original with its language segment, just like with Supertext AI; untranslated texts keep the original wording, and the summary links to each draft. Existing drafts are only updated if you tick *Update existing drafts*, and texts with changed formatting or a lost merge tag are refused.",
+  "fileKeeps": "Formatting, links and merge tags travel as protected tags in XLIFF; in HTML, merge tags are empty `<span data-mc=\"…\">` elements that must stay. In HTML files, leave the header (*supertext:* lines) and the `data-st-id` attributes unchanged.",
+  "fileLimits": "- Export needs *Start translations from → The Supertext app* enabled in the settings; import works either way.\n- HTML files can't mark a text as untranslated: if you import a text unchanged, the source text is written into the target language."
+ },
+ "neos": {
+  "fileFormats": "XLIFF 1.2 and HTML",
+  "fileReleased": false,
+  "fileDocs": "docs/USER_GUIDE.md#translation-files-export-and-import-xliff-or-html",
+  "fileIntro": "Export a Neos page with its content elements as XLIFF or HTML, translate it with your agency or CAT tool, and import the translation into the page's language version.",
+  "fileExport": "Export runs on the command line: `./flow supertext:export <page node id> <language>…` writes the page and its content elements to a file such as neos-<node id>-fr.xlf. Several languages fit into one XLIFF file; add `--format=html` for HTML, one language per file.",
+  "fileImport": "Run `./flow supertext:import <file> --workspace=user-<name>` to write the translations into the page's language version, which is created first if missing (like *Create and copy*). Without `--workspace`, the import goes to `live` and is published immediately. Add `--include-changed` to also import texts whose source changed; translations that break, remove or add formatting aren't imported.",
+  "fileKeeps": "Bold, links and other formatting travels as protected tags that translators can move but not break. In HTML files, leave the header (*supertext:* lines) and the `data-st-id` attributes unchanged.",
+  "fileLimits": "- No Neos UI: you need administrator or server access.\n- The command line runs without Neos authorization checks.\n- HTML files can't mark a text as untranslated: if you import a text unchanged, the source text is written into the target language."
+ },
+ "orchard-core": {
+  "fileFormats": "XLIFF 1.2 and HTML",
+  "fileReleased": false,
+  "fileDocs": "docs/USER_GUIDE.md#export-for-translation-and-import-a-translated-file",
+  "fileIntro": "Export Orchard Core content items as XLIFF or HTML, translate them with your agency or CAT tool, and import the translations as drafts of the language versions.",
+  "fileExport": "At the bottom of the item's *Translate with Supertext* page, under *Export for translation*, choose the *File format*, tick the *Target languages* and click *Download file* (e.g. orchardcore-<item id>-de-CH.xlf). The saved version of the content item is exported; HTML holds exactly one language.",
+  "fileImport": "Under *Import translation* on the *Translate with Supertext* page of any item, choose the file; if the language already has a translation, tick *Yes, overwrite the existing translations*. It's saved as a draft of the language version (created if missing), and untranslated texts stay in the source language. Translations that break, remove or add formatting aren't imported.",
+  "fileKeeps": "In XLIFF, formatting travels as protected tags that translators can move but not break. In HTML files, leave the header (*supertext:* lines) and the `data-st-id` attributes unchanged.",
+  "fileLimits": "- Files up to 10 MB.\n- HTML files can't mark a text as untranslated: if you import a text unchanged, the source text is written into the target language."
+ },
+ "payload-cms": {
+  "fileFormats": "XLIFF 1.2 and HTML",
+  "fileReleased": false,
+  "fileDocs": "docs/USER_GUIDE.md#export-for-translation-and-import-a-translated-file",
+  "fileIntro": "Export documents and globals from Payload CMS as XLIFF or HTML, translate them with your agency or CAT tool, and import the translations into the target locales.",
+  "fileExport": "Save the document with the locale selector on the source language, click *Translate* in the document header and switch to the *Export for translation* tab. Tick the target languages, choose the *File format* and click *Download file* (e.g. payload-pages-12-fr.xlf, or payload-pages-12.xlf for several languages). HTML holds exactly one language; languages marked *no Supertext language yet* can be exported too.",
+  "fileImport": "Open *Translate* → *Import translation* on any document of an enabled collection or global and upload the file (up to 10 MB). It's saved like a Supertext translation: as a draft in the target language where the collection uses drafts, replacing the earlier translation of those fields. Translations that break, remove or add formatting aren't imported.",
+  "fileKeeps": "In XLIFF, formatting travels as protected tags that translators can move but not break. In HTML files, leave the header (*supertext:* lines) and the `data-st-id` attributes unchanged. Also leave the `data-n` attributes unchanged.",
+  "fileLimits": "- Only for collections and globals configured for the plugin.\n- Reverse proxies must allow 10 MB uploads to `/api/supertext/import`.\n- After updating the plugin, run `npx payload generate:importmap`.\n- HTML files can't mark a text as untranslated: if you import a text unchanged, the source text is written into the target language."
+ },
+ "pimcore": {
+  "fileFormats": "XLIFF 1.2 and HTML",
+  "fileReleased": false,
+  "fileDocs": "docs/USER_GUIDE.md#export-for-translation-and-import-the-translated-file",
+  "fileIntro": "Export Pimcore documents and data objects as XLIFF or HTML, translate them with your agency or CAT tool, and import the translations as new translations or versions.",
+  "fileExport": "Save the element, open the *Translate with Supertext* dialog in Pimcore Studio and choose the mode *Export for translation*. Choose the *File format* and tick the target languages (for data objects, choose the source language first), then click *Download file* (e.g. pimcore-document-12-de_CH.xlf, or pimcore-object-7.xlf for several languages). Languages that are already translated are left out unless you tick *Overwrite existing translations*.",
+  "fileImport": "Switch the dialog to *Import translation* on any document or object and choose the file. It's saved like *Translate with Supertext*: as a new, unpublished translation of a page, or as a new version of an existing translation or object. Translations that break, remove or add formatting aren't imported, and nothing is saved for an element with an error (e.g. *Translate the parent page into this language first.*).",
+  "fileKeeps": "In XLIFF, formatting travels as protected tags that translators can move but not break. In HTML files, leave the header (*supertext:* lines) and the `data-st-id` attributes unchanged.",
+  "fileLimits": "- PHP upload limits must allow 10 MB files.\n- HTML files can't mark a text as untranslated: if you import a text unchanged, the source text is written into the target language."
+ },
+ "prestashop": {
+  "fileFormats": "XLIFF 1.2 and HTML",
+  "fileReleased": false,
+  "fileDocs": "docs/USER_GUIDE.md#export-for-translation-and-import-translated-files",
+  "fileIntro": "Export PrestaShop products, categories and CMS pages as XLIFF or HTML, translate them with your agency or CAT tool, and import the translations into the item's language fields.",
+  "fileExport": "Open *Translate with Supertext* from a row or bulk action in the products, categories or CMS pages list and choose *Translate from*. In the *Export for translation* box below the table, pick the item, the *File format* and the target languages, then click *Download file*. An HTML file holds exactly one language.",
+  "fileImport": "In the *Import translation* box on any *Translate with Supertext* page, upload the file (up to 10 MB). The texts are written into the item's language fields, friendly URL included, like a translation through the API. Existing translations are kept unless you tick *Overwrite existing translations*; translations that break, remove or add formatting aren't imported.",
+  "fileKeeps": "In XLIFF, formatting travels as protected tags that translators can move but not break. In HTML files, leave the header (*supertext:* lines) and the `data-st-id` attributes unchanged.",
+  "fileLimits": "- You need edit permission on the item's list.\n- HTML files can't mark a text as untranslated: if you import a text unchanged, the source text is written into the target language."
+ },
+ "shopify": {
+  "fileFormats": "XLIFF 1.2 and HTML",
+  "fileReleased": false,
+  "fileDocs": "docs/USER_GUIDE.md#translation-files-export-for-translation-import-translation",
+  "fileIntro": "Export a Shopify product, collection, page or blog post as XLIFF or HTML, translate it with your agency or CAT tool, and import the translations straight into your store.",
+  "fileExport": "On the app's *Translate* page, tick exactly one item under *1. Choose what to translate*. Under *Export for translation*, choose the *File format* and the target languages, then click *Download file* (e.g. shopify-8123456789-fr-FR.xlf). The file includes fields that already have a translation; HTML holds one language.",
+  "fileImport": "Under *Import translation*, upload the file (up to 10 MB). Translations are saved in Shopify immediately, like Supertext's translations, and you can review them in Translate & Adapt. Fields with a current translation are kept unless you tick *Overwrite existing translations*; translations that break, remove or add formatting aren't imported.",
+  "fileKeeps": "Bold, links and other formatting travels as protected tags that translators can move but not break. In HTML files, leave the header (*supertext:* lines) and the `data-st-id` attributes unchanged.",
+  "fileLimits": "- One item per export.\n- HTML files can't mark a text as untranslated: if you import a text unchanged, the source text is written into the target language."
+ },
+ "silverstripe": {
+  "fileFormats": "XLIFF 1.2 and HTML",
+  "fileReleased": false,
+  "fileDocs": "docs/USER_GUIDE.md#export-for-translation-and-import-the-translated-file",
+  "fileIntro": "Export Silverstripe pages with their fields and content blocks as XLIFF or HTML, translate them with your agency or CAT tool, and import the translations as drafts in the target locales.",
+  "fileExport": "Open the page in the source locale and go to the bottom of its *Supertext* tab. Choose the *File format*, tick the locales under *Into* and click *Download file* (e.g. silverstripe-12-de_CH.xlf). An HTML file holds exactly one locale.",
+  "fileImport": "On the *Supertext* tab of any page, upload the file (up to 10 MB). It's saved as a draft in its locale and logged in the translation log; a locale with its own content is skipped unless you tick *Overwrite existing translations*. Translations that break, remove or add formatting aren't imported.",
+  "fileKeeps": "Bold, links, lists and other formatting travels as protected tags that translators can move but not break. In HTML files, leave the header (*supertext:* lines) and the `data-st-id` attributes unchanged.",
+  "fileLimits": "- You need the *Translate content with Supertext* permission and edit rights in the source and target locale.\n- HTML files can't mark a text as untranslated: if you import a text unchanged, the source text is written into the target language."
+ },
+ "strapi": {
+  "fileFormats": "XLIFF 1.2 and HTML",
+  "fileReleased": false,
+  "fileDocs": "docs/USER_GUIDE.md#export-for-translation-and-import-a-translated-file",
+  "fileIntro": "Export Strapi entries as XLIFF or HTML, translate them with your agency or CAT tool, and import the translations as drafts in the target locales.",
+  "fileExport": "Save the entry and open it in the source language in the Content Manager. In the *Supertext translation* panel, tick the target languages, choose the *File format* under *Export for translation* and click *Download file* (e.g. strapi-article-<entry id>-fr-CH.xlf). An HTML file holds exactly one language.",
+  "fileImport": "Use *Import translation* in the panel of any entry and upload the file (up to 10 MB). It's saved as a draft like a Supertext translation, replacing the earlier translation of those fields; an existing translation keeps its URL slug, a new one gets a slug from the translated title. Translations that break, remove or add formatting aren't imported.",
+  "fileKeeps": "In XLIFF, formatting travels as protected tags that translators can move but not break. In HTML files, leave the header (*supertext:* lines) and the `data-st-id` attributes unchanged.",
+  "fileLimits": "- The content type must be localized (and listed in `contentTypes` if that's set).\n- Your role must be allowed to edit the locales.\n- HTML files can't mark a text as untranslated: if you import a text unchanged, the source text is written into the target language."
+ },
+ "typo3": {
+  "fileFormats": "XLIFF 1.2 and HTML",
+  "fileReleased": false,
+  "fileDocs": "docs/USER_GUIDE.md#translate-with-a-file-xliff-or-html",
+  "fileIntro": "Export pages and content elements from TYPO3 as XLIFF or HTML, translate them with your agency or CAT tool, and import the translations back into the page's language versions.",
+  "fileExport": "Export runs on the command line: `vendor/bin/typo3 supertext:export <page uid> <site language id>…`, with `--format=xliff|html` and `--output=<file>` as options. The file (e.g. typo3-12-de-CH.xlf) contains the page's texts, content elements and image captions; several languages go into one XLIFF file (typo3-12.xlf).",
+  "fileImport": "Run `vendor/bin/typo3 supertext:import <file>` to write the texts into the page's translation. Records that aren't translated yet are created first and hidden for review, and texts that are already translated are replaced by the file's. Add `--include-changed` to also import texts whose source changed; translations that break, remove or add formatting aren't imported.",
+  "fileKeeps": "In XLIFF, formatting travels as protected tags that translators can move but not break. In HTML files, leave the header (*supertext:* lines) and the `data-st-id` attributes unchanged.",
+  "fileLimits": "- There's no backend screen: export and import run on the command line, as the CLI admin user.\n- HTML files can't mark a text as untranslated: if you import a text unchanged, the source text is written into the target language."
+ },
+ "umbraco": {
+  "fileFormats": "XLIFF 1.2 and HTML",
+  "fileReleased": false,
+  "fileDocs": "docs/USER_GUIDE.md#export-for-translation-and-import-a-translated-file",
+  "fileIntro": "Export Umbraco pages with their blocks as XLIFF or HTML, translate them with your agency or CAT tool, and import the translations as drafts of the target languages.",
+  "fileExport": "At the bottom of the *Translate with Supertext* dialog, choose the language to translate *from*, tick the languages *into* and choose the *File format* under *Export for translation*, then click *Download file* (e.g. umbraco-<document key>-de-CH.xlf). The page is exported as saved, with its blocks; HTML holds exactly one language.",
+  "fileImport": "Under *Import translation* in the dialog on any page, choose the file and tick *Replace languages that already have content* if needed. It's saved as a draft of that language, and untranslated texts keep the source text. Translations that break, remove or add formatting aren't imported.",
+  "fileKeeps": "In XLIFF, formatting travels as protected tags that translators can move but not break. In HTML files, leave the header (*supertext:* lines) and the `data-st-id` attributes unchanged.",
+  "fileLimits": "- Files up to 10 MB.\n- HTML files can't mark a text as untranslated: if you import a text unchanged, the source text is written into the target language."
+ },
+ "wagtail": {
+  "fileFormats": "XLIFF 1.2 and HTML",
+  "fileReleased": false,
+  "fileDocs": "docs/USER_GUIDE.md#export-for-translation-and-import-translated-files",
+  "fileIntro": "Export Wagtail pages and snippets as XLIFF or HTML, translate them with your agency or CAT tool, and import the translations into the wagtail-localize translation editor.",
+  "fileExport": "Start the translation first (*Translate this page*), then go to *Settings → Translation files*. Choose the *Page or snippet*, the *File format* and the *Languages*, then click *Download file*. The file contains only texts not yet translated in that language; HTML holds exactly one language.",
+  "fileImport": "On the same page, upload the file (up to 10 MB). The texts appear in the wagtail-localize translation editor like a machine translation, where you review and publish them; existing translations are never overwritten. Translations that break, remove or add formatting aren't imported.",
+  "fileKeeps": "Unlike wagtail-localize's PO files, these files keep formatting and HTML: in XLIFF, formatting travels as protected tags that translators can move but not break. In HTML files, leave the header (*supertext:* lines) and the `data-st-id` attributes unchanged.",
+  "fileLimits": "- This is separate from wagtail-localize's *Download PO file* / *Upload PO file*.\n- Only translations you may edit are listed.\n- HTML files can't mark a text as untranslated: if you import a text unchanged, the source text is written into the target language."
+ },
+ "wix": {
+  "fileFormats": "XLIFF 1.2 and HTML",
+  "fileReleased": false,
+  "fileDocs": "docs/USER_GUIDE.md#translation-files-export-for-translation-import-translation",
+  "fileIntro": "Export a Wix item as XLIFF or HTML, translate it with your agency or CAT tool, and import the translations into Wix Multilingual.",
+  "fileExport": "On the app's translate page, tick exactly one item. Under *Export for translation*, choose the *File format* and the target languages, then click *Download file* (e.g. wix-<item ID>-fr-CH.xlf). The file includes texts that are already translated; HTML holds one language.",
+  "fileImport": "Under *Import translation*, upload the file (up to 10 MB). Translations are saved in Wix Multilingual like Supertext's, with the same *Mark translations as ready to publish* setting; existing translations are kept unless you tick *Overwrite existing translations*. Translations that break, remove or add formatting aren't imported.",
+  "fileKeeps": "Bold, links and other formatting travels as protected tags that translators can move but not break. In HTML files, leave the header (*supertext:* lines) and the `data-st-id` attributes unchanged.",
+  "fileLimits": "- One item per export.\n- A rich text is only saved when all its paragraphs are translated, and texts longer than Wix allows aren't saved.\n- HTML files can't mark a text as untranslated: if you import a text unchanged, the source text is written into the target language."
+ },
+ "wordpress": {
+  "fileFormats": "XLIFF 1.2 and HTML",
+  "fileReleased": false,
+  "fileDocs": "docs/README.md#translation-files-xliff-or-html",
+  "fileIntro": "Export WordPress posts and pages, with title, content, excerpt, custom and ACF fields set to *Translate* and YOOtheme texts, as XLIFF or HTML, translate them with your agency or CAT tool, and import them as linked draft translations.",
+  "fileExport": "Hover a post in *Posts* or *Pages* and click the *Export for translation* row action, which opens *Supertext → Translation files*. Choose the *File format*, tick the *Target languages* and click *Download file*. Several languages fit into one XLIFF file (wordpress-<post id>.xlf).",
+  "fileImport": "On *Supertext → Translation files*, upload the *Translated file (XLIFF or HTML)* (up to 10 MB). It's written like an AI translation: the linked translation is created if missing and saved as a draft, YOOtheme and ACF texts go back into their fields, and existing translation texts are replaced. Translations that break, remove or add formatting aren't imported.",
+  "fileKeeps": "In XLIFF, formatting travels as protected tags that translators can move but not break. In HTML files, leave the header (*supertext:* lines) and the `data-st-id` attributes unchanged.",
+  "fileLimits": "- Requires Polylang Pro.\n- You need permission to edit the original and its translation.\n- This is separate from Polylang Pro's own XLIFF export.\n- HTML files can't mark a text as untranslated: if you import a text unchanged, the source text is written into the target language."
+ }
+}
