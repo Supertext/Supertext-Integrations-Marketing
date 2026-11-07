@@ -10,6 +10,7 @@ export function integrationHref(item, locale) {
   return `/${locale}/integrations/${item.slug}`;
 }
 
+// The status shows on the integration's own page, not on the card.
 export default function IntegrationCard({ item, locale, t }) {
   return (
     <Link href={integrationHref(item, locale)} className={`tile integration${item.stage === 'roadmap' ? ' planned' : ''}`}>
@@ -38,9 +39,6 @@ export default function IntegrationCard({ item, locale, t }) {
       </div>
       <div className="integration-meta">
         <span className="tag">{t[`category_${item.category}`]}</span>
-        {(!item.stage || item.stage === 'live') && <span className="tag live">{t.stage_live}</span>}
-        {item.stage === 'in_development' && <span className="tag dev">{t.inDevelopment}</span>}
-        {item.stage === 'roadmap' && <span className="tag roadmap">{t.stage_roadmap}</span>}
         {item.release?.version && <span className="tag version">v{item.release.version}</span>}
       </div>
     </Link>
