@@ -169,6 +169,7 @@ const global = {
         { label: 'E-commerce', url: '/en/integrations?category=ecommerce', description: 'Magento, PrestaShop, Shopify, Wix' },
         { label: 'Email marketing', url: '/en/integrations?category=email', description: 'Mailchimp' },
         { label: 'Design files', url: '/en/integrations?category=design', description: 'InDesign, Illustrator, CorelDRAW' },
+        { label: 'Roadmap', url: '/en/roadmap', description: 'In development, planned next, and what you can request' },
       ],
     },
     { label: 'Pricing', url: '/en/pricing' },

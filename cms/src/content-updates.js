@@ -524,6 +524,30 @@ async function addNewsAndMcp(strapi) {
   return true;
 }
 
+/** Roadmap in the menu (November 2026): last link of the Integrations menu, every language. */
+async function addRoadmapMenu(strapi) {
+  const LINKS = {
+    en: { label: 'Roadmap', description: 'In development, planned next, and what you can request' },
+    de: { label: 'Roadmap', description: 'In Entwicklung, als Nächstes geplant und was Sie sich wünschen können' },
+    fr: { label: 'Feuille de route', description: 'En développement, prévus ensuite et ce que vous pouvez demander' },
+    it: { label: 'Roadmap', description: 'In sviluppo, previsti a seguire e ciò che può richiedere' },
+  };
+  const url = '/en/roadmap';
+  for (const [locale, link] of Object.entries(LINKS)) {
+    const draft = await strapi.documents(GLOBAL).findFirst({ locale, status: 'draft', populate: { navigation: { populate: '*' } } });
+    if (!draft) continue;
+    const navigation = stripIds(draft.navigation || []);
+    const group = navigation.find((g) => /\/integrations$/.test(g.url || '') && Array.isArray(g.links));
+    if (!group || group.links.some((l) => l.url === url)) continue;
+    group.links = [...group.links, { ...link, url }];
+    const live = await strapi.documents(GLOBAL).findFirst({ locale, status: 'published', fields: ['updatedAt'] });
+    const edited = !live || new Date(draft.updatedAt) - new Date(live.updatedAt) > 1000;
+    await strapi.documents(GLOBAL).update({ documentId: draft.documentId, locale, data: { navigation } });
+    if (!edited) await strapi.documents(GLOBAL).publish({ documentId: draft.documentId, locale });
+  }
+  return true;
+}
+
 const UPDATES = [
   {
     id: '2026-10-sdk-announcement',
@@ -547,6 +571,7 @@ const UPDATES = [
   { id: '2026-10-file-exchange', run: (strapi) => addFileExchange(strapi) },
   { id: '2026-11-roadmap', run: (strapi) => addRoadmap(strapi) },
   { id: '2026-11-news-mcp', run: (strapi) => addNewsAndMcp(strapi) },
+  { id: '2026-11-roadmap-menu', run: (strapi) => addRoadmapMenu(strapi) },
 ];
 
 async function runContentUpdates(strapi) {

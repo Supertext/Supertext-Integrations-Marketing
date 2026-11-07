@@ -492,3 +492,9 @@ a.announcement-inner:hover .announcement-cta { text-decoration: underline; text-
 .news-visual img { object-position: top left; }
 .news-marks.overlay { position: absolute; left: 12px; bottom: 12px; padding: 0; justify-content: flex-start; }
 .news-marks.overlay .mark { box-shadow: 0 2px 8px #00323033; }
+
+/* Status on the integration page */
+.status { display: inline-flex; align-items: center; gap: 7px; font-size: 13px; font-weight: 600; padding: 4px 12px; border-radius: 999px; text-decoration: none; }
+.status::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+.status.live { background: var(--mint-alpha); color: #12704a; border: 1px solid var(--mint-darken); }
+.status.dev { background: #fef3c6; color: #7a4a00; border: 1px solid #f2d27a; }

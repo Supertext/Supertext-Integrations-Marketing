@@ -101,9 +101,12 @@ export default async function IntegrationPage({ params }) {
               </h1>
               <p className="hero-sub">{item.summary}</p>
               <div className="integration-meta">
+                {item.stage === 'in_development' ? (
+                  <Link href={`/${locale}/roadmap`} className="status dev">{t.inDevelopment}</Link>
+                ) : (
+                  <span className="status live">{t.stage_live}</span>
+                )}
                 <span className="tag">{t[`category_${item.category}`]}</span>
-                {(!item.stage || item.stage === 'live') && <span className="tag live">{t.stage_live}</span>}
-                {item.stage === 'in_development' && <span className="tag dev">{t.inDevelopment}</span>}
                 {release?.version && <a className="tag version" href={release.url} target="_blank" rel="noopener">v{release.version}</a>}
               </div>
             </div>
@@ -163,6 +166,16 @@ export default async function IntegrationPage({ params }) {
           <aside className="facts">
             <div className="card">
               <dl>
+                <div>
+                  <dt>{t.status}</dt>
+                  <dd>
+                    {item.stage === 'in_development' ? (
+                      <><Link href={`/${locale}/roadmap`}>{t.inDevelopment}</Link>{' · '}{t.statusDevText}</>
+                    ) : (
+                      <>{t.stage_live}{' · '}{t.statusLiveText}</>
+                    )}
+                  </dd>
+                </div>
                 {item.integrationType && (<div><dt>{t.typeOfIntegration}</dt><dd>{item.integrationType}</dd></div>)}
                 {item.supportedVersions && (<div><dt>{t.supportedVersions}</dt><dd>{localizeVersions(item.supportedVersions, locale)}</dd></div>)}
                 {item.technology && (<div><dt>{t.technology}</dt><dd>{item.technology}</dd></div>)}
