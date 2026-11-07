@@ -9,6 +9,8 @@ function previewPath(uid, document, locale) {
       return document.slug === 'home' ? `/${lang}` : `/${lang}/${document.slug}`;
     case 'api::integration.integration':
       return `/${lang}/integrations/${document.slug}`;
+    case 'api::article.article':
+      return `/${lang}/news/${document.slug}`;
     case 'api::service-plan.service-plan':
       return `/${lang}/pricing`;
     case 'api::global.global':

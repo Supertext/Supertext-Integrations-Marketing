@@ -458,6 +458,72 @@ async function addRoadmap(strapi) {
   return true;
 }
 
+/**
+ * News and the MCP (November 2026): the first news articles, "News" in the menu and footer of
+ * every language, and Claude, ChatGPT and Copilot as one live integration (the Supertext
+ * Translation MCP) instead of three systems on the roadmap or open for requests.
+ */
+async function addNewsAndMcp(strapi) {
+  const ARTICLE = 'api::article.article';
+  for (const slug of ['claude', 'chatgpt', 'microsoft-copilot']) {
+    const doc = await strapi.documents(INTEGRATION).findFirst({ locale: 'en', status: 'draft', filters: { slug }, fields: ['stage'] });
+    if (doc && (doc.stage === 'roadmap' || doc.stage === 'request')) {
+      await strapi.documents(INTEGRATION).delete({ documentId: doc.documentId, locale: '*' });
+      strapi.log.info(`[setup] Removed ${slug}: served by the Supertext Translation MCP`);
+    }
+  }
+  const mcp = require('./seed/integrations').find((i) => i.slug === 'claude-chatgpt-and-copilot');
+  if (mcp && !(await strapi.documents(INTEGRATION).findFirst({ locale: 'en', filters: { slug: mcp.slug }, fields: ['id'] }))) {
+    const data = {
+      ...mcp,
+      seo: {
+        metaTitle: 'Supertext in Claude, ChatGPT and Copilot (MCP) | Supertext',
+        metaDescription: 'The Supertext Translation MCP brings your terminology and expert review into Claude, ChatGPT, Copilot and LangDock. Swiss servers, for Supertext Advanced and Enterprise.',
+      },
+    };
+    await strapi.documents(INTEGRATION).create({ locale: 'en', data, status: 'published' });
+    strapi.log.info('[setup] Created the Supertext Translation MCP integration');
+  }
+
+  let created = 0;
+  for (const data of require('./seed/news')) {
+    if (await strapi.documents(ARTICLE).findFirst({ locale: 'en', filters: { slug: data.slug }, fields: ['id'] })) continue;
+    await strapi.documents(ARTICLE).create({ locale: 'en', data, status: 'published' });
+    created++;
+  }
+  if (created) strapi.log.info(`[setup] Created ${created} news articles`);
+
+  const LABELS = { en: 'News', de: 'News', fr: 'Actualités', it: 'Novità' };
+  const url = '/en/news';
+  for (const [locale, label] of Object.entries(LABELS)) {
+    const draft = await strapi.documents(GLOBAL).findFirst({
+      locale,
+      status: 'draft',
+      populate: { navigation: { populate: '*' }, footerColumns: { populate: '*' } },
+    });
+    if (!draft) continue;
+    const navigation = stripIds(draft.navigation || []);
+    const footerColumns = stripIds(draft.footerColumns || []);
+    let changed = false;
+    if (!navigation.some((g) => g.url === url)) {
+      const support = navigation.findIndex((g) => /\/support$/.test(g.url || ''));
+      navigation.splice(support >= 0 ? support + 1 : navigation.length, 0, { label, url });
+      changed = true;
+    }
+    const column = footerColumns.find((c) => (c.links || []).some((l) => /\/(integrations|sdk|compare|roadmap)$/.test(l.url || '')));
+    if (column && !(column.links || []).some((l) => l.url === url)) {
+      column.links = [...column.links, { label, url }];
+      changed = true;
+    }
+    if (!changed) continue;
+    const live = await strapi.documents(GLOBAL).findFirst({ locale, status: 'published', fields: ['updatedAt'] });
+    const edited = !live || new Date(draft.updatedAt) - new Date(live.updatedAt) > 1000;
+    await strapi.documents(GLOBAL).update({ documentId: draft.documentId, locale, data: { navigation, footerColumns } });
+    if (!edited) await strapi.documents(GLOBAL).publish({ documentId: draft.documentId, locale });
+  }
+  return true;
+}
+
 const UPDATES = [
   {
     id: '2026-10-sdk-announcement',
@@ -480,6 +546,7 @@ const UPDATES = [
   { id: '2026-10-support-links', run: (strapi) => addSupportLinks(strapi) },
   { id: '2026-10-file-exchange', run: (strapi) => addFileExchange(strapi) },
   { id: '2026-11-roadmap', run: (strapi) => addRoadmap(strapi) },
+  { id: '2026-11-news-mcp', run: (strapi) => addNewsAndMcp(strapi) },
 ];
 
 async function runContentUpdates(strapi) {

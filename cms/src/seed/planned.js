@@ -2,7 +2,8 @@
 
 // Systems without a Supertext plugin yet (November 2026): the tools listed on
 // openloc.com/integrations that Supertext doesn't cover, minus other translation engines
-// (DeepL, Google Translate, Microsoft Translator, ModelFront). Status "roadmap" = planned,
+// (DeepL, Google Translate, Microsoft Translator, ModelFront) and the assistants the Supertext
+// Translation MCP already serves (Claude, ChatGPT, Copilot: see integrations.js). Status "roadmap" = planned,
 // shown on the roadmap page; "request" = not planned yet, visitors can request it.
 // [system, category, status, what it would do]
 module.exports = [
@@ -65,10 +66,7 @@ module.exports = [
   ['Salesforce Tableau', 'analytics', 'request', 'Reports on your Supertext translations in Tableau'],
   ['Google Cloud Looker', 'analytics', 'request', 'Reports on your Supertext translations in Looker'],
   // AI assistants
-  ['Claude', 'ai', 'roadmap', 'Translates and reviews content with Supertext from a Claude chat'],
-  ['ChatGPT', 'ai', 'request', 'Supertext translation inside ChatGPT'],
   ['Google Gemini', 'ai', 'request', 'Supertext translation inside Gemini'],
-  ['Microsoft Copilot', 'ai', 'request', 'Supertext translation inside Microsoft Copilot'],
   ['Mistral AI', 'ai', 'request', 'Supertext translation inside Mistral Le Chat'],
   ['Meta Llama', 'ai', 'request', 'Supertext translation for apps built on Llama'],
   ['Cohere Command', 'ai', 'request', 'Supertext translation for apps built on Cohere Command'],

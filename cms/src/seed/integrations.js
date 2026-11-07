@@ -38,6 +38,7 @@ const LIST = [
   ['Adobe InDesign', 'design', GH('Adobe-InDesign-Translation'), 'InDesign scripts (ExtendScript).', 'Exports all text to XLIFF 1.2 for any CAT tool and imports the translations with formatting intact'],
   ['Adobe Illustrator', 'design', GH('Adobe-Illustrator-Translation'), 'Illustrator scripts (ExtendScript).', 'Exports all text to XLIFF 1.2 for any CAT tool and imports the translations with formatting intact'],
   ['CorelDRAW', 'design', GH('CorelDRAW-Supertext-Translation'), 'CorelDRAW VBA macro.', 'Exports all text to XLIFF 1.2 for any CAT tool and imports the translations with formatting intact'],
+  ['Claude, ChatGPT and Copilot', 'ai', { repo: null, url: 'https://www.supertext.com/en/mcp' }, 'Supertext Translation MCP: a hosted MCP server that AI assistants connect to with OAuth or a team API key.', 'Translate with your terminology and order an expert review, right in the chat'],
 ];
 
 const DETAILS = require('./integration-details.json');

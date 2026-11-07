@@ -29,6 +29,7 @@ test('preview paths', () => {
   assert.equal(previewPath('api::page.page', { slug: 'home' }, 'de'), '/de');
   assert.equal(previewPath('api::page.page', { slug: 'pricing' }, 'en'), '/en/pricing');
   assert.equal(previewPath('api::integration.integration', { slug: 'strapi' }, 'fr'), '/fr/integrations/strapi');
+  assert.equal(previewPath('api::article.article', { slug: 'roadmap' }, 'de'), '/de/news/roadmap');
   assert.equal(previewPath('api::subscription.subscription', {}, 'en'), null);
 });
 

@@ -36,6 +36,19 @@ export default async function sitemap() {
       }
     }
   }
+  // News: the list in every language, each article in the languages it's translated into.
+  const newsLanguages = Object.fromEntries([...LOCALES.map((l) => [l, `${SITE_URL}/${l}/news`]), ['x-default', `${SITE_URL}/en/news`]]);
+  for (const l of LOCALES) entries.push({ url: `${SITE_URL}/${l}/news`, changeFrequency: 'weekly', priority: 0.6, alternates: { languages: newsLanguages } });
+  const articles = Object.fromEntries(await Promise.all(LOCALES.map(async (l) => [l, await listAll('/articles', l, ['slug', 'updatedAt'])])));
+  for (const slug of new Set(Object.values(articles).flat().map((a) => a.slug))) {
+    const locales = LOCALES.filter((l) => articles[l].some((a) => a.slug === slug));
+    const languages = Object.fromEntries(locales.map((l) => [l, `${SITE_URL}/${l}/news/${slug}`]));
+    if (locales.includes('en')) languages['x-default'] = `${SITE_URL}/en/news/${slug}`;
+    for (const l of locales) {
+      const doc = articles[l].find((a) => a.slug === slug);
+      entries.push({ url: `${SITE_URL}/${l}/news/${slug}`, lastModified: doc?.updatedAt, changeFrequency: 'monthly', priority: 0.5, alternates: { languages } });
+    }
+  }
   // The support page is part of the website (not the CMS) and exists in every language.
   const languages = Object.fromEntries([...LOCALES.map((l) => [l, `${SITE_URL}/${l}/support`]), ['x-default', `${SITE_URL}/en/support`]]);
   for (const l of LOCALES) entries.push({ url: `${SITE_URL}/${l}/support`, changeFrequency: 'monthly', priority: 0.5, alternates: { languages } });

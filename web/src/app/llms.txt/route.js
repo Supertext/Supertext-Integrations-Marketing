@@ -1,5 +1,5 @@
 import { SITE_URL, indexingAllowed } from '@/lib/seo';
-import { getIntegrations, listAll } from '@/lib/strapi';
+import { getArticles, getIntegrations, listAll } from '@/lib/strapi';
 
 const PAGE_NOTES = {
   sdk: 'build your own integration with the Supertext API (TypeScript, PHP, Python, .NET, Java)',
@@ -32,7 +32,7 @@ const CATEGORY = {
  * built from the CMS so it never goes stale.
  */
 export async function GET() {
-  const [integrations, pages] = await Promise.all([getIntegrations('en'), listAll('/pages', 'en', ['slug', 'title'])]);
+  const [integrations, pages, news] = await Promise.all([getIntegrations('en'), listAll('/pages', 'en', ['slug', 'title']), getArticles('en', 20).catch(() => [])]);
   const lines = [
     '# Supertext integrations',
     '',
@@ -78,6 +78,11 @@ export async function GET() {
   if (requestable.length) {
     lines.push(`## Not built yet, can be requested: ${SITE_URL}/en/support?kind=request`);
     lines.push(requestable.map((i) => i.system).join(', '), '');
+  }
+  if (news.length) {
+    lines.push(`## News: ${SITE_URL}/en/news`);
+    for (const a of news) lines.push(`- [${a.title}](${SITE_URL}/en/news/${a.slug}) (${a.date.slice(0, 10)}): ${a.excerpt}`);
+    lines.push('');
   }
   lines.push('## Optional', `- [Supertext website](https://www.supertext.com)`, `- [Source code of all plugins](https://github.com/Supertext)`, '');
   return new Response(lines.join('\n'), {

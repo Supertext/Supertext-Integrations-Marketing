@@ -147,3 +147,19 @@ export async function getRequestCounts() {
     return {};
   }
 }
+
+const ARTICLE_LIST = { fields: ['title', 'slug', 'date', 'category', 'excerpt', 'systems'], populate: { cover: true }, sort: ['date:desc'] };
+
+/** News articles, newest first (in the language if translated, else English). */
+export async function getArticles(locale, limit = 100) {
+  const query = { ...ARTICLE_LIST, pagination: { pageSize: limit } };
+  const [own, english] = await Promise.all([
+    locale === 'en' ? null : strapi('/articles', { ...query, locale }).catch(() => []),
+    strapi('/articles', { ...query, locale: 'en' }).catch(() => []),
+  ]);
+  const bySlug = new Map((own || []).map((a) => [a.slug, a]));
+  return (english || []).map((a) => bySlug.get(a.slug) || a);
+}
+
+export const getArticle = (slug, locale) =>
+  localized('/articles', { filters: { slug: { $eq: slug } }, populate: { cover: true, seo: { populate: '*' } } }, locale);

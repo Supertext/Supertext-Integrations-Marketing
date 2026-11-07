@@ -1,0 +1,29 @@
+{
+  "kind": "collectionType",
+  "collectionName": "articles",
+  "info": {
+    "singularName": "article",
+    "pluralName": "articles",
+    "displayName": "News article",
+    "description": "News on the website (/news). systems = integration slugs, comma-separated: their logos on the card, their cards below the article."
+  },
+  "options": { "draftAndPublish": true },
+  "pluginOptions": { "i18n": { "localized": true } },
+  "attributes": {
+    "title": { "type": "string", "required": true, "maxLength": 160, "pluginOptions": { "i18n": { "localized": true } } },
+    "slug": { "type": "uid", "targetField": "title", "required": true, "pluginOptions": { "i18n": { "localized": false } } },
+    "date": { "type": "datetime", "required": true, "pluginOptions": { "i18n": { "localized": false } } },
+    "category": {
+      "type": "enumeration",
+      "enum": ["plugins", "website", "roadmap"],
+      "default": "plugins",
+      "required": true,
+      "pluginOptions": { "i18n": { "localized": false } }
+    },
+    "excerpt": { "type": "text", "required": true, "maxLength": 400, "pluginOptions": { "i18n": { "localized": true } } },
+    "body": { "type": "richtext", "required": true, "pluginOptions": { "i18n": { "localized": true } } },
+    "systems": { "type": "string", "pluginOptions": { "i18n": { "localized": false } } },
+    "cover": { "type": "media", "multiple": false, "allowedTypes": ["images"], "pluginOptions": { "i18n": { "localized": false } } },
+    "seo": { "type": "component", "component": "shared.seo", "repeatable": false, "pluginOptions": { "i18n": { "localized": true } } }
+  }
+}

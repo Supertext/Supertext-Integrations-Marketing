@@ -445,5 +445,19 @@
       "App pages in English, German, French and Italian"
     ],
     "description": "In the Supertext app, editors go to **Translate**, choose the kind of content (website pages, landing pages, blog posts, marketing emails or knowledge base articles) and the item, tick the target languages and click *Translate with Supertext*. The result lists each language with a link to its draft in HubSpot.\n\nEditors review the drafts in HubSpot and publish or send them as usual. Until the app is listed in the HubSpot App Marketplace, Supertext sends you the link to install it."
+  },
+  "claude-chatgpt-and-copilot": {
+    "technology": "Supertext Translation MCP · hosted MCP server, OAuth 2.1 or team API key",
+    "supportedVersions": "Claude, ChatGPT, Microsoft Copilot, LangDock and other MCP clients · Supertext Advanced or Enterprise",
+    "license": "",
+    "aboutSystem": "Claude, ChatGPT and Microsoft Copilot are the AI assistants many teams write and research with every day. The Model Context Protocol (MCP), an open standard introduced by Anthropic, lets them use outside tools such as Supertext.",
+    "description": "Set up the Supertext Translation MCP once in your assistant (instructions in the Supertext cockpit under Integrations → MCP). Then ask for a translation in the chat, for example *Translate this into Swiss German using Supertext*: the assistant hands the text to Supertext, which translates it with your company's terminology, style guide and earlier translations, and the result comes back into the chat. If it matters, write *Please verify* and a Supertext language expert, or one of your own reviewers, checks the translation; the verified version returns to the chat with the reviewer named. Advanced users connect with their own account (OAuth); Enterprise admins can connect Claude and Copilot for the whole team with an API key. Your texts are processed on Swiss servers.",
+    "features": [
+      "Translate in Claude, ChatGPT, Copilot or LangDock without copying texts between tools",
+      "Your terminology, style guide and earlier translations in every request",
+      "Expert review on request: Supertext linguists or your own reviewers, verified result back in the chat",
+      "Personal connection with OAuth, or team-wide with an API key for Claude and Copilot",
+      "Processed on Swiss servers, GDPR- and FADP-compliant"
+    ]
   }
 }

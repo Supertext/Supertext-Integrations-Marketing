@@ -13,7 +13,7 @@ const LOCALES = [
 ];
 
 /** Content types the front end reads with its API token (read only). */
-const PUBLIC_READ = ['page', 'integration', 'service-plan', 'global', 'github-release', 'roadmap-item'];
+const PUBLIC_READ = ['page', 'integration', 'service-plan', 'global', 'github-release', 'roadmap-item', 'article'];
 
 /**
  * Admin accounts from environment variables, so a fresh deployment is ready without
