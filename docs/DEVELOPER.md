@@ -100,7 +100,7 @@ Dependabot opens weekly PRs for `cms/`, `web/` and GitHub Actions. Majors held b
 
 ## Deployment
 
-Railway builds `cms/Dockerfile` and `web/Dockerfile` with the repo root as context (see [INSTALLATION.md](INSTALLATION.md)). There are no releases or version tags: `main` is what runs.
+Railway builds `cms/Dockerfile` and `web/Dockerfile` with the repo root as context (see [INSTALLATION.md](INSTALLATION.md)). There are no releases or version tags: `main` is what runs. Both services deploy every push to `main` of `supertext/Supertext-Integrations-Marketing`; Railway's GitHub app needs access to that organisation (if a push doesn't start a build, check its access under the organisation's *Installed GitHub Apps*).
 
 ## Known limitations and next steps
 
