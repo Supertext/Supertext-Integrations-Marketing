@@ -6,11 +6,23 @@ const { previewPath } = require('../src/preview');
 test('seed integrations have unique slugs, valid categories and repos', () => {
   const slugs = integrations.map((i) => i.slug);
   assert.equal(new Set(slugs).size, slugs.length);
+  const schema = require('../src/api/integration/content-types/integration/schema.json').attributes;
   for (const i of integrations) {
-    assert.ok(['cms', 'pim', 'ecommerce', 'email', 'design'].includes(i.category), i.system);
+    assert.ok(schema.category.enum.includes(i.category), i.system);
+    assert.ok(schema.stage.enum.includes(i.stage), i.system);
     assert.ok(i.repo === null || /^Supertext\/[\w.-]+$/.test(i.repo), i.system);
-    assert.ok(i.summary && i.url, i.system);
+    // Systems without a plugin yet have no repo or link.
+    assert.ok(i.summary && (i.url || ['roadmap', 'request'].includes(i.stage)), i.system);
   }
+});
+
+test('systems without a plugin yet', () => {
+  const planned = integrations.filter((i) => ['roadmap', 'request'].includes(i.stage));
+  assert.ok(planned.length > 0);
+  for (const i of planned) assert.ok(!i.repo && !i.url && i.summary.length <= 90, i.slug);
+  // Not the same system twice under another name.
+  const names = new Set(integrations.filter((i) => !planned.includes(i)).map((i) => i.slug));
+  for (const i of planned) assert.ok(!names.has(i.slug), i.slug);
 });
 
 test('preview paths', () => {
@@ -29,8 +41,8 @@ test('every screenshot source belongs to a seeded integration with a repo', () =
   }
 });
 
-test('every seeded integration has details', () => {
-  for (const i of integrations) {
+test('every seeded plugin has details', () => {
+  for (const i of integrations.filter((x) => ['live', 'in_development'].includes(x.stage))) {
     assert.ok(i.technology && i.aboutSystem && i.description, `${i.slug}: technology, about, description`);
     assert.ok(i.features.length >= 3, `${i.slug}: features`);
   }

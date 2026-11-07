@@ -16,6 +16,13 @@ module.exports = ({ strapi }) => ({
     }
   },
 
+  /** Plugin requests per system, for the roadmap page (website only). */
+  async requestCounts(ctx) {
+    const token = process.env.STRAPI_API_TOKEN;
+    if (!token || ctx.request.headers.authorization !== `Bearer ${token}`) return ctx.unauthorized();
+    ctx.body = { counts: await strapi.service('api::support.support').requestCounts() };
+  },
+
   async github(ctx) {
     const support = strapi.service('api::support.support');
     const raw = ctx.request.body?.[Symbol.for('unparsedBody')];

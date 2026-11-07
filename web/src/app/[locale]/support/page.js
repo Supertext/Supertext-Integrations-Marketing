@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import SupportForm from '@/components/SupportForm';
-import { getIntegrations } from '@/lib/strapi';
+import { getIntegrations, hasPlugin } from '@/lib/strapi';
 import { isLocale, LOCALES, strings } from '@/lib/i18n';
 import { alternates, indexingAllowed, social } from '@/lib/seo';
 
@@ -21,10 +21,13 @@ export async function generateMetadata({ params }) {
 export default async function SupportPage({ params, searchParams }) {
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
-  const { platform } = await searchParams;
+  const { platform, kind } = await searchParams;
   const t = strings(locale);
-  const platforms = (await getIntegrations(locale).catch(() => [])).map((i) => ({ slug: i.slug, system: i.system }));
-  platforms.sort((a, b) => a.system.localeCompare(b.system, locale));
+  const all = (await getIntegrations(locale).catch(() => [])).map((i) => ({ slug: i.slug, system: i.system, category: i.category, stage: i.stage }));
+  all.sort((a, b) => a.system.localeCompare(b.system, locale));
+  // Questions and problems are about existing plugins; requests about systems without one yet.
+  const platforms = all.filter(hasPlugin);
+  const requestable = all.filter((i) => !hasPlugin(i));
   return (
     <>
       <section className="hero">
@@ -39,7 +42,9 @@ export default async function SupportPage({ params, searchParams }) {
             locale={locale}
             t={t}
             platforms={platforms}
-            initialPlatform={platforms.some((p) => p.slug === platform) ? platform : ''}
+            requestable={requestable}
+            initialKind={kind === 'request' || requestable.some((p) => p.slug === platform) ? 'request' : ['bug', 'feature'].includes(kind) ? kind : 'question'}
+            initialPlatform={all.some((p) => p.slug === platform) ? platform : ''}
             turnstileSiteKey={process.env.TURNSTILE_SITE_KEY || null}
           />
         </div>

@@ -3,6 +3,7 @@ import { getIntegrations, listAll } from '@/lib/strapi';
 
 const PAGE_NOTES = {
   sdk: 'build your own integration with the Supertext API (TypeScript, PHP, Python, .NET, Java)',
+  roadmap: 'Supertext plugins in development and planned next, and the systems people can request',
   compare: 'how Supertext compares with DeepL and Google Translate: Swiss German, Swiss Standard German, Swiss French and Italian, Romansh, hosting in Switzerland, formal address, professional review',
 };
 
@@ -10,7 +11,21 @@ const PAGE_NOTES = {
 
 export const dynamic = 'force-dynamic';
 
-const CATEGORY = { cms: 'Content management systems', pim: 'Product information management', ecommerce: 'E-commerce', email: 'Email marketing', design: 'Design files' };
+const CATEGORY = {
+  cms: 'Content management systems',
+  pim: 'Product information management',
+  ecommerce: 'E-commerce',
+  email: 'Email marketing',
+  design: 'Design files',
+  docs: 'Documentation and office',
+  support: 'Customer support',
+  pm: 'Project management and collaboration',
+  code: 'Developer tools',
+  automation: 'Automation',
+  language: 'Terminology and CAT tools',
+  analytics: 'Reporting',
+  ai: 'AI assistants',
+};
 
 /**
  * llms.txt (https://llmstxt.org): a plain summary of the site for AI assistants and answer engines,
@@ -34,8 +49,9 @@ export async function GET() {
       .map((p) => `- [${p.title}](${SITE_URL}/en/${p.slug})${PAGE_NOTES[p.slug] ? `: ${PAGE_NOTES[p.slug]}` : ''}`),
     '',
   ];
+  const plugins = integrations.filter((i) => !i.stage || i.stage === 'live' || i.stage === 'in_development');
   for (const [key, label] of Object.entries(CATEGORY)) {
-    const items = integrations.filter((i) => i.category === key);
+    const items = plugins.filter((i) => i.category === key);
     if (!items.length) continue;
     lines.push(`## ${label}`);
     for (const i of items) {
@@ -50,6 +66,18 @@ export async function GET() {
       lines.push(`- [${i.system}](${SITE_URL}/en/integrations/${i.slug}): ${facts}`);
     }
     lines.push('');
+  }
+  // Systems without a plugin yet.
+  const planned = integrations.filter((i) => i.stage === 'roadmap');
+  if (planned.length) {
+    lines.push(`## On the roadmap (no plugin yet): ${SITE_URL}/en/roadmap`);
+    for (const i of planned) lines.push(`- ${i.system} (${CATEGORY[i.category] || i.category}): ${i.summary}`);
+    lines.push('');
+  }
+  const requestable = integrations.filter((i) => i.stage === 'request');
+  if (requestable.length) {
+    lines.push(`## Not built yet, can be requested: ${SITE_URL}/en/support?kind=request`);
+    lines.push(requestable.map((i) => i.system).join(', '), '');
   }
   lines.push('## Optional', `- [Supertext website](https://www.supertext.com)`, `- [Source code of all plugins](https://github.com/Supertext)`, '');
   return new Response(lines.join('\n'), {

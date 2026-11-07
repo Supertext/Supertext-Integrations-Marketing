@@ -5,6 +5,8 @@
 #   bug      → reproduces it, fixes it with a test and opens a pull request for review
 #   feature  → labels it "feature-request" for the product owner, with a short assessment
 # Only people with triage rights can add labels, so outside visitors can't start this workflow.
+# Plugin requests (label "plugin-request", only in the integrations site's repo) skip triage:
+# they are counted per system and go to the product owner.
 # Needs the organisation secret ANTHROPIC_API_KEY and the Claude GitHub app.
 name: Support triage
 
@@ -20,7 +22,7 @@ concurrency:
 
 jobs:
   triage:
-    if: github.event.label.name == 'support' && github.event.issue.state == 'open'
+    if: github.event.label.name == 'support' && github.event.issue.state == 'open' && !contains(github.event.issue.labels.*.name, 'plugin-request')
     runs-on: ubuntu-latest
     timeout-minutes: 45
     permissions:

@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_blocks_roadmap",
+  "info": {
+    "displayName": "Roadmap",
+    "icon": "calendar",
+    "description": "Integrations in development and on the roadmap, roadmap items, recent releases and the systems people can request"
+  },
+  "options": {},
+  "attributes": {
+    "title": { "type": "string" },
+    "subtitle": { "type": "text" },
+    "showReleases": { "type": "boolean", "default": true },
+    "showRequests": { "type": "boolean", "default": true }
+  }
+}

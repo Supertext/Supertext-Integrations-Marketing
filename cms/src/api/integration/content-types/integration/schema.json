@@ -42,7 +42,15 @@
         "pim",
         "ecommerce",
         "email",
-        "design"
+        "design",
+        "docs",
+        "support",
+        "pm",
+        "code",
+        "automation",
+        "language",
+        "analytics",
+        "ai"
       ],
       "required": true,
       "default": "cms",
@@ -56,7 +64,9 @@
       "type": "enumeration",
       "enum": [
         "live",
-        "in_development"
+        "in_development",
+        "roadmap",
+        "request"
       ],
       "default": "live",
       "pluginOptions": {

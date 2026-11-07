@@ -9,8 +9,10 @@ export const dynamic = 'force-dynamic';
 export default async function sitemap() {
   const entries = [];
   for (const [path, base] of [['/pages', ''], ['/integrations', '/integrations']]) {
-    const fields = path === '/integrations' ? ['slug', 'updatedAt', 'fileFormats'] : ['slug', 'updatedAt'];
-    const perLocale = Object.fromEntries(await Promise.all(LOCALES.map(async (l) => [l, await listAll(path, l, fields)])));
+    const fields = path === '/integrations' ? ['slug', 'updatedAt', 'fileFormats', 'stage'] : ['slug', 'updatedAt'];
+    // Systems without a plugin yet have no page of their own (they redirect to the roadmap or the request form).
+    const withPage = (d) => !d.stage || d.stage === 'live' || d.stage === 'in_development';
+    const perLocale = Object.fromEntries(await Promise.all(LOCALES.map(async (l) => [l, (await listAll(path, l, fields)).filter(withPage)])));
     const slugs = new Set(Object.values(perLocale).flat().map((d) => d.slug));
     for (const slug of slugs) {
       const suffix = path === '/pages' && slug === 'home' ? '' : `${base}/${slug}`;

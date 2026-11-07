@@ -43,6 +43,7 @@ const BLOCK_POPULATE = {
     'blocks.use-case': { populate: '*' },
     'blocks.comparison-table': { populate: { columns: { populate: '*' }, rows: true } },
     'blocks.integration-grid': true,
+    'blocks.roadmap': true,
     'blocks.logo-strip': { populate: '*' },
     'blocks.faq': { populate: '*' },
     'blocks.cta-band': { populate: '*' },
@@ -73,7 +74,7 @@ export const getGlobal = (locale) =>
 
 /** All integrations (in the language if translated, else English), with their latest GitHub release. */
 export async function getIntegrations(locale) {
-  const query = { populate: { logo: true, screenshot: true }, sort: ['order:asc', 'system:asc'], pagination: { pageSize: 100 } };
+  const query = { populate: { logo: true, screenshot: true }, sort: ['order:asc', 'system:asc'], pagination: { pageSize: 200 } };
   const [own, english, releases] = await Promise.all([
     locale === 'en' ? null : strapi('/integrations', { ...query, locale }),
     strapi('/integrations', { ...query, locale: 'en' }),
@@ -104,7 +105,7 @@ export async function translatedLocales(path, slug) {
 
 /** Slugs and last changes of everything in one locale, for the sitemap and llms.txt. */
 export async function listAll(path, locale, fields = ['slug', 'updatedAt']) {
-  return (await strapi(path, { locale, fields, pagination: { pageSize: 100 } }).catch(() => [])) || [];
+  return (await strapi(path, { locale, fields, pagination: { pageSize: 200 } }).catch(() => [])) || [];
 }
 
 export async function getReleases() {
@@ -113,5 +114,36 @@ export async function getReleases() {
     return new Map(list.filter((r) => r.version).map((r) => [r.repo, r]));
   } catch {
     return new Map(); // release info is a nice-to-have
+  }
+}
+
+/** Statuses: live and in development have a plugin; roadmap and request don't yet. */
+export const hasPlugin = (item) => !item.stage || item.stage === 'live' || item.stage === 'in_development';
+
+/** Published roadmap items (in the language if translated, else English). */
+export async function getRoadmapItems(locale) {
+  const query = { sort: ['order:asc', 'title:asc'], pagination: { pageSize: 100 } };
+  try {
+    const [own, english] = await Promise.all([
+      locale === 'en' ? null : strapi('/roadmap-items', { ...query, locale }),
+      strapi('/roadmap-items', { ...query, locale: 'en' }),
+    ]);
+    const byId = new Map((own || []).map((i) => [i.documentId, i]));
+    return (english || []).map((i) => byId.get(i.documentId) || i);
+  } catch {
+    return [];
+  }
+}
+
+/** Plugin requests per system slug, e.g. { figma: 3 } (nice-to-have: {} when unavailable). */
+export async function getRequestCounts() {
+  try {
+    const res = await fetch(`${STRAPI_URL}/api/support/plugin-requests`, {
+      headers: { Authorization: `Bearer ${process.env.STRAPI_API_TOKEN}` },
+      next: { revalidate: 60 },
+    });
+    return res.ok ? (await res.json()).counts || {} : {};
+  } catch {
+    return {};
   }
 }

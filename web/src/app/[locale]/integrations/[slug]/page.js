@@ -1,13 +1,13 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import Blocks from '@/components/Blocks';
 import SectionHead from '@/components/blocks/SectionHead';
 import Markdown from '@/components/Markdown';
 import Mark from '@/components/Mark';
-import IntegrationCard from '@/components/IntegrationCard';
+import IntegrationCard, { integrationHref } from '@/components/IntegrationCard';
 import { Check } from '@/components/Icons';
-import { getIntegration, getIntegrations, imageProps, mediaUrl, translatedLocales } from '@/lib/strapi';
+import { getIntegration, getIntegrations, hasPlugin, imageProps, mediaUrl, translatedLocales } from '@/lib/strapi';
 import { JsonLd, ORG, SITE_URL, alternates, indexingAllowed, metaDescription, social } from '@/lib/seo';
 import { faqJsonLd } from '@/lib/page';
 import { localizeVersions } from '@/lib/versions';
@@ -16,7 +16,7 @@ import { ACCOUNT_URL, API_KEY_URL, format, isLocale, strings } from '@/lib/i18n'
 export async function generateMetadata({ params }) {
   const { locale, slug } = await params;
   const item = await getIntegration(slug, locale).catch(() => null);
-  if (!item) return {};
+  if (!item || !hasPlugin(item)) return {};
   const t = strings(locale);
   const title = item.seo?.metaTitle || `${format(t, 'integrationTitle', { system: item.system })} | Supertext`;
   const description = item.seo?.metaDescription ? metaDescription([item.seo.metaDescription]) : metaDescription([item.summary, localizeVersions(item.supportedVersions, locale)], t.metaTail);
@@ -39,9 +39,11 @@ export default async function IntegrationPage({ params }) {
   if (!isLocale(locale)) notFound();
   const [item, all] = await Promise.all([getIntegration(slug, locale), getIntegrations(locale)]);
   if (!item) notFound();
+  // No plugin yet: the system's place on the roadmap, or the request form.
+  if (!hasPlugin(item)) redirect(integrationHref(item, locale));
   const t = strings(locale);
   const release = all.find((i) => i.slug === slug)?.release;
-  const related = all.filter((i) => i.category === item.category && i.slug !== slug).slice(0, 4)
+  const related = all.filter((i) => i.category === item.category && i.slug !== slug && hasPlugin(i)).slice(0, 4)
     .map((i) => ({ ...i, logoUrl: mediaUrl(i.logo), screenshot: imageProps(i.screenshot) }));
   const screenshot = imageProps(item.screenshot);
   const pageUrl = `${SITE_URL}/${locale}/integrations/${slug}`;
@@ -100,6 +102,7 @@ export default async function IntegrationPage({ params }) {
               <p className="hero-sub">{item.summary}</p>
               <div className="integration-meta">
                 <span className="tag">{t[`category_${item.category}`]}</span>
+                {(!item.stage || item.stage === 'live') && <span className="tag live">{t.stage_live}</span>}
                 {item.stage === 'in_development' && <span className="tag dev">{t.inDevelopment}</span>}
                 {release?.version && <a className="tag version" href={release.url} target="_blank" rel="noopener">v{release.version}</a>}
               </div>

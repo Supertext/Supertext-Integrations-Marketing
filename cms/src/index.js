@@ -13,7 +13,7 @@ const LOCALES = [
 ];
 
 /** Content types the front end reads with its API token (read only). */
-const PUBLIC_READ = ['page', 'integration', 'service-plan', 'global', 'github-release'];
+const PUBLIC_READ = ['page', 'integration', 'service-plan', 'global', 'github-release', 'roadmap-item'];
 
 /**
  * Admin accounts from environment variables, so a fresh deployment is ready without
@@ -104,9 +104,18 @@ async function ensureWebToken(strapi) {
     });
     await strapi.db.query('admin::api-token').update({ where: { id: created.id }, data: { accessKey, encryptedKey: null } });
     strapi.log.info('[setup] Created the "web" API token from STRAPI_API_TOKEN');
-  } else if (existing.accessKey !== accessKey) {
-    await strapi.db.query('admin::api-token').update({ where: { id: existing.id }, data: { accessKey, encryptedKey: null } });
-    strapi.log.info('[setup] Updated the "web" API token to the current STRAPI_API_TOKEN');
+  } else {
+    if (existing.accessKey !== accessKey) {
+      await strapi.db.query('admin::api-token').update({ where: { id: existing.id }, data: { accessKey, encryptedKey: null } });
+      strapi.log.info('[setup] Updated the "web" API token to the current STRAPI_API_TOKEN');
+    }
+    // Content types added later (roadmap items): the token gets their read permissions too.
+    const current = await tokens.getById(existing.id);
+    const granted = new Set((current?.permissions || []).map((p) => p.action || p));
+    if (permissions.some((p) => !granted.has(p))) {
+      await tokens.update(existing.id, { permissions: [...new Set([...granted, ...permissions])] });
+      strapi.log.info('[setup] Gave the "web" API token read access to new content types');
+    }
   }
 }
 
@@ -146,8 +155,26 @@ async function seed(strapi) {
   }
 }
 
+/** Plugin requests: when an integration is published or changed, tell its requesters about a new status. */
+function watchIntegrationStatus(strapi) {
+  let timer = null;
+  const later = () => {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      strapi.service('api::support.support').notifyStatusChanges().catch((e) => strapi.log.warn(`[support] Status emails: ${e.message}`));
+    }, 5000);
+  };
+  strapi.documents.use(async (context, next) => {
+    const result = await next();
+    if (context.uid === 'api::integration.integration' && ['publish', 'update', 'create'].includes(context.action)) later();
+    return result;
+  });
+}
+
 module.exports = {
-  register() {},
+  register({ strapi }) {
+    watchIntegrationStatus(strapi);
+  },
 
   async bootstrap({ strapi }) {
     const step = async (name, fn) => {

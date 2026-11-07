@@ -21,7 +21,15 @@
         "pim",
         "ecommerce",
         "email",
-        "design"
+        "design",
+        "docs",
+        "support",
+        "pm",
+        "code",
+        "automation",
+        "language",
+        "analytics",
+        "ai"
       ],
       "default": "all"
     },

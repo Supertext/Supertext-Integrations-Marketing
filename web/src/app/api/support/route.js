@@ -1,4 +1,4 @@
-const FIELDS = ['platform', 'kind', 'subject', 'message', 'systemVersion', 'pluginVersion', 'name', 'company', 'email', 'locale', 'website', 'elapsedMs', 'turnstileToken'];
+const FIELDS = ['platform', 'requestedSystem', 'kind', 'subject', 'message', 'systemVersion', 'pluginVersion', 'name', 'company', 'email', 'locale', 'website', 'elapsedMs', 'turnstileToken'];
 
 /**
  * Forwards a support request to the CMS, server-side with the shared token, together with the

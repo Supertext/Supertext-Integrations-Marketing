@@ -70,6 +70,12 @@ Visitors ask questions, report problems or suggest ideas on the **Support** page
 
 **Answering yourself:** comment on the GitHub issue as a member of the Supertext organisation; the comment is emailed to the sender. Comments containing `<!-- internal -->` stay internal. **Bug fixes** arrive as pull requests: review and merge them; the issue closes with the merge. **Feature requests:** filter the issues by the label `feature-request`.
 
+**Plugin requests:** the support form's fourth option, *A plugin for a system you don't support yet*, asks only for the system (from the systems without a plugin, or typed in), an optional description and the email address. Requests for the same system share one issue in this site's repository with the label `plugin-request` (later ones are added as comments; Claude doesn't triage them), so the issue list doubles as a vote count, and the roadmap page shows the number per system. The sender is emailed when the system's *stage* changes to `in_development` and again at `live` (as soon as the integration is published). Commenting on the issue as a team member emails everyone who asked for that system.
+
+## Roadmap page
+
+The page **roadmap** (`/roadmap`, linked in the footer and below every integration grid) is built by its *Roadmap* block from the integrations' *stage*: **In development** (`in_development`), **On the roadmap** (`roadmap`, with a "Request the plugin" link and the request count) and **Request a plugin** (`request`, grouped by category, most-requested first), plus plugins released in the last four months. *Roadmap items* (their own content type) add things that aren't integrations, in the column of their *phase* (`now`, `next`, `later`); three are prepared as drafts: publish the ones you want to show. To move a system along, change its *stage* and publish.
+
 ## Comparison page
 
 The page **compare** (`/compare`) compares Supertext with DeepL and Google Translate: what sets Supertext apart, a side-by-side table, questions. It's linked from the footer and from every integration page. The facts are as of October 2026 (sources in the project document *comparison-research*); check them when you change the page, as DeepL and Google change quickly.
@@ -83,7 +89,7 @@ The dark bar at the very top of every page, for short-lived news like the SDK la
 - *category* decides the filter button; *order* the position in the grid.
 - *supportedVersions*, *technology* and *license* (shared by all languages) appear in the fact box of the integration's page; *supportedVersions* also on its card.
 - *description* ("How it works"), *features* ("What Supertext does in …") and *aboutSystem* ("About …") are the sections of the integration's page, translated per language.
-- *stage* `in_development` adds an "In development" label and takes the integration out of the platform list at checkout.
+- *stage* is the status: `live` (label "Live"), `in_development` ("In development", not in the platform list at checkout), `roadmap` ("On the roadmap": card without a page of its own, links to the roadmap) or `request` (not built yet: a small "+ System" link under its category that opens the request form). Systems with `roadmap` or `request` need only *system*, *category* and *summary*; their page redirects to the roadmap or the request form, and they stay out of the sitemap, the checkout and the support form's plugin list. The 57 systems without a plugin come from openloc.com/integrations (November 2026, without other translation engines).
 - *repo* is the GitHub repository (`Supertext/<name>`). It links the guides and brings in the latest version every night.
 - *screenshot*: the image on the integration's card and at the top of its page: a full-screen view of the system with Supertext in it. Where a plugin's repo has no full-screen view yet, the best screenshot from its guides stands in until one exists. Integrations listed in `cms/src/seed/screenshots.js` get one automatically from their plugin's repo; replace it any time in the admin (your upload is never overwritten). Without a screenshot, the card shows the initials instead.
 - *logo*: without one, the site shows the initials.

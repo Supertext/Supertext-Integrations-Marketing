@@ -58,7 +58,8 @@
         "blocks.faq",
         "blocks.cta-band",
         "blocks.rich-text",
-        "blocks.notice"
+        "blocks.notice",
+        "blocks.roadmap"
       ],
       "pluginOptions": {
         "i18n": {

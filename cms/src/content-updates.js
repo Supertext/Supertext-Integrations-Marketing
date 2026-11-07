@@ -416,6 +416,48 @@ async function addFileExchange(strapi) {
   return true;
 }
 
+/**
+ * Plugin status and roadmap (November 2026): the systems without a plugin yet (on the roadmap
+ * or open for requests), the roadmap page, draft roadmap items and a footer link in every language.
+ */
+async function addRoadmap(strapi) {
+  const seeds = require('./seed/integrations').filter((i) => i.stage === 'roadmap' || i.stage === 'request');
+  const { roadmapPage, roadmapItems, footerRoadmap } = require('./seed/roadmap');
+  let created = 0;
+  for (const seed of seeds) {
+    if (await strapi.documents(INTEGRATION).findFirst({ locale: 'en', filters: { slug: seed.slug }, fields: ['id'] })) continue;
+    await strapi.documents(INTEGRATION).create({ locale: 'en', data: seed, status: 'published' });
+    created++;
+  }
+  if (created) strapi.log.info(`[setup] Added ${created} systems on the roadmap or open for requests`);
+
+  if (!(await strapi.documents(PAGE).findFirst({ locale: 'en', filters: { slug: 'roadmap' }, fields: ['id'] }))) {
+    await strapi.documents(PAGE).create({ locale: 'en', data: roadmapPage, status: 'published' });
+    strapi.log.info('[setup] Created the roadmap page');
+  }
+
+  const ITEM = 'api::roadmap-item.roadmap-item';
+  if ((await strapi.documents(ITEM).count({ locale: 'en' })) === 0) {
+    // Drafts: an editor publishes the ones that should be public.
+    for (const data of roadmapItems) await strapi.documents(ITEM).create({ locale: 'en', data });
+  }
+
+  for (const locale of ['en', 'de', 'fr', 'it']) {
+    const label = locale === 'en' ? footerRoadmap.label : translationsFor(locale)[footerRoadmap.label] || footerRoadmap.label;
+    const draft = await strapi.documents(GLOBAL).findFirst({ locale, status: 'draft', populate: { footerColumns: { populate: '*' } } });
+    if (!draft) continue;
+    const footerColumns = stripIds(draft.footerColumns || []);
+    const column = footerColumns.find((c) => (c.links || []).some((l) => /\/(integrations|sdk|compare)$/.test(l.url)));
+    if (!column || column.links.some((l) => l.url === footerRoadmap.url)) continue;
+    column.links = [...column.links, { label, url: footerRoadmap.url }];
+    const live = await strapi.documents(GLOBAL).findFirst({ locale, status: 'published', fields: ['updatedAt'] });
+    const edited = !live || new Date(draft.updatedAt) - new Date(live.updatedAt) > 1000;
+    await strapi.documents(GLOBAL).update({ documentId: draft.documentId, locale, data: { footerColumns } });
+    if (!edited) await strapi.documents(GLOBAL).publish({ documentId: draft.documentId, locale });
+  }
+  return true;
+}
+
 const UPDATES = [
   {
     id: '2026-10-sdk-announcement',
@@ -437,6 +479,7 @@ const UPDATES = [
   { id: '2026-10-comparisons', run: (strapi) => addComparisons(strapi) },
   { id: '2026-10-support-links', run: (strapi) => addSupportLinks(strapi) },
   { id: '2026-10-file-exchange', run: (strapi) => addFileExchange(strapi) },
+  { id: '2026-11-roadmap', run: (strapi) => addRoadmap(strapi) },
 ];
 
 async function runContentUpdates(strapi) {

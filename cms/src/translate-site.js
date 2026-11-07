@@ -10,7 +10,7 @@
 // get the English value back: slugs, link targets, code blocks and inline code.
 
 const TARGETS = ['de', 'fr', 'it'];
-const TYPES = ['api::global.global', 'api::page.page', 'api::integration.integration', 'api::service-plan.service-plan'];
+const TYPES = ['api::global.global', 'api::page.page', 'api::integration.integration', 'api::service-plan.service-plan', 'api::roadmap-item.roadmap-item'];
 const KEEP = new Set(['slug', 'url']);
 const SKIP = new Set(['id', 'documentId', 'locale', 'createdAt', 'updatedAt', 'publishedAt', 'createdBy', 'updatedBy', 'localizations']);
 

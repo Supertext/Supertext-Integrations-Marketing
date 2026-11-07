@@ -2,6 +2,7 @@
 
 // The Supertext plugin list (claude/plugin-conventions.md → Plugin list), as seed data.
 // [system, category, repo or URL, type of integration, what it does, status]
+// Systems without a plugin yet (roadmap, request) are in planned.js.
 const GH = (repo) => ({ repo: `Supertext/${repo}`, url: `https://github.com/Supertext/${repo}` });
 
 const LIST = [
@@ -52,7 +53,9 @@ const details = (slug) => {
 
 const slugify = (s) => s.toLowerCase().replace(/\(.*?\)/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
-module.exports = LIST.map(([system, category, link, integrationType, summary, stage = 'live'], index) => ({
+const PLANNED = require('./planned');
+
+const live = LIST.map(([system, category, link, integrationType, summary, stage = 'live'], index) => ({
   system,
   slug: slugify(system),
   category,
@@ -66,3 +69,17 @@ module.exports = LIST.map(([system, category, link, integrationType, summary, st
   builtInTranslation: builtIn[slugify(system)],
   ...(FILES[slugify(system)] || {}),
 }));
+
+// Systems without a plugin yet: on the roadmap or open for requests, after the existing ones.
+const planned = PLANNED.map(([system, category, stage, summary], index) => ({
+  system,
+  slug: slugify(system),
+  category,
+  stage,
+  repo: null,
+  url: null,
+  order: (LIST.length + index + 1) * 10,
+  summary,
+}));
+
+module.exports = [...live, ...planned];

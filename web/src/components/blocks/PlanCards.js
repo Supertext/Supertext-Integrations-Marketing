@@ -101,7 +101,7 @@ export default function PlanCards({ block, integrations, locale, t }) {
   const search = useSearchParams();
   const plans = block.plans || [];
   const hasAnnual = plans.some((p) => p.priceAnnual !== null && p.priceAnnual !== undefined && Number(p.priceAnnual) !== Number(p.priceMonthly));
-  const platforms = integrations.filter((i) => i.stage !== 'in_development').map(({ slug, system }) => ({ slug, system }));
+  const platforms = integrations.filter((i) => !i.stage || i.stage === 'live').map(({ slug, system }) => ({ slug, system }));
   return (
     <section className="section">
       <div className="container">

@@ -2,10 +2,25 @@
 
 import Link from 'next/link';
 import { useMemo, useState } from 'react';
-import IntegrationCard from '../IntegrationCard';
+import IntegrationCard, { integrationHref } from '../IntegrationCard';
 import SectionHead from './SectionHead';
+import { format } from '@/lib/i18n';
 
-const CATEGORIES = ['cms', 'pim', 'ecommerce', 'email', 'design'];
+const CATEGORIES = ['cms', 'pim', 'ecommerce', 'email', 'design', 'docs', 'support', 'pm', 'code', 'automation', 'language', 'analytics', 'ai'];
+
+/** Systems without a plugin and not planned yet: small links to the request form. */
+function RequestPills({ items, locale, t }) {
+  return (
+    <div className="request-pills">
+      <span className="request-label">{t.requestGroupTitle}</span>
+      {items.map((i) => (
+        <Link key={i.slug} href={integrationHref(i, locale)} className="chip request" aria-label={format(t, 'requestPillLabel', { system: i.system })}>
+          <span aria-hidden="true">+</span> {i.system}
+        </Link>
+      ))}
+    </div>
+  );
+}
 
 function SdkCard({ locale, t }) {
   return (
@@ -59,22 +74,32 @@ export default function IntegrationGrid({ block, integrations, locale, t, initia
         )}
         {shown.length ? (
           // "All": one group per category with its own heading (h2 when the section has no title).
-          (category === 'all' ? CATEGORIES.filter((c) => counts[c]) : [category]).map((c, index, list) => {
-            const items = shown.filter((i) => i.category === c);
+          (() => {
+            const groups = (category === 'all' ? CATEGORIES.filter((c) => counts[c]) : [category]).map((c) => {
+              const items = shown.filter((i) => i.category === c);
+              return { c, cards: items.filter((i) => i.stage !== 'request'), requests: items.filter((i) => i.stage === 'request') };
+            });
+            const sdkGroup = groups.map((g) => g.cards.length > 0).lastIndexOf(true);
             const Heading = block.title ? 'h3' : 'h2';
-            return (
+            return groups.map(({ c, cards, requests }, index) => (
               <div key={c} className="integration-group">
                 {category === 'all' && <Heading className="group-title">{t[`category_${c}`]}</Heading>}
-                <div className="integrations">
-                  {items.map((item) => <IntegrationCard key={item.slug} item={item} locale={locale} t={t} />)}
-                  {index === list.length - 1 && <SdkCard locale={locale} t={t} />}
-                </div>
+                {(cards.length > 0 || index === sdkGroup) && (
+                  <div className="integrations">
+                    {cards.map((item) => <IntegrationCard key={item.slug} item={item} locale={locale} t={t} />)}
+                    {index === sdkGroup && <SdkCard locale={locale} t={t} />}
+                  </div>
+                )}
+                {requests.length > 0 && <RequestPills items={requests} locale={locale} t={t} />}
               </div>
-            );
-          })
+            ));
+          })()
         ) : (
           <p className="empty">{t.noResults}</p>
         )}
+        <p className="roadmap-link">
+          <Link href={`/${locale}/roadmap`} className="btn btn-text">{t.roadmapLink} →</Link>
+        </p>
       </div>
     </section>
   );

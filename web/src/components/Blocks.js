@@ -10,6 +10,7 @@ import Notice from './blocks/Notice';
 import LogoStrip from './blocks/LogoStrip';
 import IntegrationGrid from './blocks/IntegrationGrid';
 import PlanCards from './blocks/PlanCards';
+import Roadmap from './blocks/Roadmap';
 import { getIntegrations, imageProps, mediaUrl } from '@/lib/strapi';
 
 const STATIC = {
@@ -27,11 +28,11 @@ const STATIC = {
 /** Renders a Strapi dynamic zone. Unknown block types are skipped. */
 export default async function Blocks({ blocks, locale, t, searchParams = {} }) {
   if (!blocks?.length) return null;
-  const needsIntegrations = blocks.some((b) => b.__component === 'blocks.integration-grid' || b.__component === 'blocks.plan-cards');
+  const needsIntegrations = blocks.some((b) => ['blocks.integration-grid', 'blocks.plan-cards', 'blocks.roadmap'].includes(b.__component));
   const integrations = needsIntegrations
     ? (await getIntegrations(locale)).map((i) => ({
         slug: i.slug, system: i.system, category: i.category, stage: i.stage, summary: i.summary, supportedVersions: i.supportedVersions,
-        logoUrl: mediaUrl(i.logo), screenshot: imageProps(i.screenshot), release: i.release ? { version: i.release.version } : null,
+        logoUrl: mediaUrl(i.logo), screenshot: imageProps(i.screenshot), release: i.release ? { version: i.release.version, releasedAt: i.release.releasedAt || null } : null,
       }))
     : [];
 
@@ -39,6 +40,9 @@ export default async function Blocks({ blocks, locale, t, searchParams = {} }) {
     const key = `${block.__component}-${block.id}`;
     if (block.__component === 'blocks.integration-grid') {
       return <IntegrationGrid key={key} block={block} integrations={integrations} locale={locale} t={t} initialCategory={searchParams.category} />;
+    }
+    if (block.__component === 'blocks.roadmap') {
+      return <Roadmap key={key} block={block} integrations={integrations} locale={locale} t={t} />;
     }
     if (block.__component === 'blocks.plan-cards') {
       return (
